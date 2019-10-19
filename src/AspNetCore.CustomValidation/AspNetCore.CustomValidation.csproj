@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Company>Tanvir Ahmad Arjel</Company>
+    <Authors>TanvirArjel</Authors>
+    <Copyright>2019 TanvirArjel</Copyright>
+    <Description>This a custom validaton library for ASP.NET Core.</Description>
+    <PackageProjectUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TanvirArjel/ExceptionHandler</RepositoryUrl>
+    <PackageTags>Custom Validation, ASP.NET Core CustomValidation, FileValidation</PackageTags>
+    <PackageReleaseNotes>This a custom validaton library for ASP.NET Core.</PackageReleaseNotes>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
