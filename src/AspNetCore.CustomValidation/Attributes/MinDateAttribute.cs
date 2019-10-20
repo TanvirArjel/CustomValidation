@@ -27,7 +27,7 @@ namespace AspNetCore.CustomValidation.Attributes
         /// </summary>
         /// <param name="minDate">The <see cref="string"/> representation of the minDate value.</param>
         /// <param name="format">Format of the supplied string minDate value.</param>
-        public MinDateAttribute(/*[NotNull]*/ string minDate, /*[NotNull]*/ string format)
+        public MinDateAttribute(string minDate, string format)
         {
             MinDate = DateTime.ParseExact(minDate, format, CultureInfo.InvariantCulture);
         }
@@ -38,14 +38,14 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            PropertyInfo propertyInfo = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+            Type propertyType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
 
-            if (propertyInfo != null)
+            if (propertyType != null)
             {
-                if (propertyInfo.PropertyType != typeof(DateTime))
+                if (propertyType != typeof(DateTime) && propertyType != typeof(DateTime?))
                 {
-                    throw new ArgumentException($"The {nameof(MinDateAttribute)} is not valid on property type {propertyInfo.PropertyType}." +
-                                                $" This Attribute is only valid on {typeof(DateTime)}");
+                    throw new ArgumentException($"The {nameof(MinDateAttribute)} is not valid on property type {propertyType}." +
+                                                $" This Attribute is only valid on {typeof(DateTime)} and {typeof(DateTime?)}");
                 }
             }
 

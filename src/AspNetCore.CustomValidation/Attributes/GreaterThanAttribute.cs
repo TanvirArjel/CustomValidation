@@ -42,14 +42,14 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentException($"The type of {validationContext.MemberName} is null.");
             }
 
-            Type otherPropertyType = validationContext.ObjectType.GetProperty(PropertyName)?.PropertyType;
+            Type comparePropertyType = validationContext.ObjectType.GetProperty(PropertyName)?.PropertyType;
 
-            if (otherPropertyType == null)
+            if (comparePropertyType == null)
             {
                 throw new ArgumentNullException($"The type of {PropertyName} is null");
             }
 
-            if (propertyType == otherPropertyType)
+            if (propertyType == comparePropertyType)
             {
                 var validationResult = TriggerValueComparison();
                 return validationResult;
@@ -57,6 +57,11 @@ namespace AspNetCore.CustomValidation.Attributes
             else
             {
                 if (value.IsNumber() && comparePropertyValue.IsNumber())
+                {
+                    var validationResult = TriggerValueComparison();
+                    return validationResult;
+                }
+                else if (value is DateTime && comparePropertyValue is DateTime)
                 {
                     var validationResult = TriggerValueComparison();
                     return validationResult;

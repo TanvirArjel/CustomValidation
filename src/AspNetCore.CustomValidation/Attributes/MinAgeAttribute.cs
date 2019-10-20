@@ -31,14 +31,14 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            PropertyInfo propertyInfo = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+            var propertyType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
 
-            if (propertyInfo != null)
+            if (propertyType != null)
             {
-                if (propertyInfo.PropertyType != typeof(DateTime))
+                if (propertyType != typeof(DateTime) && propertyType != typeof(DateTime?))
                 {
-                    throw new ArgumentException($"The {nameof(MinAgeAttribute)} is not valid on property type {propertyInfo.PropertyType}." +
-                                                $" This Attribute is only valid on {typeof(DateTime)}.");
+                    throw new ArgumentException($"The {nameof(MinAgeAttribute)} is not valid on property type {propertyType}." +
+                                                $" This Attribute is only valid on {typeof(DateTime)} and {typeof(DateTime?)}.");
                 }
             }
             

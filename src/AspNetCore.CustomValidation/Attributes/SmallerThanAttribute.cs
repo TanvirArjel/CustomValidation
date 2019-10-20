@@ -60,6 +60,11 @@ namespace AspNetCore.CustomValidation.Attributes
                     var validationResult = TriggerValueComparison();
                     return validationResult;
                 }
+                else if (value is DateTime && comparePropertyValue is DateTime)
+                {
+                    var validationResult = TriggerValueComparison();
+                    return validationResult;
+                }
                 else
                 {
                     throw new ArgumentException($"The type of {validationContext.MemberName} is not comparable to type of {PropertyName}.");
