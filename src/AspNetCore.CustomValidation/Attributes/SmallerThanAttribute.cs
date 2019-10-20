@@ -14,10 +14,10 @@ namespace AspNetCore.CustomValidation.Attributes
         /// <summary>
         /// This constructor takes the name of field or property which against the comparison will be done.
         /// </summary>
-        /// <param name="fieldName">A property name of the same object.</param>
-        public SmallerThanAttribute(string fieldName)
+        /// <param name="comparePropertyName">A property name of the same object.</param>
+        public SmallerThanAttribute(string comparePropertyName)
         {
-            OtherFieldName = fieldName;
+            PropertyName = comparePropertyName;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -27,76 +27,69 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            if (value == null)
+            var comparePropertyValue = validationContext.ObjectType.GetProperty(PropertyName)?.GetValue(validationContext.ObjectInstance, null);
+
+            if (value == null || comparePropertyValue == null)
             {
                 return ValidationResult.Success;
             }
 
-            Type propertyType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
+            Type memberType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
 
-            if (propertyType == null)
+            if (memberType == null)
             {
                 throw new ArgumentException($"The type of {validationContext.MemberName} is null.");
             }
 
-            Type otherPropertyType = validationContext.ObjectType.GetProperty(OtherFieldName)?.PropertyType;
+            Type comparePropertyType = validationContext.ObjectType.GetProperty(PropertyName)?.PropertyType;
 
-            if (otherPropertyType == null)
+            if (comparePropertyType == null)
             {
-                throw new ArgumentNullException($"The type of {nameof(OtherFieldName)} is null");
+                throw new ArgumentNullException($"The type of {nameof(PropertyName)} is null.");
             }
 
-            if (propertyType == otherPropertyType)
+            if (memberType == comparePropertyType)
             {
                 var validationResult = TriggerValueComparison();
                 return validationResult;
             }
             else
             {
-                try
+                if (value.IsNumber() && comparePropertyValue.IsNumber())
                 {
-                    object changeType = Convert.ChangeType(value, otherPropertyType, CultureInfo.InvariantCulture);
-
                     var validationResult = TriggerValueComparison();
                     return validationResult;
                 }
-                catch (Exception)
+                else
                 {
-                    throw new ArgumentException($"The type of {validationContext.MemberName} is not convertible to type of {OtherFieldName}");
+                    throw new ArgumentException($"The type of {validationContext.MemberName} is not comparable to type of {PropertyName}.");
                 }
 
             }
 
             ValidationResult TriggerValueComparison()
             {
-                var otherPropertyValue = validationContext.ObjectType.GetProperty(OtherFieldName)?.GetValue(validationContext.ObjectInstance, null);
-
-                if (otherPropertyValue == null)
-                {
-                    return ValidationResult.Success;
-                }
-
                 if (value.IsNumber())
                 {
-                    if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) > Convert.ToDecimal(otherPropertyValue, CultureInfo.InvariantCulture))
+                    if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) > Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
                     {
-                        return new ValidationResult(ErrorMessage ?? $"The value of {validationContext.MemberName} should be smaller than value of {OtherFieldName}");
+                        return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} should be smaller than  {PropertyName}.");
                     }
                 }
 
                 if (value.IsDateTime())
                 {
-                    if ((DateTime)value > (DateTime)otherPropertyValue)
+                    if ((DateTime)value > (DateTime)comparePropertyValue)
                     {
-                        return new ValidationResult(ErrorMessage ?? $"The value of {validationContext.MemberName} should be smaller than value of {OtherFieldName}");
+                        return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} should be smaller than {PropertyName}.");
                     }
                 }
 
                 if (value is string)
                 {
-                    if (value.ToString().Length > otherPropertyValue.ToString().Length)
+                    if (value.ToString().Length > comparePropertyValue.ToString().Length)
                     {
-                        return new ValidationResult(ErrorMessage ?? $"The value of {validationContext.MemberName} should be smaller than value of {OtherFieldName}");
+                        return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} should be smaller than {PropertyName}.");
                     }
                 }
 
@@ -105,6 +98,6 @@ namespace AspNetCore.CustomValidation.Attributes
 
         }
 
-        private string OtherFieldName { get; set; }
+        private string PropertyName { get; set; }
     }
 }

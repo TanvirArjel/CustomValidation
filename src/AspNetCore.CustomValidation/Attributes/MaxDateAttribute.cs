@@ -58,7 +58,7 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (inputDate > MaxDate)
             {
-                var errorMessage = ErrorMessage ?? $"The {validationContext.MemberName} cannot be larger than {MaxDate:dd-MMM-yyyy}";
+                var errorMessage = ErrorMessage ?? $"The {validationContext.MemberName} cannot be larger than {MaxDate:dd-MMM-yyyy}.";
                 return new ValidationResult(errorMessage);
             }
 

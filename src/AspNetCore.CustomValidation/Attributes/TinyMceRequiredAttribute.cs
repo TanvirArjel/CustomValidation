@@ -35,18 +35,19 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (value == null)
             {
-                return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} is required!");
+                return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} is required.");
             }
+
             string inputValue = value.ToString();
             string  inputValueWithoutHtml = Regex.Replace(inputValue, "<.*?>", String.Empty);
             if (string.IsNullOrWhiteSpace(inputValueWithoutHtml))
             {
-                return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} is required!");
+                return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} is required.");
             }
 
             if (MinLength > 0 && inputValueWithoutHtml.Length < MinLength)
             {
-                return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} should be at least {MinLength} characters long!");
+                return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} should be at least {MinLength} characters long.");
             }
             return ValidationResult.Success;
         }

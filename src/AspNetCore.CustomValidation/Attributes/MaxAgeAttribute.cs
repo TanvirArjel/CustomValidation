@@ -38,7 +38,7 @@ namespace AspNetCore.CustomValidation.Attributes
                 if (propertyInfo.PropertyType != typeof(DateTime))
                 {
                     throw new ArgumentException($"The {nameof(MaxAgeAttribute)} is not valid on property type {propertyInfo.PropertyType}." +
-                                                $" This Attribute is only valid on {typeof(DateTime)}");
+                                                $" This Attribute is only valid on {typeof(DateTime)}.");
                 }
             }
 
