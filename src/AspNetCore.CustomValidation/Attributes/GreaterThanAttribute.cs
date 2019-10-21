@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Reflection;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
@@ -27,13 +28,19 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            var comparePropertyValue = validationContext.ObjectType.GetProperty(PropertyName)?.GetValue(validationContext.ObjectInstance, null);
+            PropertyInfo compareProperty = validationContext.ObjectType.GetProperty(PropertyName);
+
+            if (compareProperty == null)
+            {
+                throw new ArgumentException($"The object does not contain any property with name '{PropertyName}'");
+            }
+
+            var comparePropertyValue = compareProperty.GetValue(validationContext.ObjectInstance, null);
 
             if (value == null || comparePropertyValue == null)
             {
                 return ValidationResult.Success;
             }
-
 
             Type propertyType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
 
@@ -42,7 +49,7 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentException($"The type of {validationContext.MemberName} is null.");
             }
 
-            Type comparePropertyType = validationContext.ObjectType.GetProperty(PropertyName)?.PropertyType;
+            Type comparePropertyType = compareProperty.PropertyType;
 
             if (comparePropertyType == null)
             {

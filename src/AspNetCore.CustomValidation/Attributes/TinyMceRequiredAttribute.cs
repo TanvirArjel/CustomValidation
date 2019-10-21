@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace AspNetCore.CustomValidation.Attributes
@@ -21,15 +22,17 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            Type propertyType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
+            PropertyInfo propertyInfo = validationContext.ObjectType.GetProperty(validationContext.MemberName);
 
-            if (propertyType != null)
+            if (propertyInfo == null)
             {
-                if (propertyType != typeof(String))
-                {
-                    throw new ArgumentException($"The {nameof(TinyMceRequiredAttribute)} is not valid on property type {propertyType}" +
-                                                $"This Attribute is only valid on {typeof(String)}");
-                }
+                throw new ArgumentException($"The object does not contain any property with name '{validationContext.MemberName}'");
+            }
+
+            if (propertyInfo.PropertyType != typeof(String))
+            {
+                throw new ArgumentException($"The {nameof(TinyMceRequiredAttribute)} is not valid on property type {propertyInfo.PropertyType}" +
+                                            $"This Attribute is only valid on {typeof(String)}");
             }
 
             if (value == null)

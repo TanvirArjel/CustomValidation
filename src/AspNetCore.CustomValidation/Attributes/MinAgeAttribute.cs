@@ -14,9 +14,9 @@ namespace AspNetCore.CustomValidation.Attributes
         /// <summary>
         /// This constructor takes the permitted min age value in <see cref="years"/>, <see cref="months"/> and <see cref="days"/> format.
         /// </summary>
-        /// <param name="years">A positive <see cref="int"/> value.</param>
-        /// <param name="months">A <see cref="int"/> value in between 0 and 11.</param>
-        /// <param name="days">A <see cref="int"/> value in between 0 and 31.</param>
+        /// <param name="years">A positive <see cref="int"/> number.</param>
+        /// <param name="months">A positive <see cref="int"/> value ranging from 0 to 11.</param>
+        /// <param name="days">A positive <see cref="int"/> value ranging from 0 to 31.</param>
         public MinAgeAttribute(int years, int months, int days)
         {
             Years = years < 0 ? 0: years;
@@ -43,6 +43,12 @@ namespace AspNetCore.CustomValidation.Attributes
             }
             
             var dateOfBirth = (DateTime) value;
+
+            if (dateOfBirth > DateTime.Now)
+            {
+                return new ValidationResult($"{validationContext.MemberName} can not be greater than today's date.");
+            }
+
             var dateNow = DateTime.Now;
             TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
             DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);

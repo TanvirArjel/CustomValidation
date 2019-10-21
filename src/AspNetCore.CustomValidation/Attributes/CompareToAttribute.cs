@@ -2,16 +2,25 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Reflection;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
+    /// <summary>
+    /// This <see cref="Attribute"/> is used to compare the decorated property value against the another property value of the same object.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
     public class CompareToAttribute : ValidationAttribute
     {
-        public CompareToAttribute(string propertyName, CompareType compareType)
+        /// <summary>
+        /// This constructor takes the <param name="propertyName"></param> and <param name="comparisonType"></param> values.
+        /// </summary>
+        /// <param name="propertyName">Name of the property which against the comparison will be done.</param>
+        /// <param name="comparisonType">The <see cref="ComparisonType"/>.</param>
+        public CompareToAttribute(string propertyName, ComparisonType comparisonType)
         {
             PropertyName = propertyName;
-            CompareType = compareType;
+            ComparisonType = comparisonType;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -21,22 +30,35 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            var comparePropertyValue = validationContext.ObjectType.GetProperty(PropertyName)?.GetValue(validationContext.ObjectInstance, null);
+            PropertyInfo compareProperty = validationContext.ObjectType.GetProperty(PropertyName);
+
+            if (compareProperty == null)
+            {
+                throw new ArgumentException($"The object does not contain any property with name '{PropertyName}'");
+            }
+
+            var comparePropertyValue = compareProperty.GetValue(validationContext.ObjectInstance, null);
 
             if (value == null || comparePropertyValue == null)
             {
                 return ValidationResult.Success;
             }
 
+            PropertyInfo propertyInfo = validationContext.ObjectType.GetProperty(validationContext.MemberName);
 
-            Type memberType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
+            if (propertyInfo == null)
+            {
+                throw new ArgumentException($"The object does not contain any property with name '{validationContext.MemberName}'");
+            }
+
+            Type memberType = propertyInfo.PropertyType;
 
             if (memberType == null)
             {
                 throw new ArgumentException($"The type of {validationContext.MemberName} is null.");
             }
 
-            Type comparePropertyType = validationContext.ObjectType.GetProperty(PropertyName)?.PropertyType;
+            Type comparePropertyType = compareProperty.PropertyType;
 
             if (comparePropertyType == null)
             {
@@ -68,7 +90,7 @@ namespace AspNetCore.CustomValidation.Attributes
 
             ValidationResult TriggerValueComparison()
             {
-                if (CompareType == CompareType.GreaterThan)
+                if (ComparisonType == ComparisonType.GreaterThan)
                 {
                     if (value.IsNumber())
                     {
@@ -95,7 +117,7 @@ namespace AspNetCore.CustomValidation.Attributes
                     }
                 }
 
-                if (CompareType == CompareType.SmallerThan)
+                if (ComparisonType == ComparisonType.SmallerThan)
                 {
                     if (value.IsNumber())
                     {
@@ -122,7 +144,7 @@ namespace AspNetCore.CustomValidation.Attributes
                     }
                 }
 
-                if (CompareType == CompareType.Equality)
+                if (ComparisonType == ComparisonType.Equality)
                 {
                     if (value.IsNumber() && comparePropertyValue.IsNumber())
                     {
@@ -155,11 +177,11 @@ namespace AspNetCore.CustomValidation.Attributes
         }
 
         private string PropertyName { get; }
-        private CompareType CompareType { get; }
+        private ComparisonType ComparisonType { get; }
     }
 
 
-    public enum CompareType
+    public enum ComparisonType
     {
         GreaterThan,
         SmallerThan,

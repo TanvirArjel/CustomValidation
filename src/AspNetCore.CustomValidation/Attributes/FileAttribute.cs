@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using AspNetCore.CustomValidation.Extensions;
 using Microsoft.AspNetCore.Http;
 
 namespace AspNetCore.CustomValidation.Attributes
@@ -32,7 +33,6 @@ namespace AspNetCore.CustomValidation.Attributes
             FileTypes = fileTypes;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "<Pending>")]
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)
@@ -42,13 +42,15 @@ namespace AspNetCore.CustomValidation.Attributes
 
             PropertyInfo propertyInfo = validationContext.ObjectType.GetProperty(validationContext.MemberName);
 
-            if (propertyInfo != null)
+            if (propertyInfo == null)
             {
-                if (propertyInfo.PropertyType != typeof(IFormFile))
-                {
-                    throw new ArgumentException($"The {nameof(FileAttribute)} is not valid on property type {propertyInfo.PropertyType}" +
-                                                $"This Attribute is only valid on {typeof(IFormFile)}");
-                }
+                throw new ArgumentException($"The object does not contain any property with name '{validationContext.MemberName}'");
+            }
+
+            if (propertyInfo.PropertyType != typeof(IFormFile))
+            {
+                throw new ArgumentException($"The {nameof(FileAttribute)} is not valid on property type {propertyInfo.PropertyType}" +
+                                            $"This Attribute is only valid on {typeof(IFormFile)}");
             }
 
             if (value == null)
@@ -68,12 +70,8 @@ namespace AspNetCore.CustomValidation.Attributes
                         string[] validFileTypeNames = FileTypes.Select(ft => ft.ToString("G")).ToArray();
                         string validFileTypeNamesString = string.Join(",", validFileTypeNames);
 
-                        if (validFileTypeNames.Length > 1)
-                        {
-                            return new ValidationResult(ErrorMessage ?? $"The file should be in {validFileTypeNamesString.ToLowerInvariant()} formats.");
-                        }
-
-                        return new ValidationResult(ErrorMessage ?? $"The file should be in {validFileTypeNamesString.ToLowerInvariant()} format.");
+                        return new ValidationResult(ErrorMessage ?? $"The file should be in {validFileTypeNamesString.ToUpperInvariant()}" +
+                                                    $" {(validFileTypeNames.Length > 1 ? "formats" : "format")}.");
 
                     }
                 }
@@ -130,16 +128,5 @@ namespace AspNetCore.CustomValidation.Attributes
         Mp3
     }
 
-    internal static class FileTypeExtensions
-    {
-        public static string ToDescriptionString(this FileType val)
-        {
-            DescriptionAttribute[] attributes = (DescriptionAttribute[])val
-                .GetType()
-                .GetField(val.ToString())
-                .GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-            return attributes.Length > 0 ? attributes[0].Description : string.Empty;
-        }
-    }
+    
 }

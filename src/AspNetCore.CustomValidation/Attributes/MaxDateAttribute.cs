@@ -38,15 +38,19 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            Type propertyType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
+            PropertyInfo propertyInfo = validationContext.ObjectType.GetProperty(validationContext.MemberName);
 
-            if (propertyType != null)
+            if (propertyInfo == null)
             {
-                if (propertyType != typeof(DateTime) && propertyType != typeof(DateTime?))
-                {
-                    throw new ArgumentException($"The {nameof(MaxDateAttribute)} is not valid on property type {propertyType}." +
-                                                $" This Attribute is only valid on {typeof(DateTime)} and {typeof(DateTime?)}");
-                }
+                throw new ArgumentException($"The object does not contain any property with name '{validationContext.MemberName}'");
+            }
+
+            Type propertyType = propertyInfo.PropertyType;
+
+            if (propertyType != typeof(DateTime) && propertyType != typeof(DateTime?))
+            {
+                throw new ArgumentException($"The {nameof(MaxDateAttribute)} is not valid on property type {propertyType}." +
+                                            $" This Attribute is only valid on {typeof(DateTime)} and {typeof(DateTime?)}");
             }
 
             if (value == null)

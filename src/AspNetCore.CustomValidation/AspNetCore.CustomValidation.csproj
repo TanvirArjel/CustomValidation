@@ -8,13 +8,13 @@
     <Description>This a custom validaton library for ASP.NET Core.</Description>
     <PackageProjectUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TanvirArjel/ExceptionHandler</RepositoryUrl>
-    <PackageTags>ASP.NETCore,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation</PackageTags>
+    <PackageTags>ASP.NETCore,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TinyMCERequired</PackageTags>
     <PackageReleaseNotes>This a custom validaton library for ASP.NET Core.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
