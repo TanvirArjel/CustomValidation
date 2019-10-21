@@ -1,5 +1,5 @@
 # AspNetCore.CustomValidation
- This is a cusotm model validaton library for ASP.NET Core projects.
+ This is a custom model validation library for ASP.NET Core projects.
  
  ## How do I get started?
  
@@ -9,7 +9,7 @@
  
     `Install-Package AspNetCore.CustomValidation`
     
- 2. Then decorate your class propeties with appropriate Custom validation attributes as follows:
+ 2. Then decorate your class properties with appropriate Custom validation attributes as follows:
  
         public class Employee
         {
@@ -33,9 +33,9 @@
             public IFormFile Photo { get; set; }
         }
         
-  ## Whats in Version 1.1.0?
+  ## Whats new in Version 1.1.0?
   
-  In version 1.1.0 `AspNetCore.Validation` contains follwing validation attributes
+  In version 1.1.0 `AspNetCore.Validation` contains following validation attributes
   
   **1. FileAttribute**
        To validate file type, file max size, file min size
@@ -62,10 +62,10 @@
        To enforce required valiaton attribute on the online text editors like TinyMCE, CkEditor etc.
        
   **8. CompareToAttribute**
-       To comapre one property value against another property value of the same object.
+       To compare one property value against another property value of the same object.
        
    # Dynamic Validation
-   In version 1.1.0, validation against dynamic values from database, configuration file or any external source added for the follwing type:
+   In version 1.1.0, validation against dynamic values from database, configuration file or any external source added for the following type:
     **1. File Type:** with `ValidateFile()` method
     **1. DateTime Type:** with `ValidateMaxAge()` and `ValidateMinAge()` method as follows:
     
@@ -96,6 +96,6 @@
        
    # Note
    
-   Dont forget to request your desired validaton attribute by submitting an isse.
+   Dont forget to request your desired validation  attribute by submitting an issue.
   
   
