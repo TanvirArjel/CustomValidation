@@ -5,7 +5,7 @@
  
  Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is as simple as below:
  
- 1. First install the `AspNetCore.CustomValidation` nuget package into your project as follows:
+ 1. First install the `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
  
     `Install-Package AspNetCore.CustomValidation`
     
