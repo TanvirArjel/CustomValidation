@@ -1,15 +1,15 @@
 # AspNetCore.CustomValidation
- This is a cusotm model validaton library for ASP.NET Core projects.
+ This is a custom model validation library for ASP.NET Core projects.
  
  ## How do I get started?
  
  Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is as simple as below:
  
- 1. First install the `AspNetCore.CustomValidation` nuget package into your project as follows:
+ 1. First install the `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
  
     `Install-Package AspNetCore.CustomValidation`
     
- 2. Then decorate your class propeties with appropriate Custom validation attributes as follows:
+ 2. Then decorate your class properties with appropriate Custom validation attributes as follows:
  
         public class Employee
         {
@@ -33,9 +33,9 @@
             public IFormFile Photo { get; set; }
         }
         
-  ## Whats new in Version 1.0.0?
+  ## Whats new in Version 1.1.0?
   
-  In version 1.0.0 `AspNetCore.Validation` as follwing validation attributes
+  In version 1.1.0 `AspNetCore.Validation` contains following validation attributes
   
   **1. FileAttribute**
        To validate file type, file max size, file min size
@@ -61,8 +61,41 @@
   **8. TinyMceRequiredAttribute**
        To enforce required valiaton attribute on the online text editors like TinyMCE, CkEditor etc.
        
+  **8. CompareToAttribute**
+       To compare one property value against another property value of the same object.
+       
+   # Dynamic Validation
+   In version 1.1.0, validation against dynamic values from database, configuration file or any external source added for the following type:
+    **1. File Type:** with `ValidateFile()` method
+    **1. DateTime Type:** with `ValidateMaxAge()` and `ValidateMinAge()` method as follows:
+    
+    public class Employee : IValidatableObject
+    {
+        public DateTime? DateOfBirth { get; set; }
+        public IFormFile Photo { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            List<ValidationResult> validationResults = new List<ValidationResult>();
+            FileOptions fileOptions = new FileOptions()
+            {
+                FileTypes = new FileType[] {FileType.Jpeg,FileType.Jpg},
+                MinSize = 124,
+                MaxSize = Convert.ToInt32(AppSettings.GetValue("DemoSettings:MaxFileSize"))
+            };
+
+            ValidationResult minAgeValidationResult = validationContext.ValidateMinAge(nameof(DateOfBirth), 10, 0, 0);
+            validationResults.Add(minAgeValidationResult);
+            
+            ValidationResult fileValidationResult = validationContext.ValidateFile(nameof(Photo), fileOptions);
+            validationResults.Add(fileValidationResult);
+            return validationResults;
+        }
+    }
+    
+       
    # Note
    
-   Dont forget to request your desired validaton attribute by submitting an isse.
+   Dont forget to request your desired validation  attribute by submitting an issue.
   
   
