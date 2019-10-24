@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
@@ -9,7 +12,7 @@ namespace AspNetCore.CustomValidation.Attributes
     /// max age value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class MaxAgeAttribute : ValidationAttribute
+    public class MaxAgeAttribute : ValidationAttribute, IClientModelValidator
     {
         /// <summary>
         /// This constructor takes the permitted max age value in <see cref="years"/>, <see cref="months"/> and <see cref="days"/> format.
@@ -22,6 +25,8 @@ namespace AspNetCore.CustomValidation.Attributes
             Years = years < 0 ? 0 : years;
             Months = years < 0 ? 0 : months;
             Days = days < 0 ? 0 : days;
+
+            ErrorMessage = ErrorMessage ?? $"Maximum age can be {(Years > 0 ? "{0}" + " years" : "")} {(Months > 0 ? "{1}" + " months" : "")} {(Days > 0 ? "{2}" + " days" : "")}";
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -48,7 +53,7 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (dateOfBirth > DateTime.Now)
             {
-                return new ValidationResult($"{validationContext.MemberName} can not be greater than today's date.");
+                return new ValidationResult($"{validationContext.DisplayName} can not be greater than today's date.");
             }
 
             var dateNow = DateTime.Now;
@@ -57,15 +62,11 @@ namespace AspNetCore.CustomValidation.Attributes
 
             var maxAgeDateTime = DateTime.MinValue.AddYears(Years).AddMonths(Months).AddDays(Days);
 
-            var errorMessage = ErrorMessage ?? $"Maximum age can be {(Years > 0 ? Years + " years" : "")} {(Months > 0 ? Months + " months" : "")} {(Days > 0 ? Days + " days" : "")}.";
-
-            ValidationResult validationResult = new ValidationResult(errorMessage);
-
             if (Years > 0 || Months > 0 || Days > 0)
             {
                 if (ageDateTime > maxAgeDateTime)
                 {
-                    return validationResult;
+                    return new ValidationResult(ErrorMessage); 
                 }
             }
 
@@ -75,5 +76,45 @@ namespace AspNetCore.CustomValidation.Attributes
         public int Years { get; }
         public int Months { get; }
         public int Days { get; }
+        public void AddValidation(ClientModelValidationContext context)
+        {
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
+            var errorMessage = FormatErrorMessage(propertyDisplayName);
+
+            
+
+            AddAttribute(context.Attributes, "data-val", "true");
+
+            AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
+
+            AddAttribute(context.Attributes, "data-val-maxage", errorMessage);
+
+            var years = Years.ToString(CultureInfo.InvariantCulture);
+            var months = Months.ToString(CultureInfo.InvariantCulture);
+            var days = Days.ToString(CultureInfo.InvariantCulture);
+
+            AddAttribute(context.Attributes, "data-val-maxage-years", years);
+            AddAttribute(context.Attributes, "data-val-maxage-months", months);
+            AddAttribute(context.Attributes, "data-val-maxage-days", days);
+        }
+
+        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
+        {
+            if (!attributes.ContainsKey(key))
+            {
+                attributes.Add(key, value);
+            }
+        }
+
+        public override string FormatErrorMessage(string displayName)
+        {
+            return string.Format(CultureInfo.InvariantCulture,ErrorMessage, Years, Months, Days);
+        }
     }
 }

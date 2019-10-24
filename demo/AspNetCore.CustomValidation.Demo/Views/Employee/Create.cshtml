@@ -29,7 +29,7 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="JoiningDate"  class="control-label"></label>
+                <label asp-for="JoiningDate" class="control-label"></label>
                 <input asp-for="JoiningDate" type="date" class="form-control" />
                 <span asp-validation-for="JoiningDate" class="text-danger"></span>
             </div>
@@ -61,4 +61,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.min.js"></script>
 }

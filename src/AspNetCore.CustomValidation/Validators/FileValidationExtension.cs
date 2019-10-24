@@ -68,12 +68,12 @@ namespace AspNetCore.CustomValidation.Validators
 
                 if (fileOptions.MinSize > 0 && fileLengthInKByte < fileOptions.MinSize)
                 {
-                    return new ValidationResult($"File size should be at least {fileOptions.MinSize} KB.", new[] { propertyName });
+                    return new ValidationResult($"File size should be at least {(fileOptions.MinSize >= 1024 ? Math.Round(fileOptions.MinSize / 1024M, 2) + " MB" : fileOptions.MinSize + " KB")}.", new[] { propertyName });
                 }
 
                 if (fileOptions.MaxSize > 0 && fileLengthInKByte > fileOptions.MaxSize)
                 {
-                    return new ValidationResult($"File size should not be more than {fileOptions.MaxSize} KB.", new[] { propertyName });
+                    return new ValidationResult($"File size should not be more than {(fileOptions.MaxSize >= 1024 ? Math.Round(fileOptions.MaxSize / 1024M, 2) + " MB" : fileOptions.MaxSize  + " KB")}.", new[] { propertyName });
                 }
             }
             else

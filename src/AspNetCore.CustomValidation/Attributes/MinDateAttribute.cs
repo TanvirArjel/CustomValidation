@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
@@ -9,7 +11,7 @@ namespace AspNetCore.CustomValidation.Attributes
     /// This <see cref="Attribute"/> is used to check whether the property value is smaller than the specified <see cref="MinDate"/> value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class MinDateAttribute : ValidationAttribute
+    public class MinDateAttribute : ValidationAttribute, IClientModelValidator
     {
         /// <summary>
         /// This constructor takes the <see cref="MinDate"/> value in <paramref name="year"/>, <paramref name="month"/> and <paramref name="day"/> format.
@@ -20,6 +22,7 @@ namespace AspNetCore.CustomValidation.Attributes
         public MinDateAttribute(int year, int month, int day)
         {
             MinDate = new DateTime(year, month, day);
+            ErrorMessage = ErrorMessage ?? "The {0} cannot be smaller than {1}.";
         }
 
         /// <summary>
@@ -62,7 +65,7 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (inputDate < MinDate)
             {
-                var errorMessage = ErrorMessage ?? $"The {validationContext.MemberName} cannot be smaller than {MinDate:dd-MMM-yyyy}.";
+                var errorMessage = FormatErrorMessage(validationContext.DisplayName);
                 return new ValidationResult(errorMessage);
             }
 
@@ -70,5 +73,35 @@ namespace AspNetCore.CustomValidation.Attributes
         }
 
         public DateTime MinDate { get; }
+        public void AddValidation(ClientModelValidationContext context)
+        {
+            
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
+            var errorMessage = FormatErrorMessage(propertyDisplayName);
+
+            AddAttribute(context.Attributes, "data-val", "true");
+            AddAttribute(context.Attributes, "data-val-mindate", errorMessage);
+            var minDate = MinDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
+            AddAttribute(context.Attributes, "data-val-mindate-date", minDate);
+        }
+
+        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
+        {
+            if (!attributes.ContainsKey(key))
+            {
+                attributes.Add(key, value);
+            }
+        }
+
+        public override string FormatErrorMessage(string displayName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, MinDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
+        }
+
     }
 }

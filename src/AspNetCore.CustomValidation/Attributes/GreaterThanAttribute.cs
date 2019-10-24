@@ -10,6 +10,7 @@ namespace AspNetCore.CustomValidation.Attributes
     /// This <see cref="Attribute"/> is used to check whether the value of the property is greater than the value of the specified property.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
+    [Obsolete("This attribute has been obsolete and will be removed in future version. Use CompareToAttribute instead.", true)]
     public class GreaterThanAttribute : ValidationAttribute
     {
         /// <summary>

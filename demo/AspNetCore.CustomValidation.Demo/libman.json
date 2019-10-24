@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "jsdelivr",
+  "libraries": [
+    {
+      "library": "aspnetcore-custom-validation@1.0.1",
+      "destination": "wwwroot/aspnetcore-custom-validation/"
+    }
+  ]
+}
