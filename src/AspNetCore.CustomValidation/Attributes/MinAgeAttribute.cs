@@ -87,7 +87,7 @@ namespace AspNetCore.CustomValidation.Attributes
             var errorMessage = FormatErrorMessage(propertyDisplayName);
 
             AddAttribute(context.Attributes, "data-val", "true");
-
+            AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
             AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
 
             AddAttribute(context.Attributes, "data-val-minage", errorMessage);

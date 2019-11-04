@@ -4,17 +4,37 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Company>Tanvir Ahmad Arjel</Company>
     <Authors>TanvirArjel</Authors>
-    <Copyright>©2019 TanvirArjel</Copyright>
-    <Description>This a custom validaton library for ASP.NET Core.</Description>
+    <Copyright>©2019 TanvirArjel. All rights reserved.</Copyright>
+    <Description>This a custom server-side validation library for ASP.NET Core. This also includes jQuery Client-Side Validation for each server-side validation.
+
+This version includes following Validation Attributes:
+
+1. FileAttribute:  To validate file type, file max size, file min size etc.
+
+2. MaxAgeAttribute: To validate maximum age against date of birth value of DateTime type.
+
+3. MinAgeAttribute: To validate minimum required age against a date of birth value of DateTime type.
+
+4. MaxDateAttribute: To set max value validation for a DateTime field.
+
+5. MinDateAttribute: To set min value validation for a DateTime field.
+
+6. TinyMceRequiredAttribute: To enforce required validation attribute on the online text editors like TinyMCE, CkEditor etc.
+
+7. CompareToAttribute: To compare one property value against another property value of the same object.
+
+This version also includes validation against dynamic values from database, configuration file or any external source added for the following type: 1. File Type: with ValidateFile() method 1. DateTime Type: with ValidateMaxAge() and ValidateMinAge()</Description>
     <PackageProjectUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/TanvirArjel/ExceptionHandler</RepositoryUrl>
-    <PackageTags>ASP.NETCore,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TinyMCERequired</PackageTags>
-    <PackageReleaseNotes>This a custom validaton library for ASP.NET Core.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</RepositoryUrl>
+    <PackageTags>ASP.NETCore,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TinyMCERequired, CompareToValidation</PackageTags>
+    <PackageReleaseNotes>This version added client side validation for each server side validation.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.0</Version>
+    <Version>1.2.1</Version>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +45,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="images\icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>

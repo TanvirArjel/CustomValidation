@@ -1,7 +1,7 @@
 ﻿// Unobtrusive validation support library for AspNetCore.CustomValidation library
 // Copyright (c) TanvirArjel. All rights reserved.
 // Licensed under the MIT License, Version 2.0. See License.txt in the project root for license information.
-// @version v1.0.0
+// @version v1.0.2
 
 (function ($) {
 
@@ -16,11 +16,47 @@
         }
     });
 
+    var isDate = function (date) {
+        return new Date(date).toString() !== "Invalid Date" && !isNaN(new Date(date));
+    }
+
+    var isIsoDate = function (inputString) {
+        const regex = /\d{4}-\d{2}-\d{2}/i;
+        return regex.test(inputString);
+    }
+
+    var getDateValue = function (stringDate) {
+        if (isDate(stringDate)) {
+            if (isIsoDate(stringDate)) {
+                const dateValue = stringDate.indexOf("T") === -1 ? new Date(stringDate + "T00:00:00") : new Date(stringDate);
+                return dateValue;
+            } else {
+                return new Date(stringDate);
+            }
+        } else {
+            throw { name: "InvalidDateTimeFormat", message: "Input date/datetime is not in valid format. Please enter the date in valid datetime format. Prefer: '01-Jan-1999' format." };
+        }
+    }
+
+    // min date validation
+    $.validator.addMethod("valid-date-format", function (value, element, params) {
+        if (value) {
+            return isDate(value);
+        }
+        return true;
+    });
+
+    $.validator.unobtrusive.adapters.add("valid-date-format", [], function (options) {
+        options.rules["valid-date-format"] = {};
+        options.messages["valid-date-format"] = options.message;
+    });
+
+
     // min date validation
     $.validator.addMethod("mindate", function (value, element, params) {
         if (value) {
-            const inputDate = value.indexOf("T") === -1 ? new Date(value + "T00:00:00") : new Date(value);
-            var minDate = new Date(params.date);
+            const minDate = new Date(params.date);
+            const inputDate = getDateValue(value);
             return inputDate >= minDate;
         }
         return true;
@@ -34,8 +70,8 @@
     // max date validation
     $.validator.addMethod("maxdate", function (value, element, params) {
         if (value) {
-            var inputDate = value.indexOf("T") === -1 ? new Date(value + "T00:00:00") : new Date(value);
-            var maxDate = new Date(params.date);
+            const maxDate = new Date(params.date);
+            const inputDate = getDateValue(value);
             return inputDate <= maxDate;
         }
         return true;
@@ -46,15 +82,13 @@
         options.messages["maxdate"] = options.message;
     });
 
-
     // must be smaller than current time validation
     $.validator.addMethod("currenttime", function (value, element, params) {
         if (value) {
-            const inputDate = value.indexOf("T") === -1 ? new Date(value + "T00:00:00") : new Date(value);
             const currentTime = new Date();
+            const inputDate = getDateValue(value);
             return currentTime > inputDate;
         }
-
         return true;
     });
 
@@ -66,13 +100,13 @@
     // max age validation
     $.validator.addMethod("maxage", function (value, element, params) {
         if (value) {
-            const inputDate = value.indexOf("T") === -1 ? new Date(value + "T00:00:00") : new Date(value);
             let maxAgeDateTime = new Date();
 
             maxAgeDateTime.setFullYear(maxAgeDateTime.getFullYear() - params.years);
             maxAgeDateTime.setMonth(maxAgeDateTime.getMonth() - params.months);
             maxAgeDateTime.setDate(maxAgeDateTime.getDate() - params.days);
 
+            const inputDate = getDateValue(value);
             return inputDate >= maxAgeDateTime;
         }
 
@@ -88,12 +122,11 @@
     $.validator.addMethod("minage", function (value, element, params) {
         if (value) {
             let minAgeDateTime = new Date();
-            const inputDate = value.indexOf("T") === -1 ? new Date(value + "T00:00:00") : new Date(value);
-
             minAgeDateTime.setFullYear(minAgeDateTime.getFullYear() - params.years);
             minAgeDateTime.setMonth(minAgeDateTime.getMonth() - params.months);
             minAgeDateTime.setDate(minAgeDateTime.getDate() - params.days);
 
+            const inputDate = getDateValue(value);
             return minAgeDateTime >= inputDate;
         }
 
@@ -187,12 +220,18 @@
             }
 
             if (inputPropertyType === "text" && inputPropertyType === comparePropertyType) {
-                return inputValue.length === comparePropertyValue.length;
+                if (isDate(inputValue) && isDate(comparePropertyValue)) {
+                    const inputDate = getDateValue(inputValue);
+                    const compareDate = getDateValue(comparePropertyValue);
+                    return inputDate.getTime() === compareDate.getTime();
+                } else {
+                    return inputValue.length === comparePropertyValue.length;
+                }
             }
 
             if (inputPropertyType.indexOf("date") !== -1 && comparePropertyType.indexOf("date") !== -1) {
-                const inputDate = value.indexOf("T") === -1 ? new Date(value + "T00:00:00") : new Date(value);
-                const compareDate = comparePropertyValue.indexOf("T") === -1 ? new Date(comparePropertyValue + "T00:00:00") : new Date(comparePropertyValue);
+                const inputDate = getDateValue(value);
+                const compareDate = getDateValue(comparePropertyValue);
                 return inputDate.getTime() === compareDate.getTime();
             }
         }
@@ -223,12 +262,18 @@
             }
 
             if (inputPropertyType === "text" && inputPropertyType === comparePropertyType) {
-                return inputValue.length > comparePropertyValue.length;
+                if (isDate(inputValue) && isDate(comparePropertyValue)) {
+                    const inputDate = getDateValue(inputValue);
+                    const compareDate = getDateValue(comparePropertyValue);
+                    return inputDate > compareDate;
+                } else {
+                    return inputValue.length > comparePropertyValue.length;
+                }
             }
 
             if (inputPropertyType.indexOf("date") !== -1 && comparePropertyType.indexOf("date") !== -1) {
-                const inputDate = value.indexOf("T") === -1 ? new Date(value + "T00:00:00") : new Date(value);
-                const compareDate = comparePropertyValue.indexOf("T") === -1 ? new Date(comparePropertyValue + "T00:00:00") : new Date(comparePropertyValue);
+                const inputDate = getDateValue(value);
+                const compareDate = getDateValue(comparePropertyValue);
                 return inputDate > compareDate;
             }
         }
@@ -259,12 +304,18 @@
             }
 
             if (inputPropertyType === "text" && inputPropertyType === comparePropertyType) {
-                return inputValue.length < comparePropertyValue.length;
+                if (isDate(inputValue) && isDate(comparePropertyValue)) {
+                    const inputDate = getDateValue(inputValue);
+                    const compareDate = getDateValue(comparePropertyValue);
+                    return inputDate < compareDate;
+                } else {
+                    return inputValue.length < comparePropertyValue.length;
+                }
             }
 
             if (inputPropertyType.indexOf("date") !== -1 && comparePropertyType.indexOf("date") !== -1) {
-                const inputDate = value.indexOf("T") === -1 ? new Date(value + "T00:00:00") : new Date(value);
-                const compareDate = comparePropertyValue.indexOf("T") === -1 ? new Date(comparePropertyValue + "T00:00:00") : new Date(comparePropertyValue);
+                const inputDate = getDateValue(value);
+                const compareDate = getDateValue(comparePropertyValue);
                 return inputDate < compareDate;
             }
         }

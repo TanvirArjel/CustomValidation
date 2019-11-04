@@ -14,20 +14,14 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [TinyMceRequired(MinLength = 5, MaxLength = 10)]
         public string Name { get; set; }
 
-        //[MaxAge(30,10,0)] // 30 Year 10 Months 0 Days
-        //[MinAge(10,10,0)] // 10 Year 10 Months 0 Days
-        //[MinAge(1,1,1)]
-        [Display(Name = "Date Of Birth")]
+        [MinAge(0,0,1)]
         [DataType(DataType.Date)]
-
-        [MaxDate(2019,10,20)]
-        
         public DateTime? DateOfBirth { get; set; }
 
         //[MinDate(2019,1,1)] // 2019 January 1
         //[MaxDate(2019,10,1)] // 2019 October 1
 
-        [CompareTo(nameof(DateOfBirth), ComparisonType.Equality)]
+        [CompareTo(nameof(DateOfBirth), ComparisonType.GreaterThan)]
         public DateTime JoiningDate { get; set; }
 
         [Display(Name = "First Name")]

@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Create";
 }
+<link href="~/lib/jqueryui/jquery-ui.min.css" rel="stylesheet" />
+
 
 <h1>Create</h1>
 
@@ -24,13 +26,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
+                <input asp-for="DateOfBirth" type="text" id="datepicker" class="form-control" onkeydown="return false" onpaste="return false" autocomplete="off"  />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="JoiningDate" class="control-label"></label>
-                <input asp-for="JoiningDate" type="date" class="form-control" />
+                <input asp-for="JoiningDate" type="text" id="datepicker2" class="form-control" onkeydown="return false" onpaste="return false"  autocomplete="off" />
                 <span asp-validation-for="JoiningDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -60,6 +62,28 @@
 </div>
 
 @section Scripts {
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.min.js"></script>
+    <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.js"></script>
+    <script>
+        $( function() {
+            $("#datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0", // You can set the year range as per as your need
+                dateFormat: 'dd-M-yy'
+            }).on('change', function() {
+                $("form").validate().element("#datepicker");
+            });
+
+            $("#datepicker2").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0", // You can set the year range as per as your need
+                dateFormat: 'dd-M-yy'
+            }).on('change', function() {
+                $("form").validate().element("#datepicker2");
+            });
+        } );
+    </script>
 }
