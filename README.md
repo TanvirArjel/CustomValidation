@@ -1,7 +1,11 @@
 # AspNetCore.CustomValidation
  This is a custom model validation library for ASP.NET Core projects.
  
- ## How do I get started?
+## Whats new in Version 1.2.0?
+
+Version 1.2.0 is a major feature update which added client side validation support for all the validation attributes.
+ 
+## How do I get started?
  
  Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is as simple as below:
  
@@ -33,9 +37,35 @@
             public IFormFile Photo { get; set; }
         }
         
-  ## Whats new in Version 1.1.0?
+  ## Client Side validation:
   
-  In version 1.1.0 `AspNetCore.Validation` contains following validation attributes
+  To enable client client side validation, please add the `aspnetcore-custom-validation.min.js` file as follows:
+  
+    @section Scripts {
+      @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+      <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.min.js"</script>
+    }
+    
+    Or
+    
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.min.js"</script>
+    
+You can download the `aspnetcore-custom-validation.min.js` from here [aspnetcore-custom-validation-npm](https://www.npmjs.com/package/aspnetcore-custom-validation)
+
+Or using Visusl Studio **Libman** as follows:
+
+    1 ) wwwroot > lib> Add > Client Side Libray
+
+    2. Provider: jsdelivr
+       Libray: aspnetcore-custom-validation
+    3. Click install
+  
+        
+  ## Whats contain in Version 1.2.0?
+  
+  In version 1.2.0 `AspNetCore.Validation` contains following validation attributes
   
   **1. FileAttribute**
        To validate file type, file max size, file min size
