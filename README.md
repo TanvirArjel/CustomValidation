@@ -1,9 +1,9 @@
 # AspNetCore.CustomValidation
  This is a custom model validation library for ASP.NET Core projects.
  
-## Whats new in Version 1.2.0?
+## Whats new in Version 1.2.1?
 
-Version 1.2.0 is a major feature update which added client side validation support for all the validation attributes.
+Version 1.2.1 is a major feature update which added client side validation support for all the validation attributes.
  
 ## How do I get started?
  
@@ -30,7 +30,7 @@ Version 1.2.0 is a major feature update which added client side validation suppo
             public DateTime JoiningDate { get; set; }
             public int FirstNumber { get; set; }
 
-            [GreaterThan(nameof(FirstNumber))]
+            [CompareTo(nameof(FirstNumber),ComparisonType.GreaterThan)]
             public int SecondNumber { get; set; }
 
             [File(new FileType[]{FileType.Jpg, FileType.Jpeg}, MaxSize = 1024)]
@@ -63,7 +63,7 @@ Or using Visusl Studio **Libman** as follows:
     3. Click install
   
         
-  ## Whats contain in Version 1.2.0?
+  ## Whats contain in Version 1.2.1?
   
   In version 1.2.0 `AspNetCore.Validation` contains following validation attributes
   
@@ -95,7 +95,7 @@ Or using Visusl Studio **Libman** as follows:
        To compare one property value against another property value of the same object.
        
    # Dynamic Validation
-   In version 1.1.0, validation against dynamic values from database, configuration file or any external source added for the following type:
+   In version 1.2.1, validation against dynamic values from database, configuration file or any external source added for the following type:
     **1. File Type:** with `ValidateFile()` method
     **1. DateTime Type:** with `ValidateMaxAge()` and `ValidateMinAge()` method as follows:
     
