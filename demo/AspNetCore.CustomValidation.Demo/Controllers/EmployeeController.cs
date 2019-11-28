@@ -35,7 +35,6 @@ namespace AspNetCore.CustomValidation.Demo.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 return View();
             }
 

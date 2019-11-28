@@ -56,17 +56,15 @@ namespace AspNetCore.CustomValidation.Attributes
                                             $" This Attribute is only valid on {typeof(DateTime)} and {typeof(DateTime?)}");
             }
 
-            if (value == null)
+            if (value != null)
             {
-                return ValidationResult.Success;
-            }
+                var inputDate = (DateTime)value;
 
-            var inputDate = (DateTime)value;
-
-            if (inputDate > MaxDate)
-            {
-                var errorMessage = FormatErrorMessage(validationContext.DisplayName);
-                return new ValidationResult(errorMessage);
+                if (inputDate > MaxDate)
+                {
+                    var errorMessage = FormatErrorMessage(validationContext.DisplayName);
+                    return new ValidationResult(errorMessage);
+                }
             }
 
             return ValidationResult.Success;

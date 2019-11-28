@@ -14,7 +14,8 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [TinyMceRequired(MinLength = 5, MaxLength = 10)]
         public string Name { get; set; }
 
-        [MinAge(0,0,1)]
+        [Required]
+        [MaxAge(1,0,0)]
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 
@@ -22,10 +23,12 @@ namespace AspNetCore.CustomValidation.Demo.Models
         //[MaxDate(2019,10,1)] // 2019 October 1
 
         [CompareTo(nameof(DateOfBirth), ComparisonType.GreaterThan)]
-        public DateTime JoiningDate { get; set; }
+        public DateTime? JoiningDate { get; set; }
 
-        [Display(Name = "First Name")]
+        [Display(Name = "First Number")]
         public int FirstNumber { get; set; }
+
+        [CompareTo(nameof(FirstNumber),ComparisonType.NotEquality)]
         public int? SecondNumber { get; set; }
 
         [File(FileType.Jpg, MaxSize = 2048)]
@@ -44,8 +47,8 @@ namespace AspNetCore.CustomValidation.Demo.Models
             //ValidationResult fileValidationResult = validationContext.ValidateFile(nameof(Photo), fileOptions);
             //validationResults.Add(fileValidationResult);
 
-            ValidationResult minAgeValidationResult = validationContext.ValidateMinAge(nameof(DateOfBirth), 10, 0, 0);
-            validationResults.Add(minAgeValidationResult);
+            //ValidationResult minAgeValidationResult = validationContext.ValidateMinAge(nameof(DateOfBirth), 10, 0, 0);
+            //validationResults.Add(minAgeValidationResult);
            
             return validationResults;
         }

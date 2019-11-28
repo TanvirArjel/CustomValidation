@@ -1,7 +1,7 @@
 ﻿// Unobtrusive validation support library for AspNetCore.CustomValidation library
 // Copyright (c) TanvirArjel. All rights reserved.
 // Licensed under the MIT License, Version 2.0. See License.txt in the project root for license information.
-// @version v1.0.2
+// @version v1.1.0
 
 (function ($) {
 
@@ -242,6 +242,50 @@
     $.validator.unobtrusive.adapters.add("comparison-equality", ['property'], function (options) {
         options.rules["comparison-equality"] = options.params;
         options.messages["comparison-equality"] = options.message;
+    });
+
+
+    // Not equality comparison validation
+
+    $.validator.addMethod("comparison-not-equality", function (value, element, params) {
+
+        const inputValue = value;
+        const inputPropertyType = $(element).prop('type');
+
+        const comparePropertyName = params.property;
+        const compareProperty = $(element).closest('form').find('input[name="' + comparePropertyName + '"]');
+        const comparePropertyType = compareProperty.prop('type');
+        const comparePropertyValue = compareProperty.val();
+
+        if (inputValue && comparePropertyValue) {
+
+            if (inputPropertyType === "number" && inputPropertyType === comparePropertyType) {
+                return Number(value) !== Number(compareProperty.val());
+            }
+
+            if (inputPropertyType === "text" && inputPropertyType === comparePropertyType) {
+                if (isDate(inputValue) && isDate(comparePropertyValue)) {
+                    const inputDate = getDateValue(inputValue);
+                    const compareDate = getDateValue(comparePropertyValue);
+                    return inputDate.getTime() !== compareDate.getTime();
+                } else {
+                    return inputValue.length !== comparePropertyValue.length;
+                }
+            }
+
+            if (inputPropertyType.indexOf("date") !== -1 && comparePropertyType.indexOf("date") !== -1) {
+                const inputDate = getDateValue(value);
+                const compareDate = getDateValue(comparePropertyValue);
+                return inputDate.getTime() !== compareDate.getTime();
+            }
+        }
+
+        return true;
+    });
+
+    $.validator.unobtrusive.adapters.add("comparison-not-equality", ['property'], function (options) {
+        options.rules["comparison-not-equality"] = options.params;
+        options.messages["comparison-not-equality"] = options.message;
     });
 
     // greaterThan comparison validation

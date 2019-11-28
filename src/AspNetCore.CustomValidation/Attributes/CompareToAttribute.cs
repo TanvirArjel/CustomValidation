@@ -130,6 +130,36 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 }
 
+                if (ComparisonType == ComparisonType.NotEquality)
+                {
+                    var errorMessage = GetFormattedErrorMessage(NotEqualityErrorMessage, propertyDisplayName, comparePropertyDisplayName);
+
+                    if (value.IsNumber() && comparePropertyValue.IsNumber())
+                    {
+                        if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) == Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
+                        {
+                            return new ValidationResult(errorMessage);
+                        }
+                    }
+
+                    if (value is DateTime memberValue)
+                    {
+                        if (memberValue == (DateTime)comparePropertyValue)
+                        {
+                            return new ValidationResult(errorMessage);
+                        }
+                    }
+
+                    if (value is string)
+                    {
+                        if (value.ToString() == comparePropertyValue.ToString())
+                        {
+                            return new ValidationResult(errorMessage);
+                        }
+                    }
+
+                }
+
                 if (ComparisonType == ComparisonType.GreaterThan)
                 {
                     var errorMessage = GetFormattedErrorMessage(GreaterThanErrorMessage, propertyDisplayName, comparePropertyDisplayName);
@@ -193,6 +223,7 @@ namespace AspNetCore.CustomValidation.Attributes
         }
 
         private string EqualityErrorMessage => ErrorMessage ?? "The {0} is not equal to {1}.";
+        private string NotEqualityErrorMessage => ErrorMessage ?? "The {0} can not be equal to {1}.";
         private string GreaterThanErrorMessage => ErrorMessage ?? "The {0} should be greater than {1}.";
         private string SmallerThanErrorMessage => ErrorMessage ?? "The {0} should be smaller than {1}.";
 
@@ -213,6 +244,12 @@ namespace AspNetCore.CustomValidation.Attributes
             {
                 AddAttribute(context.Attributes, "data-val-comparison-equality", GetFormattedErrorMessage(EqualityErrorMessage, propertyName, ComparePropertyName));
                 AddAttribute(context.Attributes, "data-val-comparison-equality-property", ComparePropertyName);
+            }
+
+            if (ComparisonType == ComparisonType.NotEquality)
+            {
+                AddAttribute(context.Attributes, "data-val-comparison-not-equality", GetFormattedErrorMessage(NotEqualityErrorMessage, propertyName, ComparePropertyName));
+                AddAttribute(context.Attributes, "data-val-comparison-not-equality-property", ComparePropertyName);
             }
 
             if (ComparisonType == ComparisonType.GreaterThan)
@@ -246,6 +283,7 @@ namespace AspNetCore.CustomValidation.Attributes
     public enum ComparisonType
     {
         Equality,
+        NotEquality,
         GreaterThan,
         SmallerThan
     }

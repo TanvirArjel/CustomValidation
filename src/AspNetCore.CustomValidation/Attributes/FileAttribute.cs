@@ -56,43 +56,41 @@ namespace AspNetCore.CustomValidation.Attributes
                                             $"This Attribute is only valid on {typeof(IFormFile)}");
             }
 
-            if (value == null)
+            if (value != null)
             {
-                return ValidationResult.Success;
-            }
+                IFormFile inputFile = (IFormFile)value;
 
-            IFormFile inputFile = (IFormFile)value;
-
-            if (inputFile.Length > 0)
-            {
-                if (FileTypes != null && FileTypes.Length > 0)
+                if (inputFile.Length > 0)
                 {
-                    string[] validFileTypes = FileTypes.Select(ft => ft.ToDescriptionString().ToUpperInvariant()).ToArray();
-                    if (!validFileTypes.Contains(inputFile.ContentType.ToUpperInvariant()))
+                    if (FileTypes != null && FileTypes.Length > 0)
                     {
-                        string[] validFileTypeNames = FileTypes.Select(ft => ft.ToString("G")).ToArray();
-                        string validFileTypeNamesString = string.Join(",", validFileTypeNames);
-                        var fileTypeErrorMessage = GetFileTypeErrorMessage(FileTypeErrorMessage, validFileTypeNamesString, validFileTypeNames.Length);
-                        return new ValidationResult(fileTypeErrorMessage);
+                        string[] validFileTypes = FileTypes.Select(ft => ft.ToDescriptionString().ToUpperInvariant()).ToArray();
+                        if (!validFileTypes.Contains(inputFile.ContentType.ToUpperInvariant()))
+                        {
+                            string[] validFileTypeNames = FileTypes.Select(ft => ft.ToString("G")).ToArray();
+                            string validFileTypeNamesString = string.Join(",", validFileTypeNames);
+                            var fileTypeErrorMessage = GetFileTypeErrorMessage(FileTypeErrorMessage, validFileTypeNamesString, validFileTypeNames.Length);
+                            return new ValidationResult(fileTypeErrorMessage);
 
+                        }
+                    }
+
+                    var fileLengthInKByte = inputFile.Length / 1000;
+
+                    if (MinSize > 0 && fileLengthInKByte < MinSize)
+                    {
+                        return new ValidationResult(FileMinSizeErrorMessage);
+                    }
+
+                    if (MaxSize > 0 && fileLengthInKByte > MaxSize)
+                    {
+                        return new ValidationResult(FileMaxSizeErrorMessage);
                     }
                 }
-
-                var fileLengthInKByte = inputFile.Length / 1000;
-
-                if (MinSize > 0 && fileLengthInKByte < MinSize)
+                else
                 {
-                    return new ValidationResult(FileMinSizeErrorMessage);
+                    return new ValidationResult("Selected file is empty.");
                 }
-
-                if (MaxSize > 0 && fileLengthInKByte > MaxSize)
-                {
-                    return new ValidationResult(FileMaxSizeErrorMessage);
-                }
-            }
-            else
-            {
-                return new ValidationResult("Selected file is empty.");
             }
 
             return ValidationResult.Success;

@@ -5,7 +5,7 @@
     <Company>Tanvir Ahmad Arjel</Company>
     <Authors>TanvirArjel</Authors>
     <Copyright>©2019 TanvirArjel. All rights reserved.</Copyright>
-    <Description>This a custom server-side validation library for ASP.NET Core. This also includes jQuery Client-Side Validation for each server-side validation.
+    <Description>This is a custom server-side validation library for ASP.NET Core. This also includes jQuery Client-Side Validation for each server-side validation.
 
 This version includes following Validation Attributes:
 
@@ -27,12 +27,12 @@ This version also includes validation against dynamic values from database, conf
     <PackageProjectUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</RepositoryUrl>
     <PackageTags>ASP.NETCore,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TinyMCERequired, CompareToValidation</PackageTags>
-    <PackageReleaseNotes>This version added client side validation for each server side validation.</PackageReleaseNotes>
+    <PackageReleaseNotes>This release added NotEquality ComparisonType  to CompareToAttribute along with its client side validation. This release also include some imporant bug fixes.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.1</Version>
+    <Version>1.3.0</Version>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>

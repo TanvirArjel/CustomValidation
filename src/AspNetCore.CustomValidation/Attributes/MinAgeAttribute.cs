@@ -46,26 +46,28 @@ namespace AspNetCore.CustomValidation.Attributes
                                                 $" This Attribute is only valid on {typeof(DateTime)} and {typeof(DateTime?)}.");
                 }
             }
-            
-            var dateOfBirth = (DateTime) value;
 
-            if (dateOfBirth > DateTime.Now)
+            if (value != null)
             {
-                return new ValidationResult($"{validationContext.DisplayName} can not be greater than today's date.");
-            }
+                var dateOfBirth = (DateTime)value;
 
-            var dateNow = DateTime.Now;
-            TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
-            DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
-
-            var minAgeDateTime = DateTime.MinValue.AddYears(Years).AddMonths(Months).AddDays(Days);
-
-
-            if (Years > 0 || Months > 0 || Days > 0 )
-            {
-                if (minAgeDateTime > ageDateTime)
+                if (dateOfBirth > DateTime.Now)
                 {
-                    return new ValidationResult(ErrorMessage);
+                    return new ValidationResult($"{validationContext.DisplayName} can not be greater than today's date.");
+                }
+
+                var dateNow = DateTime.Now;
+                TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
+                DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
+
+                var minAgeDateTime = DateTime.MinValue.AddYears(Years).AddMonths(Months).AddDays(Days);
+
+                if (Years > 0 || Months > 0 || Days > 0)
+                {
+                    if (minAgeDateTime > ageDateTime)
+                    {
+                        return new ValidationResult(ErrorMessage);
+                    }
                 }
             }
 

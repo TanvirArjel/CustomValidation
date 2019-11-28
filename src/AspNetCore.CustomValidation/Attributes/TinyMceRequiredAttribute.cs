@@ -16,7 +16,7 @@ namespace AspNetCore.CustomValidation.Attributes
     {
         public TinyMceRequiredAttribute()
         {
-            ErrorMessage = ErrorMessage ?? "The {0} field is required{1}.";
+            ErrorMessage = ErrorMessage ?? "The {0} field is required {1}.";
         }
         /// <summary>
         /// You can set <see cref="MinLength"/> of the TinyMCE field. The value should be a positive <see cref="int"/> number.
@@ -48,7 +48,7 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (value == null)
             {
-                return new ValidationResult(ErrorMessage ?? $"The {validationContext.MemberName} is required.");
+                return new ValidationResult(GetRequiredErrorMessage(validationContext.DisplayName));
             }
 
             string inputValue = value.ToString();
