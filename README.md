@@ -1,9 +1,10 @@
 # AspNetCore.CustomValidation
- This is a custom model validation library for ASP.NET Core projects.
- 
-## Whats new in Version 1.2.1?
 
-Version 1.2.1 is a major feature update which added client side validation support for all the validation attributes.
+ This is a common custom model validation library for ASP.NET Core projects.
+ 
+## Whats new in Version 1.3.0?
+
+This release added NotEquality ComparisonType  to CompareToAttribute along with its client side validation. This release also include some imporant bug fixes.
  
 ## How do I get started?
  
@@ -63,9 +64,9 @@ Or using Visusl Studio **Libman** as follows:
     3. Click install
   
         
-  ## Whats contain in Version 1.2.1?
+  ## Whats contain in Version 1.3.0?
   
-  In version 1.2.0 `AspNetCore.Validation` contains following validation attributes
+  In version 1.3.0 `AspNetCore.CustomValidation` contains the following validation attributes:
   
   **1. FileAttribute**
        To validate file type, file max size, file min size
@@ -82,20 +83,14 @@ Or using Visusl Studio **Libman** as follows:
   **5. MinDateAttribute**
        To set min value validation for a `DateTime` field.
        
-  **6. GreaterThanAttribute**
-       To check whether the field value is greater than another field value of same type.
-    
-  **7. SmallerThanAttribute**
-       To check whether the field value is smaller than another field value of same type.
-       
-  **8. TinyMceRequiredAttribute**
+  **6. TinyMceRequiredAttribute**
        To enforce required valiaton attribute on the online text editors like TinyMCE, CkEditor etc.
        
-  **8. CompareToAttribute**
+  **7. CompareToAttribute**
        To compare one property value against another property value of the same object.
        
    # Dynamic Validation
-   In version 1.2.1, validation against dynamic values from database, configuration file or any external source added for the following type:
+   In version 1.3.0, validation against dynamic values from database, configuration file or any external source added for the following type:
     **1. File Type:** with `ValidateFile()` method
     **1. DateTime Type:** with `ValidateMaxAge()` and `ValidateMinAge()` method as follows:
     
