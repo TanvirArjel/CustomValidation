@@ -1,7 +1,7 @@
 ﻿// Unobtrusive validation support library for AspNetCore.CustomValidation library
 // Copyright (c) TanvirArjel. All rights reserved.
 // Licensed under the MIT License, Version 2.0. See License.txt in the project root for license information.
-// @version v1.1.0
+// @version v1.2.0
 
 (function ($) {
 
@@ -203,7 +203,7 @@
 
     // equality comparison validation
 
-    $.validator.addMethod("comparison-equality", function (value, element, params) {
+    $.validator.addMethod("comparison-equal", function (value, element, params) {
 
         const inputValue = value;
         const inputPropertyType = $(element).prop('type');
@@ -239,15 +239,15 @@
         return true;
     });
 
-    $.validator.unobtrusive.adapters.add("comparison-equality", ['property'], function (options) {
-        options.rules["comparison-equality"] = options.params;
-        options.messages["comparison-equality"] = options.message;
+    $.validator.unobtrusive.adapters.add("comparison-equal", ['property'], function (options) {
+        options.rules["comparison-equal"] = options.params;
+        options.messages["comparison-equal"] = options.message;
     });
 
 
     // Not equality comparison validation
 
-    $.validator.addMethod("comparison-not-equality", function (value, element, params) {
+    $.validator.addMethod("comparison-not-equal", function (value, element, params) {
 
         const inputValue = value;
         const inputPropertyType = $(element).prop('type');
@@ -283,14 +283,14 @@
         return true;
     });
 
-    $.validator.unobtrusive.adapters.add("comparison-not-equality", ['property'], function (options) {
-        options.rules["comparison-not-equality"] = options.params;
-        options.messages["comparison-not-equality"] = options.message;
+    $.validator.unobtrusive.adapters.add("comparison-not-equal", ['property'], function (options) {
+        options.rules["comparison-not-equal"] = options.params;
+        options.messages["comparison-not-equal"] = options.message;
     });
 
     // greaterThan comparison validation
 
-    $.validator.addMethod("comparison-greater", function (value, element, params) {
+    $.validator.addMethod("comparison-greater-than", function (value, element, params) {
         const inputValue = value;
         let inputPropertyType = $(element).prop('type');
 
@@ -325,14 +325,56 @@
         return true;
     });
 
-    $.validator.unobtrusive.adapters.add("comparison-greater", ['property'], function (options) {
-        options.rules["comparison-greater"] = options.params;
-        options.messages["comparison-greater"] = options.message;
+    $.validator.unobtrusive.adapters.add("comparison-greater-than", ['property'], function (options) {
+        options.rules["comparison-greater-than"] = options.params;
+        options.messages["comparison-greater-than"] = options.message;
+    });
+
+    // greaterThan or equal comparison validation
+
+    $.validator.addMethod("comparison-greater-than-or-equal", function (value, element, params) {
+        const inputValue = value;
+        let inputPropertyType = $(element).prop('type');
+
+        const comparePropertyName = params.property;
+        const compareProperty = $(element).closest('form').find('input[name="' + comparePropertyName + '"]');
+        const comparePropertyType = compareProperty.prop('type');
+        const comparePropertyValue = compareProperty.val();
+
+        if (inputValue && comparePropertyValue) {
+
+            if (inputPropertyType === "number" && inputPropertyType === comparePropertyType) {
+                return Number(inputValue) >= Number(comparePropertyValue);
+            }
+
+            if (inputPropertyType === "text" && inputPropertyType === comparePropertyType) {
+                if (isDate(inputValue) && isDate(comparePropertyValue)) {
+                    const inputDate = getDateValue(inputValue);
+                    const compareDate = getDateValue(comparePropertyValue);
+                    return inputDate >= compareDate;
+                } else {
+                    return inputValue.length >= comparePropertyValue.length;
+                }
+            }
+
+            if (inputPropertyType.indexOf("date") !== -1 && comparePropertyType.indexOf("date") !== -1) {
+                const inputDate = getDateValue(value);
+                const compareDate = getDateValue(comparePropertyValue);
+                return inputDate >= compareDate;
+            }
+        }
+
+        return true;
+    });
+
+    $.validator.unobtrusive.adapters.add("comparison-greater-than-or-equal", ['property'], function (options) {
+        options.rules["comparison-greater-than-or-equal"] = options.params;
+        options.messages["comparison-greater-than-or-equal"] = options.message;
     });
 
     // smallerThan comparison validation
 
-    $.validator.addMethod("comparison-smaller", function (value, element, params) {
+    $.validator.addMethod("comparison-smaller-than", function (value, element, params) {
         const inputValue = value;
         const inputPropertyType = $(element).prop('type');
 
@@ -367,9 +409,51 @@
         return true;
     });
 
-    $.validator.unobtrusive.adapters.add("comparison-smaller", ['property'], function (options) {
-        options.rules["comparison-smaller"] = options.params;
-        options.messages["comparison-smaller"] = options.message;
+    $.validator.unobtrusive.adapters.add("comparison-smaller-than", ['property'], function (options) {
+        options.rules["comparison-smaller-than"] = options.params;
+        options.messages["comparison-smaller-than"] = options.message;
+    });
+
+    // smallerThan or equal comparison validation
+
+    $.validator.addMethod("comparison-smaller-than-or-equal", function (value, element, params) {
+        const inputValue = value;
+        const inputPropertyType = $(element).prop('type');
+
+        const comparePropertyName = params.property;
+        const compareProperty = $(element).closest('form').find('input[name="' + comparePropertyName + '"]');
+        const comparePropertyType = compareProperty.prop('type');
+        const comparePropertyValue = compareProperty.val();
+
+        if (inputValue && comparePropertyValue) {
+
+            if (inputPropertyType === "number" && inputPropertyType === comparePropertyType) {
+                return Number(inputValue) <= Number(comparePropertyValue);
+            }
+
+            if (inputPropertyType === "text" && inputPropertyType === comparePropertyType) {
+                if (isDate(inputValue) && isDate(comparePropertyValue)) {
+                    const inputDate = getDateValue(inputValue);
+                    const compareDate = getDateValue(comparePropertyValue);
+                    return inputDate <= compareDate;
+                } else {
+                    return inputValue.length <= comparePropertyValue.length;
+                }
+            }
+
+            if (inputPropertyType.indexOf("date") !== -1 && comparePropertyType.indexOf("date") !== -1) {
+                const inputDate = getDateValue(value);
+                const compareDate = getDateValue(comparePropertyValue);
+                return inputDate <= compareDate;
+            }
+        }
+
+        return true;
+    });
+
+    $.validator.unobtrusive.adapters.add("comparison-smaller-than-or-equal", ['property'], function (options) {
+        options.rules["comparison-smaller-than-or-equal"] = options.params;
+        options.messages["comparison-smaller-than-or-equal"] = options.message;
     });
 
     // tinymce required validation

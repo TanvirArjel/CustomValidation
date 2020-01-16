@@ -1,5 +1,4 @@
 ﻿using AspNetCore.CustomValidation.Attributes;
-using AspNetCore.CustomValidation.Validators;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,6 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [TinyMceRequired(MinLength = 5, MaxLength = 10)]
         public string Name { get; set; }
 
-        [Required]
         [MaxAge(1,0,0)]
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
@@ -28,10 +26,10 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [Display(Name = "First Number")]
         public int FirstNumber { get; set; }
 
-        [CompareTo(nameof(FirstNumber),ComparisonType.NotEquality)]
+        [CompareTo(nameof(FirstNumber),ComparisonType.GreaterThanOrEqual)]
         public int? SecondNumber { get; set; }
 
-        [File(FileType.Jpg, MaxSize = 2048)]
+        [File(new []{FileType.DocX, FileType.Xlsx})]
         public IFormFile Photo { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

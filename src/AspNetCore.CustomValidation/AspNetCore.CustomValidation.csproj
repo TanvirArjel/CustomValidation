@@ -21,18 +21,22 @@ This version includes following Validation Attributes:
 
 6. TinyMceRequiredAttribute: To enforce required validation attribute on the online text editors like TinyMCE, CkEditor etc.
 
-7. CompareToAttribute: To compare one property value against another property value of the same object.
+7. CompareToAttribute: To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual,GreaterThan,GreatherThanOrEqual,SmallerThan,SmallerThanOrEqual
 
 This version also includes validation against dynamic values from database, configuration file or any external source added for the following type: 1. File Type: with ValidateFile() method 1. DateTime Type: with ValidateMaxAge() and ValidateMinAge()</Description>
     <PackageProjectUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</RepositoryUrl>
     <PackageTags>ASP.NETCore,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TinyMCERequired, CompareToValidation</PackageTags>
-    <PackageReleaseNotes>This release added NotEquality ComparisonType  to CompareToAttribute along with its client side validation. This release also include some imporant bug fixes.</PackageReleaseNotes>
+    <PackageReleaseNotes>1. This release added GreaterThanOrEqual and SmallerThanOrEqual ComparisonType  to CompareToAttribute along with its client side validation. 
+
+2. ComparisonType Equality and NotEquality have been renamed to Equal and NotEqual respcetively.
+
+3. This release also include some imporant bug fixes.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.3.0</Version>
+    <Version>1.4.0</Version>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>

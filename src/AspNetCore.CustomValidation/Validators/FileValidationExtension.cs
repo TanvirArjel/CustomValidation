@@ -54,6 +54,7 @@ namespace AspNetCore.CustomValidation.Validators
                 if (fileOptions.FileTypes != null && fileOptions.FileTypes.Length > 0)
                 {
                     string[] validFileTypes = fileOptions.FileTypes.Select(ft => ft.ToDescriptionString().ToUpperInvariant()).ToArray();
+                    validFileTypes = validFileTypes.SelectMany(vft => vft.Split(',')).ToArray();
                     if (!validFileTypes.Contains(inputFile.ContentType.ToUpperInvariant()))
                     {
                         string[] validFileTypeNames = fileOptions.FileTypes.Select(ft => ft.ToString("G")).ToArray();
@@ -88,6 +89,7 @@ namespace AspNetCore.CustomValidation.Validators
     }
     public class FileOptions
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
         public FileType[] FileTypes { get; set; }
 
         /// <summary>

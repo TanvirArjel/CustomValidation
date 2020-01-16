@@ -23,6 +23,8 @@ namespace AspNetCore.CustomValidation.Demo.Controllers
         }
 
         // GET: Employee/Create
+        [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
+        [DisableRequestSizeLimit]
         public ActionResult Create()
         {
             return View();
@@ -31,6 +33,8 @@ namespace AspNetCore.CustomValidation.Demo.Controllers
         // POST: Employee/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
+        [DisableRequestSizeLimit]
         public ActionResult Create(Employee employee)
         {
             if (ModelState.IsValid)

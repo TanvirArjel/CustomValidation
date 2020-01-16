@@ -24,7 +24,7 @@ namespace AspNetCore.CustomValidation.Attributes
         /// <param name="fileType">A single <see cref="FileType"/> value.</param>
         public FileAttribute(FileType fileType)
         {
-            FileTypes = new FileType[]{ fileType };
+            FileTypes = new FileType[] { fileType };
         }
 
         /// <summary>
@@ -65,6 +65,7 @@ namespace AspNetCore.CustomValidation.Attributes
                     if (FileTypes != null && FileTypes.Length > 0)
                     {
                         string[] validFileTypes = FileTypes.Select(ft => ft.ToDescriptionString().ToUpperInvariant()).ToArray();
+                        validFileTypes = validFileTypes.SelectMany(vft => vft.Split(',')).ToArray();
                         if (!validFileTypes.Contains(inputFile.ContentType.ToUpperInvariant()))
                         {
                             string[] validFileTypeNames = FileTypes.Select(ft => ft.ToString("G")).ToArray();
@@ -160,18 +161,60 @@ namespace AspNetCore.CustomValidation.Attributes
     /// </summary>
     public enum FileType
     {
+
+        [Description("text/plain")]
+        Text,
+
+        [Description("application/msword")]
+        Doc,
+
+        [Description("application/vnd.openxmlformats-officedocument.wordprocessingml.document")]
+        DocX,
+
+        [Description("application/vnd.ms-excel")]
+        Xls,
+
+        [Description("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+        Xlsx,
+
+        [Description("application/vnd.ms-powerpoint")]
+        Ppt,
+
+        [Description("application/vnd.openxmlformats-officedocument.presentationml.presentation")]
+        Pptx,
+
         [Description("application/pdf")]
         Pdf,
+
         [Description("image/jpg")]
         Jpg,
+
         [Description("image/jpeg")]
         Jpeg,
+
         [Description("image/png")]
         Png,
+
         [Description("video/mp4")]
         Mp4,
-        [Description("audio/mp3")]
-        Mp3
+
+        [Description("video/x-matroska")]
+        Mkv,
+
+        [Description("video/x-msvideo")]
+        Avi,
+
+        [Description("video/x-ms-wmv")]
+        Wmv,
+
+        [Description("audio/mp3,audio/mpeg")]
+        Mp3,
+
+        [Description("application/x-rar-compressed, application/octet-stream")]
+        Rar,
+
+        [Description("application/zip, application/octet-stream, application/x-zip-compressed, multipart/x-zip")]
+        Zip
     }
 
     
