@@ -1,7 +1,7 @@
 ﻿// Unobtrusive validation support library for AspNetCore.CustomValidation library
 // Copyright (c) TanvirArjel. All rights reserved.
 // Licensed under the MIT License, Version 2.0. See License.txt in the project root for license information.
-// @version v1.2.0
+// @version v1.2.1
 
 (function ($) {
 
@@ -16,7 +16,22 @@
         }
     });
 
+    var getIsoDate = function(dateString) {
+        var parts = dateString.split('-');
+        var day = parts[0];
+        var monthName = parts[1];
+        var year = parts[2];
+
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var month = monthNames.indexOf(monthName) + 1;
+        var date = year + "-" + month + "-" + day;
+        return date;
+    }
+
     var isDate = function (date) {
+        if (date.length === 11) {
+            date = getIsoDate(date);
+        }
         return new Date(date).toString() !== "Invalid Date" && !isNaN(new Date(date));
     }
 
@@ -31,6 +46,9 @@
                 const dateValue = stringDate.indexOf("T") === -1 ? new Date(stringDate + "T00:00:00") : new Date(stringDate);
                 return dateValue;
             } else {
+                if (stringDate.length === 11) {
+                    stringDate = getIsoDate(stringDate);
+                }
                 return new Date(stringDate);
             }
         } else {
@@ -38,9 +56,12 @@
         }
     }
 
-    // min date validation
+    // valid date validation
     $.validator.addMethod("valid-date-format", function (value, element, params) {
         if (value) {
+            if (value.length === 11) {
+              date = getIsoDate(value);
+            }
             return isDate(value);
         }
         return true;
