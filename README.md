@@ -2,15 +2,17 @@
 
  This is a common custom model validation library for ASP.NET Core projects.
  
-## Whats new in Version 1.3.0?
+## Whats new in Version 1.4.0?
 
-This release added NotEquality ComparisonType  to CompareToAttribute along with its client side validation. This release also include some imporant bug fixes.
+   1. `GreaterThanOrEqual` and `SmallerThanOrEqual` ComparisonType  to CompareToAttribute along with its client side validation.
+   2. ComparisonType `Equality` and `NotEquality` have renamed to `Equal` and `NotEqual` respectively.
+   3. This release also include some imporant bug fixes.
  
 ## How do I get started?
  
  Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is as simple as below:
  
- 1. First install the `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
+ 1. First install the lastest version of `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
  
     `Install-Package AspNetCore.CustomValidation`
     
@@ -40,7 +42,7 @@ This release added NotEquality ComparisonType  to CompareToAttribute along with 
         
   ## Client Side validation:
   
-  To enable client client side validation, please add the `aspnetcore-custom-validation.min.js` file as follows:
+  To enable client client side validation, please add the latest version of `aspnetcore-custom-validation.min.js` file as follows:
   
     @section Scripts {
       @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -64,9 +66,9 @@ Or using Visusl Studio **Libman** as follows:
     3. Click install
   
         
-  ## Whats contain in Version 1.3.0?
+  ## What contains in Version 1.4.0?
   
-  In version 1.3.0 `AspNetCore.CustomValidation` contains the following validation attributes:
+  In version 1.4.0 `AspNetCore.CustomValidation` contains the following validation attributes:
   
   **1. FileAttribute**
        To validate file type, file max size, file min size
@@ -90,7 +92,7 @@ Or using Visusl Studio **Libman** as follows:
        To compare one property value against another property value of the same object.
        
    # Dynamic Validation
-   In version 1.3.0, validation against dynamic values from database, configuration file or any external source added for the following type:
+   In version 1.4.0, validation against dynamic values from database, configuration file or any external source added for the following type:
     **1. File Type:** with `ValidateFile()` method
     **1. DateTime Type:** with `ValidateMaxAge()` and `ValidateMinAge()` method as follows:
     
