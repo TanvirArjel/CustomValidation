@@ -88,6 +88,11 @@ namespace AspNetCore.CustomValidation.Attributes
                     var validationResult = TriggerValueComparison();
                     return validationResult;
                 }
+                else if (value is TimeSpan && comparePropertyValue is TimeSpan)
+                {
+                    var validationResult = TriggerValueComparison();
+                    return validationResult;
+                }
                 else
                 {
                     throw new ArgumentException($"The type of {validationContext.MemberName} is not comparable to type of {ComparePropertyName}");
@@ -115,6 +120,14 @@ namespace AspNetCore.CustomValidation.Attributes
                     if (value is DateTime memberValue)
                     {
                         if (memberValue != (DateTime)comparePropertyValue)
+                        {
+                            return new ValidationResult(errorMessage);
+                        }
+                    }
+
+                    if (value is TimeSpan timeSpanValue)
+                    {
+                        if (timeSpanValue != (TimeSpan)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
@@ -150,6 +163,14 @@ namespace AspNetCore.CustomValidation.Attributes
                         }
                     }
 
+                    if (value is TimeSpan timeSpanValue)
+                    {
+                        if (timeSpanValue == (TimeSpan)comparePropertyValue)
+                        {
+                            return new ValidationResult(errorMessage);
+                        }
+                    }
+
                     if (value is string)
                     {
                         if (value.ToString() == comparePropertyValue.ToString())
@@ -175,6 +196,14 @@ namespace AspNetCore.CustomValidation.Attributes
                     if (value.IsDateTime())
                     {
                         if ((DateTime)value <= (DateTime)comparePropertyValue)
+                        {
+                            return new ValidationResult(errorMessage);
+                        }
+                    }
+
+                    if (value.IsTimeSpan())
+                    {
+                        if ((TimeSpan)value <= (TimeSpan)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
@@ -209,6 +238,14 @@ namespace AspNetCore.CustomValidation.Attributes
                         }
                     }
 
+                    if (value.IsTimeSpan())
+                    {
+                        if ((TimeSpan)value < (TimeSpan)comparePropertyValue)
+                        {
+                            return new ValidationResult(errorMessage);
+                        }
+                    }
+
                     if (value is string)
                     {
                         if (value.ToString().Length < comparePropertyValue.ToString().Length)
@@ -238,6 +275,14 @@ namespace AspNetCore.CustomValidation.Attributes
                         }
                     }
 
+                    if (value.IsTimeSpan())
+                    {
+                        if ((TimeSpan)value >= (TimeSpan)comparePropertyValue)
+                        {
+                            return new ValidationResult(errorMessage);
+                        }
+                    }
+
                     if (value is string)
                     {
                         if (value.ToString().Length >= comparePropertyValue.ToString().Length)
@@ -262,6 +307,14 @@ namespace AspNetCore.CustomValidation.Attributes
                     if (value.IsDateTime())
                     {
                         if ((DateTime)value > (DateTime)comparePropertyValue)
+                        {
+                            return new ValidationResult(errorMessage);
+                        }
+                    }
+
+                    if (value.IsTimeSpan())
+                    {
+                        if ((TimeSpan)value > (TimeSpan)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }

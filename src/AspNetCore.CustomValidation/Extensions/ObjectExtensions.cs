@@ -23,5 +23,10 @@ namespace AspNetCore.CustomValidation.Extensions
         {
             return value is DateTime;
         }
+
+        internal static bool IsTimeSpan(this object value)
+        {
+            return value is TimeSpan;
+        }
     }
 }
