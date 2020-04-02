@@ -1,16 +1,15 @@
-# AspNetCore.CustomValidation
+# ASP.NET Core Custom Validation
 
  This is a common custom model validation library for ASP.NET Core projects.
  
-## Whats new in Version 1.4.0?
+## Whats new in Version 1.5.0?
 
-   1. `GreaterThanOrEqual` and `SmallerThanOrEqual` ComparisonType  to CompareToAttribute along with its client side validation.
-   2. ComparisonType `Equality` and `NotEquality` have renamed to `Equal` and `NotEqual` respectively.
+   1. This release added `TimeSpan` comparison ability with CompareTo attribute.
    3. This release also include some imporant bug fixes.
  
 ## How do I get started?
  
- Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is as simple as below:
+ Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is simple as below:
  
  1. First install the lastest version of `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
  
@@ -42,7 +41,7 @@
         
   ## Client Side validation:
   
-  To enable client client side validation, please add the latest version of `aspnetcore-custom-validation.min.js` file as follows:
+  To enable client client side validation for **ASP.NET Core MVC or Razor Pages**, please add the latest version of `aspnetcore-custom-validation.min.js` file as follows:
   
     @section Scripts {
       @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -66,15 +65,15 @@ Or using Visusl Studio **Libman** as follows:
     3. Click install
   
         
-  ## What contains in Version 1.4.0?
+  ## What contains in Version 1.5.0?
   
-  In version 1.4.0 `AspNetCore.CustomValidation` contains the following validation attributes:
+  In version 1.5.0 `AspNetCore.CustomValidation` contains the following validation attributes:
   
   **1. FileAttribute**
-       To validate file type, file max size, file min size
+       To validate file type, file max size, file min size etc.
        
   **2. MaxAgeAttribute**
-       To validate maximum age against date of birth value of `DateTime` type
+       To validate maximum age against date of birth value of `DateTime` type.
        
   **3. MinAgeAttribute**
        To validate minimum required age against a date of birth value of `DateTime` type.
