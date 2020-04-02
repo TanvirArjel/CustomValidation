@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using AspNetCore.CustomValidation.Demo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using AspNetCore.CustomValidation.Demo.Models;
 
 namespace AspNetCore.CustomValidation.Demo.Controllers
 {
@@ -24,6 +20,11 @@ namespace AspNetCore.CustomValidation.Demo.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Test()
         {
             return View();
         }

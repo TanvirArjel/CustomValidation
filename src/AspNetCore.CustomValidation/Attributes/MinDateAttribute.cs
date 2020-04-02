@@ -34,6 +34,32 @@ namespace AspNetCore.CustomValidation.Attributes
         {
             MinDate = DateTime.ParseExact(minDate, format, CultureInfo.InvariantCulture);
         }
+
+        public DateTime MinDate { get; }
+
+        public void AddValidation(ClientModelValidationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
+            var errorMessage = FormatErrorMessage(propertyDisplayName);
+
+            AddAttribute(context.Attributes, "data-val", "true");
+            AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
+            AddAttribute(context.Attributes, "data-val-mindate", errorMessage);
+
+            var minDate = MinDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
+            AddAttribute(context.Attributes, "data-val-mindate-date", minDate);
+        }
+
+        public override string FormatErrorMessage(string displayName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, MinDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
+        }
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)
@@ -70,26 +96,6 @@ namespace AspNetCore.CustomValidation.Attributes
             return ValidationResult.Success;
         }
 
-        public DateTime MinDate { get; }
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            var errorMessage = FormatErrorMessage(propertyDisplayName);
-
-            AddAttribute(context.Attributes, "data-val", "true");
-            AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
-            AddAttribute(context.Attributes, "data-val-mindate", errorMessage);
-
-            var minDate = MinDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
-            AddAttribute(context.Attributes, "data-val-mindate-date", minDate);
-        }
-
         private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
         {
             if (!attributes.ContainsKey(key))
@@ -97,11 +103,5 @@ namespace AspNetCore.CustomValidation.Attributes
                 attributes.Add(key, value);
             }
         }
-
-        public override string FormatErrorMessage(string displayName)
-        {
-            return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, MinDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
-        }
-
     }
 }

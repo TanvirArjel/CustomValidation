@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Company>Tanvir Ahmad Arjel</Company>
     <Authors>TanvirArjel</Authors>
-    <Copyright>©2019 TanvirArjel. All rights reserved.</Copyright>
+    <Copyright>©2019-2020 TanvirArjel. All rights reserved.</Copyright>
     <Description>This is a custom server-side validation library for ASP.NET Core. This also includes jQuery Client-Side Validation for each server-side validation.
 
 This version includes following Validation Attributes:
@@ -26,26 +26,30 @@ This version includes following Validation Attributes:
 This version also includes validation against dynamic values from database, configuration file or any external source added for the following type: 1. File Type: with ValidateFile() method 1. DateTime Type: with ValidateMaxAge() and ValidateMinAge()</Description>
     <PackageProjectUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</RepositoryUrl>
-    <PackageTags>ASP.NETCore,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TinyMCERequired, CompareToValidation</PackageTags>
-    <PackageReleaseNotes>1. This release added GreaterThanOrEqual and SmallerThanOrEqual ComparisonType  to CompareToAttribute along with its client side validation. 
+    <PackageTags>ASP.NET Core,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TinyMCERequired, CompareToValidation</PackageTags>
+    <PackageReleaseNotes>1. This release added TimeSpan comparison ability with CompareTo attribute.
 
-2. ComparisonType Equality and NotEquality have been renamed to Equal and NotEqual respcetively.
+2. This release also include some imporant bug fixes.
 
-3. This release also include some imporant bug fixes.</PackageReleaseNotes>
+3. This release aligned client side validation library's version with this package version.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.0.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.0.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

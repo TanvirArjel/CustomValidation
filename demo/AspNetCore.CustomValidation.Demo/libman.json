@@ -421,6 +421,29 @@
         "themes/vader/images/ui-icons_f29a00_256x240.png",
         "jquery-ui.min.css"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-datetimepicker@4.17.47",
+      "destination": "wwwroot/lib/bootstrap-datetimepicker/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "moment.js@2.24.0",
+      "destination": "wwwroot/moment.js/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@5.12.1",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.min.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "tempusdominus-bootstrap-4@5.1.2",
+      "destination": "wwwroot/lib/tempusdominus-bootstrap-4/"
     }
   ]
 }

@@ -15,6 +15,7 @@ namespace AspNetCore.CustomValidation.Attributes
     public class MaxAgeAttribute : ValidationAttribute, IClientModelValidator
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="MaxAgeAttribute"/> class.
         /// This constructor takes the permitted max age value in <see cref="years"/>, <see cref="months"/> and <see cref="days"/> format.
         /// </summary>
         /// <param name="years">A positive <see cref="int"/> value.</param>
@@ -22,11 +23,47 @@ namespace AspNetCore.CustomValidation.Attributes
         /// <param name="days">A <see cref="int"/> value in between 0 and 31.</param>
         public MaxAgeAttribute(int years, int months, int days)
         {
-            Years = years < 0 ? 0 : years;
-            Months = years < 0 ? 0 : months;
-            Days = days < 0 ? 0 : days;
+            this.Years = years < 0 ? 0 : years;
+            this.Months = years < 0 ? 0 : months;
+            this.Days = days < 0 ? 0 : days;
 
-            ErrorMessage = ErrorMessage ?? $"Maximum age can be {(Years > 0 ? "{0}" + " years" : "")} {(Months > 0 ? "{1}" + " months" : "")} {(Days > 0 ? "{2}" + " days" : "")}";
+            this.ErrorMessage = this.ErrorMessage ?? $"Maximum age can be {(this.Years > 0 ? "{0}" + " years" : string.Empty)} {(this.Months > 0 ? "{1}" + " months" : string.Empty)} {(this.Days > 0 ? "{2}" + " days" : string.Empty)}";
+        }
+
+        public int Years { get; }
+
+        public int Months { get; }
+
+        public int Days { get; }
+
+        public void AddValidation(ClientModelValidationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
+            var errorMessage = this.FormatErrorMessage(propertyDisplayName);
+
+            this.AddAttribute(context.Attributes, "data-val", "true");
+
+            this.AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
+            this.AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
+            this.AddAttribute(context.Attributes, "data-val-maxage", errorMessage);
+
+            var years = this.Years.ToString(CultureInfo.InvariantCulture);
+            var months = this.Months.ToString(CultureInfo.InvariantCulture);
+            var days = this.Days.ToString(CultureInfo.InvariantCulture);
+
+            this.AddAttribute(context.Attributes, "data-val-maxage-years", years);
+            this.AddAttribute(context.Attributes, "data-val-maxage-months", months);
+            this.AddAttribute(context.Attributes, "data-val-maxage-days", days);
+        }
+
+        public override string FormatErrorMessage(string displayName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, this.ErrorMessage, this.Years, this.Months, this.Days);
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -62,50 +99,18 @@ namespace AspNetCore.CustomValidation.Attributes
                 TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
                 DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
 
-                var maxAgeDateTime = DateTime.MinValue.AddYears(Years).AddMonths(Months).AddDays(Days);
+                var maxAgeDateTime = DateTime.MinValue.AddYears(this.Years).AddMonths(this.Months).AddDays(this.Days);
 
-                if (Years > 0 || Months > 0 || Days > 0)
+                if (this.Years > 0 || this.Months > 0 || this.Days > 0)
                 {
                     if (ageDateTime > maxAgeDateTime)
                     {
-                        return new ValidationResult(ErrorMessage);
+                        return new ValidationResult(this.ErrorMessage);
                     }
                 }
             }
 
-
             return ValidationResult.Success;
-        }
-
-        public int Years { get; }
-        public int Months { get; }
-        public int Days { get; }
-        public void AddValidation(ClientModelValidationContext context)
-        {
-
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            var errorMessage = FormatErrorMessage(propertyDisplayName);
-
-            
-
-            AddAttribute(context.Attributes, "data-val", "true");
-
-            AddAttribute(context.Attributes,"data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
-            AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
-            AddAttribute(context.Attributes, "data-val-maxage", errorMessage);
-
-            var years = Years.ToString(CultureInfo.InvariantCulture);
-            var months = Months.ToString(CultureInfo.InvariantCulture);
-            var days = Days.ToString(CultureInfo.InvariantCulture);
-
-            AddAttribute(context.Attributes, "data-val-maxage-years", years);
-            AddAttribute(context.Attributes, "data-val-maxage-months", months);
-            AddAttribute(context.Attributes, "data-val-maxage-days", days);
         }
 
         private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
@@ -114,11 +119,6 @@ namespace AspNetCore.CustomValidation.Attributes
             {
                 attributes.Add(key, value);
             }
-        }
-
-        public override string FormatErrorMessage(string displayName)
-        {
-            return string.Format(CultureInfo.InvariantCulture,ErrorMessage, Years, Months, Days);
         }
     }
 }

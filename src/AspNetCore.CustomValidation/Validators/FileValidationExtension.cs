@@ -1,10 +1,10 @@
-﻿using AspNetCore.CustomValidation.Attributes;
-using AspNetCore.CustomValidation.Extensions;
-using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using AspNetCore.CustomValidation.Attributes;
+using AspNetCore.CustomValidation.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace AspNetCore.CustomValidation.Validators
 {
@@ -18,8 +18,10 @@ namespace AspNetCore.CustomValidation.Validators
         /// <param name="propertyName">Name of the <see cref="IFormFile"/> type property.</param>
         /// <param name="fileOptions">Validation options.</param>
         /// <returns>Returns <see cref="ValidationResult"/></returns>
-        public static ValidationResult ValidateFile(this ValidationContext validationContext,
-                 string propertyName, FileOptions fileOptions)
+        public static ValidationResult ValidateFile(
+            this ValidationContext validationContext,
+            string propertyName,
+            FileOptions fileOptions)
         {
             if (validationContext == null)
             {
@@ -59,8 +61,9 @@ namespace AspNetCore.CustomValidation.Validators
                     {
                         string[] validFileTypeNames = fileOptions.FileTypes.Select(ft => ft.ToString("G")).ToArray();
                         string validFileTypeNamesString = string.Join(",", validFileTypeNames);
-                       
-                        return new ValidationResult($"The file should be in {validFileTypeNamesString.ToUpperInvariant()}" +
+
+                        return new ValidationResult(
+                            $"The file should be in {validFileTypeNamesString.ToUpperInvariant()}" +
                                                     $" {(validFileTypeNames.Length > 1 ? "formats" : "format")}.", new[] { propertyName });
                     }
                 }
@@ -74,7 +77,7 @@ namespace AspNetCore.CustomValidation.Validators
 
                 if (fileOptions.MaxSize > 0 && fileLengthInKByte > fileOptions.MaxSize)
                 {
-                    return new ValidationResult($"File size should not be more than {(fileOptions.MaxSize >= 1024 ? Math.Round(fileOptions.MaxSize / 1024M, 2) + " MB" : fileOptions.MaxSize  + " KB")}.", new[] { propertyName });
+                    return new ValidationResult($"File size should not be more than {(fileOptions.MaxSize >= 1024 ? Math.Round(fileOptions.MaxSize / 1024M, 2) + " MB" : fileOptions.MaxSize + " KB")}.", new[] { propertyName });
                 }
             }
             else
@@ -84,12 +87,11 @@ namespace AspNetCore.CustomValidation.Validators
 
             return ValidationResult.Success;
         }
-
-
     }
+
     public class FileOptions
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Not applicable here")]
         public FileType[] FileTypes { get; set; }
 
         /// <summary>
@@ -102,5 +104,4 @@ namespace AspNetCore.CustomValidation.Validators
         /// </summary>
         public int MaxSize { get; set; }
     }
-
 }

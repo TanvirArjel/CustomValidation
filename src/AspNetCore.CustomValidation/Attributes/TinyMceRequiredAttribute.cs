@@ -18,14 +18,46 @@ namespace AspNetCore.CustomValidation.Attributes
         {
             ErrorMessage = ErrorMessage ?? "The {0} field is required {1}.";
         }
+
         /// <summary>
         /// You can set <see cref="MinLength"/> of the TinyMCE field. The value should be a positive <see cref="int"/> number.
         /// </summary>
         public int MinLength { get; set; }
+
         /// <summary>
-        /// 
+        /// You can set <see cref="MaxLength"/> of the TinyMCE field. The value should be a positive <see cref="int"/> number.
         /// </summary>
         public int MaxLength { get; set; }
+
+        private static string MinLengthErrorMessage => "The {0} should be at least {1} characters long.";
+
+        private static string MaxLengthErrorMessage => "The {0} cannot be more than {1} characters long.";
+
+        public void AddValidation(ClientModelValidationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            var propertyDisplayName = context.ModelMetadata.GetDisplayName();
+
+            AddAttribute(context.Attributes, "data-val", "true");
+            AddAttribute(context.Attributes, "data-val-tinymce-required", GetRequiredErrorMessage(propertyDisplayName));
+
+            if (MinLength > 0)
+            {
+                AddAttribute(context.Attributes, "data-val-tinymce-minlength", GetMinLengthErrorMessage(propertyDisplayName));
+                AddAttribute(context.Attributes, "data-val-tinymce-minlength-value", MinLength.ToString(CultureInfo.InvariantCulture));
+            }
+
+            if (MaxLength > 0)
+            {
+                AddAttribute(context.Attributes, "data-val-tinymce-maxlength", GetMaxLengthErrorMessage(propertyDisplayName));
+                AddAttribute(context.Attributes, "data-val-tinymce-maxlength-value", MaxLength.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)
@@ -40,10 +72,10 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentException($"The object does not contain any property with name '{validationContext.MemberName}'");
             }
 
-            if (propertyInfo.PropertyType != typeof(String))
+            if (propertyInfo.PropertyType != typeof(string))
             {
                 throw new ArgumentException($"The {nameof(TinyMceRequiredAttribute)} is not valid on property type {propertyInfo.PropertyType}" +
-                                            $"This Attribute is only valid on {typeof(String)}");
+                                            $"This Attribute is only valid on {typeof(string)}");
             }
 
             if (value == null)
@@ -52,7 +84,7 @@ namespace AspNetCore.CustomValidation.Attributes
             }
 
             string inputValue = value.ToString();
-            string  inputValueWithoutHtml = Regex.Replace(inputValue, "<.*?>", String.Empty);
+            string inputValueWithoutHtml = Regex.Replace(inputValue, "<.*?>", string.Empty);
 
             if (string.IsNullOrWhiteSpace(inputValueWithoutHtml))
             {
@@ -72,33 +104,6 @@ namespace AspNetCore.CustomValidation.Attributes
             return ValidationResult.Success;
         }
 
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            var propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            
-            AddAttribute(context.Attributes, "data-val", "true");
-            AddAttribute(context.Attributes, "data-val-tinymce-required", GetRequiredErrorMessage(propertyDisplayName));
-
-            if (MinLength > 0)
-            {
-                AddAttribute(context.Attributes, "data-val-tinymce-minlength", GetMinLengthErrorMessage(propertyDisplayName));
-                AddAttribute(context.Attributes, "data-val-tinymce-minlength-value", MinLength.ToString(CultureInfo.InvariantCulture));
-            }
-
-            if (MaxLength > 0)
-            {
-                AddAttribute(context.Attributes, "data-val-tinymce-maxlength", GetMaxLengthErrorMessage(propertyDisplayName));
-                AddAttribute(context.Attributes, "data-val-tinymce-maxlength-value", MaxLength.ToString(CultureInfo.InvariantCulture));
-            }
-
-            
-        }
-
         private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
         {
             if (!attributes.ContainsKey(key))
@@ -107,12 +112,9 @@ namespace AspNetCore.CustomValidation.Attributes
             }
         }
 
-        private static string MinLengthErrorMessage => "The {0} should be at least {1} characters long.";
-        private static string MaxLengthErrorMessage => "The {0} cannot be more than {1} characters long.";
-
         private string GetRequiredErrorMessage(string displayName)
         {
-            return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName,string.Empty);
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, string.Empty);
         }
 
         private string GetMinLengthErrorMessage(string displayName)
@@ -120,7 +122,7 @@ namespace AspNetCore.CustomValidation.Attributes
             return string.Format(CultureInfo.InvariantCulture, MinLengthErrorMessage, displayName, MinLength);
         }
 
-        private string GetMaxLengthErrorMessage( string displayName)
+        private string GetMaxLengthErrorMessage(string displayName)
         {
             return string.Format(CultureInfo.InvariantCulture, MaxLengthErrorMessage, displayName, MaxLength);
         }

@@ -1,5 +1,5 @@
-﻿using AspNetCore.CustomValidation.Attributes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using AspNetCore.CustomValidation.Attributes;
 
 namespace AspNetCore.CustomValidation.Extensions
 {

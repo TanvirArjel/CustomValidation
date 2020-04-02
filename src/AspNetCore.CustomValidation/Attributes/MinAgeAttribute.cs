@@ -22,11 +22,47 @@ namespace AspNetCore.CustomValidation.Attributes
         /// <param name="days">A positive <see cref="int"/> value ranging from 0 to 31.</param>
         public MinAgeAttribute(int years, int months, int days)
         {
-            Years = years < 0 ? 0: years;
+            Years = years < 0 ? 0 : years;
             Months = months < 0 ? 0 : months;
             Days = days < 0 ? 0 : days;
 
-            ErrorMessage = ErrorMessage ?? $"Minimum age should be {(Years > 0 ? "{0}" + " years" : "")} {(Months > 0 ? "{1}" + " months" : "")} {(Days > 0 ? "{2}" + " days" : "")}";
+            ErrorMessage = ErrorMessage ?? $"Minimum age should be {(Years > 0 ? "{0}" + " years" : string.Empty)} {(Months > 0 ? "{1}" + " months" : string.Empty)} {(Days > 0 ? "{2}" + " days" : string.Empty)}";
+        }
+
+        public int Years { get; }
+
+        public int Months { get; }
+
+        public int Days { get; }
+
+        public void AddValidation(ClientModelValidationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
+            var errorMessage = FormatErrorMessage(propertyDisplayName);
+
+            AddAttribute(context.Attributes, "data-val", "true");
+            AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
+            AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
+
+            AddAttribute(context.Attributes, "data-val-minage", errorMessage);
+
+            var years = Years.ToString(CultureInfo.InvariantCulture);
+            var months = Months.ToString(CultureInfo.InvariantCulture);
+            var days = Days.ToString(CultureInfo.InvariantCulture);
+
+            AddAttribute(context.Attributes, "data-val-minage-years", years);
+            AddAttribute(context.Attributes, "data-val-minage-months", months);
+            AddAttribute(context.Attributes, "data-val-minage-days", days);
+        }
+
+        public override string FormatErrorMessage(string displayName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, ErrorMessage, Years, Months, Days);
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -74,46 +110,12 @@ namespace AspNetCore.CustomValidation.Attributes
             return ValidationResult.Success;
         }
 
-
-        public int Years { get; }
-        public int Months { get; }
-        public int Days { get; }
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            var errorMessage = FormatErrorMessage(propertyDisplayName);
-
-            AddAttribute(context.Attributes, "data-val", "true");
-            AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
-            AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
-
-            AddAttribute(context.Attributes, "data-val-minage", errorMessage);
-
-            var years = Years.ToString(CultureInfo.InvariantCulture);
-            var months = Months.ToString(CultureInfo.InvariantCulture);
-            var days = Days.ToString(CultureInfo.InvariantCulture);
-
-            AddAttribute(context.Attributes, "data-val-minage-years", years);
-            AddAttribute(context.Attributes, "data-val-minage-months", months);
-            AddAttribute(context.Attributes, "data-val-minage-days", days);
-        }
-
         private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
         {
             if (!attributes.ContainsKey(key))
             {
                 attributes.Add(key, value);
             }
-        }
-
-        public override string FormatErrorMessage(string displayName)
-        {
-            return string.Format(CultureInfo.InvariantCulture, ErrorMessage, Years, Months, Days);
         }
     }
 }

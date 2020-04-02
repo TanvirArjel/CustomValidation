@@ -17,8 +17,13 @@ namespace AspNetCore.CustomValidation.Validators
         /// <param name="days">A positive <see cref="int"/> number ranging from 0 to 31.</param>
         /// <param name="errorMessage">A <see cref="string"/> content to override the default ErrorMessage.</param>
         /// <returns>Return <see cref="ValidationResult"/></returns>
-        public static ValidationResult ValidateMinAge(this ValidationContext validationContext,
-            string propertyName, int years,int months, int days, string errorMessage = null)
+        public static ValidationResult ValidateMinAge(
+            this ValidationContext validationContext,
+            string propertyName,
+            int years,
+            int months,
+            int days,
+            string errorMessage = null)
         {
             if (validationContext == null)
             {
@@ -38,8 +43,8 @@ namespace AspNetCore.CustomValidation.Validators
             {
                 throw new ArgumentException($"Property '{propertyName}' must be {typeof(DateTime)} or {typeof(DateTime?)} type.");
             }
-            var propertyValue = propertyInfo.GetValue(validationContext.ObjectInstance, null);
 
+            var propertyValue = propertyInfo.GetValue(validationContext.ObjectInstance, null);
 
             if (propertyValue == null)
             {
@@ -63,14 +68,13 @@ namespace AspNetCore.CustomValidation.Validators
             {
                 if (minAgeDateTime > ageDateTime)
                 {
-                    errorMessage = errorMessage ?? $"Minimum age should be at least {(years > 0 ? years + " years" : "")} {(months > 0 ? months + " months" : "")} {(days > 0 ? days + " days" : "")}.";
+                    errorMessage = errorMessage ?? $"Minimum age should be at least {(years > 0 ? years + " years" : string.Empty)} {(months > 0 ? months + " months" : string.Empty)} {(days > 0 ? days + " days" : string.Empty)}.";
 
-                    return new ValidationResult(errorMessage, new[] {propertyName});
+                    return new ValidationResult(errorMessage, new[] { propertyName });
                 }
             }
 
             return ValidationResult.Success;
-
         }
     }
 }

@@ -255,6 +255,10 @@
                 const compareDate = getDateValue(comparePropertyValue);
                 return inputDate.getTime() === compareDate.getTime();
             }
+
+            if (inputPropertyType === "time" && inputPropertyType == comparePropertyType) {
+                return inputValue === comparePropertyValue;
+            }
         }
 
         return true;
@@ -299,6 +303,10 @@
                 const compareDate = getDateValue(comparePropertyValue);
                 return inputDate.getTime() !== compareDate.getTime();
             }
+
+            if (inputPropertyType === "time" && inputPropertyType == comparePropertyType) {
+                return inputValue !== comparePropertyValue;
+            }
         }
 
         return true;
@@ -341,6 +349,12 @@
                 const compareDate = getDateValue(comparePropertyValue);
                 return inputDate > compareDate;
             }
+
+            if (inputPropertyType === "time" && inputPropertyType == comparePropertyType) {
+                return inputValue > comparePropertyValue;
+            }
+
+            
         }
 
         return true;
@@ -382,6 +396,10 @@
                 const inputDate = getDateValue(value);
                 const compareDate = getDateValue(comparePropertyValue);
                 return inputDate >= compareDate;
+            }
+
+            if (inputPropertyType === "time" && inputPropertyType == comparePropertyType) {
+                return inputValue >= comparePropertyValue;
             }
         }
 
@@ -425,6 +443,10 @@
                 const compareDate = getDateValue(comparePropertyValue);
                 return inputDate < compareDate;
             }
+
+            if (inputPropertyType === "time" && inputPropertyType == comparePropertyType) {
+                return inputValue < comparePropertyValue;
+            }
         }
 
         return true;
@@ -466,6 +488,10 @@
                 const inputDate = getDateValue(value);
                 const compareDate = getDateValue(comparePropertyValue);
                 return inputDate <= compareDate;
+            }
+
+            if (inputPropertyType === "time" && inputPropertyType == comparePropertyType) {
+                return inputValue <= comparePropertyValue;
             }
         }
 
