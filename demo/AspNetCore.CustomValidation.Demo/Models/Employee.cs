@@ -8,7 +8,7 @@ namespace AspNetCore.CustomValidation.Demo.Models
 {
     public class Employee : IValidatableObject
     {
-        [TinyMceRequired(MinLength = 5, MaxLength = 10)]
+        [FixedLength(5)]
         public string Name { get; set; }
 
         [MaxAge(1, 0, 0)]

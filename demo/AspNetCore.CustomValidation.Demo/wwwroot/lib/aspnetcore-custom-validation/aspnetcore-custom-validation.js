@@ -1,7 +1,7 @@
 ﻿// Unobtrusive validation support library for AspNetCore.CustomValidation library
 // Copyright (c) TanvirArjel. All rights reserved.
 // Licensed under the MIT License, Version 2.0. See License.txt in the project root for license information.
-// @version v1.2.1
+// @version v1.3.0
 
 (function ($) {
 
