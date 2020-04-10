@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Server.IIS;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +24,32 @@ namespace AspNetCore.CustomValidation.Demo
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
+            #region LocalizationSetting
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(SharedResource)); // <-- ShareResource is an empty class in the project's root directory.
+                });
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("fr")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
+            #endregion
+
             services.Configure<IISServerOptions>(options =>
             {
                 options.MaxRequestBodySize = int.MaxValue;
@@ -60,6 +89,27 @@ namespace AspNetCore.CustomValidation.Demo
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            #region LocalizationSettings
+
+            CultureInfo[] supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("fr")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions()
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
+
+            #endregion
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -541,4 +541,22 @@
         options.messages["tinymce-maxlength"] = options.message;
     });
 
+    // FixedLength validation
+
+    $.validator.addMethod("fixed-length", function (value, element, params) {
+        const inputValueWithoutHtml = jQuery($("<p>").html(value)).text().replace(/\s\s+/g, ' ');
+        const fixedLength = params.value;
+
+        if (inputValueWithoutHtml) {
+            return inputValueWithoutHtml.length == fixedLength;
+        }
+
+        return true; 
+    });
+
+    $.validator.unobtrusive.adapters.add("fixed-length", ['value'], function (options) {
+        options.rules["fixed-length"] = options.params;
+        options.messages["fixed-length"] = options.message;
+    });
+
 }(jQuery));

@@ -444,6 +444,16 @@
       "provider": "cdnjs",
       "library": "tempusdominus-bootstrap-4@5.1.2",
       "destination": "wwwroot/lib/tempusdominus-bootstrap-4/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "twitter-bootstrap@4.4.0",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "js/bootstrap.bundle.min.js",
+        "css/bootstrap.css",
+        "css/bootstrap.min.css"
+      ]
     }
   ]
 }
