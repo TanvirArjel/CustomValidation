@@ -27,7 +27,7 @@ namespace AspNetCore.CustomValidation.Adapters
             }
 
             string propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            var errorMessage = GetErrorMessage(context);
+            string errorMessage = GetErrorMessage(context);
 
             AddAttribute(context.Attributes, "data-val", "true");
             AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
@@ -35,9 +35,9 @@ namespace AspNetCore.CustomValidation.Adapters
 
             AddAttribute(context.Attributes, "data-val-minage", errorMessage);
 
-            var years = Attribute.Years.ToString(CultureInfo.InvariantCulture);
-            var months = Attribute.Months.ToString(CultureInfo.InvariantCulture);
-            var days = Attribute.Days.ToString(CultureInfo.InvariantCulture);
+            string years = Attribute.Years.ToString(CultureInfo.InvariantCulture);
+            string months = Attribute.Months.ToString(CultureInfo.InvariantCulture);
+            string days = Attribute.Days.ToString(CultureInfo.InvariantCulture);
 
             AddAttribute(context.Attributes, "data-val-minage-years", years);
             AddAttribute(context.Attributes, "data-val-minage-months", months);

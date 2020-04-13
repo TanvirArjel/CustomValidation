@@ -43,7 +43,7 @@ namespace AspNetCore.CustomValidation.Adapters
             if (Attribute.MinSize > 0)
             {
                 string localizedErrorMessage = _stringLocalizer[Attribute.FileMinSizeErrorMessage];
-                var formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, localizedErrorMessage, propertyDisplayName, Attribute.MinSizeAndUnit);
+                string formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, localizedErrorMessage, propertyDisplayName, Attribute.MinSizeAndUnit);
                 AddAttribute(context.Attributes, "data-val-file-minsize", formattedErrorMessage);
                 AddAttribute(context.Attributes, "data-val-file-minsize-value", Attribute.MinSize.ToString(CultureInfo.InvariantCulture));
             }
@@ -51,7 +51,7 @@ namespace AspNetCore.CustomValidation.Adapters
             if (Attribute.MaxSize > 0)
             {
                 string localizedErrorMessage = _stringLocalizer[Attribute.FileMaxSizeErrorMessage];
-                var formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, localizedErrorMessage, propertyDisplayName, Attribute.MaxSizeAndUnit);
+                string formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, localizedErrorMessage, propertyDisplayName, Attribute.MaxSizeAndUnit);
                 AddAttribute(context.Attributes, "data-val-file-maxsize", formattedErrorMessage);
                 AddAttribute(context.Attributes, "data-val-file-maxsize-value", Attribute.MaxSize.ToString(CultureInfo.InvariantCulture));
             }

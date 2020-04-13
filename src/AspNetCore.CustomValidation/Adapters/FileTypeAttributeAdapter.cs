@@ -41,7 +41,7 @@ namespace AspNetCore.CustomValidation.Adapters
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            var propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
+            string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
             string[] validFileTypeNames = Attribute.FileTypes.Select(ft => ft.ToString("G")).ToArray();
             string validFileTypeNamesString = string.Join(",", validFileTypeNames);
             return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, validFileTypeNamesString);

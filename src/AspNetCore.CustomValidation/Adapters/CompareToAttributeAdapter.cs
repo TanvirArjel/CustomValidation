@@ -27,9 +27,9 @@ namespace AspNetCore.CustomValidation.Adapters
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var propertyDisplayName = context.ModelMetadata.GetDisplayName();
+            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
             string comparePropertyName = Attribute.ComparePropertyName;
-            var comparisonType = Attribute.ComparisonType;
+            ComparisonType comparisonType = Attribute.ComparisonType;
 
             this.AddAttribute(context.Attributes, "data-val", "true");
             this.AddAttribute(context.Attributes, "data-val-input-type-compare", $"{propertyDisplayName} is not comparable to {comparePropertyName}");

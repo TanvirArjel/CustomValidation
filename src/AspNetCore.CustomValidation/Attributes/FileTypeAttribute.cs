@@ -70,7 +70,7 @@ namespace AspNetCore.CustomValidation.Attributes
                         {
                             string[] validFileTypeNames = FileTypes.Select(ft => ft.ToString("G")).ToArray();
                             string validFileTypeNamesString = string.Join(",", validFileTypeNames);
-                            var fileTypeErrorMessage = GetFileTypeErrorMessage(ErrorMessage, validationContext.DisplayName, validFileTypeNamesString);
+                            string fileTypeErrorMessage = GetFileTypeErrorMessage(ErrorMessage, validationContext.DisplayName, validFileTypeNamesString);
                             return new ValidationResult(fileTypeErrorMessage);
                         }
                     }

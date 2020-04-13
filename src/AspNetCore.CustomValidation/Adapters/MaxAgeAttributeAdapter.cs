@@ -27,7 +27,7 @@ namespace AspNetCore.CustomValidation.Adapters
             }
 
             string propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            var errorMessage = GetErrorMessage(context);
+            string errorMessage = GetErrorMessage(context);
 
             this.AddAttribute(context.Attributes, "data-val", "true");
 
@@ -35,9 +35,9 @@ namespace AspNetCore.CustomValidation.Adapters
             this.AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
             this.AddAttribute(context.Attributes, "data-val-maxage", errorMessage);
 
-            var years = Attribute.Years.ToString(CultureInfo.InvariantCulture);
-            var months = Attribute.Months.ToString(CultureInfo.InvariantCulture);
-            var days = Attribute.Days.ToString(CultureInfo.InvariantCulture);
+            string years = Attribute.Years.ToString(CultureInfo.InvariantCulture);
+            string months = Attribute.Months.ToString(CultureInfo.InvariantCulture);
+            string days = Attribute.Days.ToString(CultureInfo.InvariantCulture);
 
             this.AddAttribute(context.Attributes, "data-val-maxage-years", years);
             this.AddAttribute(context.Attributes, "data-val-maxage-months", months);

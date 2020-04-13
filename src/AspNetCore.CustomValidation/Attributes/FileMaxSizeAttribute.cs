@@ -18,7 +18,7 @@ namespace AspNetCore.CustomValidation.Attributes
             ErrorMessage = ErrorMessage ?? "{0} should be not more than {1}.";
         }
 
-        public int MaxSize { get;  }
+        public int MaxSize { get; }
 
         private string MaxSizeAndUnit => MaxSize >= 1024 ? Math.Round(MaxSize / 1024M, 2) + " MB" : MaxSize + " KB";
 
@@ -48,7 +48,7 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (inputFile.Length > 0)
                 {
-                    var fileLengthInKByte = inputFile.Length / 1024;
+                    long fileLengthInKByte = inputFile.Length / 1024;
 
                     if (MaxSize > 0 && fileLengthInKByte > MaxSize)
                     {

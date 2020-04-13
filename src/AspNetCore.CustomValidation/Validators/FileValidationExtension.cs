@@ -39,14 +39,14 @@ namespace AspNetCore.CustomValidation.Validators
                 throw new ArgumentException($"The object does not contain the property '{propertyName}'");
             }
 
-            var propertyType = propertyInfo.PropertyType;
+            Type propertyType = propertyInfo.PropertyType;
 
             if (propertyType != typeof(IFormFile))
             {
                 throw new ArgumentException($"Property '{propertyName}' must be {typeof(IFormFile)} type.");
             }
 
-            var propertyValue = propertyInfo.GetValue(validationContext.ObjectInstance, null);
+            object propertyValue = propertyInfo.GetValue(validationContext.ObjectInstance, null);
 
             IFormFile inputFile = (IFormFile)propertyValue;
 
@@ -72,7 +72,7 @@ namespace AspNetCore.CustomValidation.Validators
                     }
                 }
 
-                var fileLengthInKByte = inputFile.Length / 1024;
+                long fileLengthInKByte = inputFile.Length / 1024;
 
                 if (fileOptions.MinSize > 0 && fileLengthInKByte < fileOptions.MinSize)
                 {

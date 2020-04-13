@@ -48,7 +48,7 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            var propertyType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
+            Type propertyType = validationContext.ObjectType.GetProperty(validationContext.MemberName)?.PropertyType;
 
             if (propertyType != null)
             {
@@ -61,18 +61,18 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (value != null)
             {
-                var dateOfBirth = (DateTime)value;
+                DateTime dateOfBirth = (DateTime)value;
 
                 if (dateOfBirth > DateTime.Now)
                 {
                     return new ValidationResult($"{validationContext.DisplayName} can not be greater than today's date.");
                 }
 
-                var dateNow = DateTime.Now;
+                DateTime dateNow = DateTime.Now;
                 TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
                 DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
 
-                var minAgeDateTime = DateTime.MinValue.AddYears(Years).AddMonths(Months).AddDays(Days);
+                DateTime minAgeDateTime = DateTime.MinValue.AddYears(Years).AddMonths(Months).AddDays(Days);
 
                 if (Years > 0 || Months > 0 || Days > 0)
                 {

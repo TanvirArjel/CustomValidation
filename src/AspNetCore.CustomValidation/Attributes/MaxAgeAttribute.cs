@@ -65,18 +65,18 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (value != null)
             {
-                var dateOfBirth = (DateTime)value;
+                DateTime dateOfBirth = (DateTime)value;
 
                 if (dateOfBirth > DateTime.Now)
                 {
                     return new ValidationResult($"{validationContext.DisplayName} can not be greater than today's date.");
                 }
 
-                var dateNow = DateTime.Now;
+                DateTime dateNow = DateTime.Now;
                 TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
                 DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
 
-                var maxAgeDateTime = DateTime.MinValue.AddYears(this.Years).AddMonths(this.Months).AddDays(this.Days);
+                DateTime maxAgeDateTime = DateTime.MinValue.AddYears(this.Years).AddMonths(this.Months).AddDays(this.Days);
 
                 if (this.Years > 0 || this.Months > 0 || this.Days > 0)
                 {

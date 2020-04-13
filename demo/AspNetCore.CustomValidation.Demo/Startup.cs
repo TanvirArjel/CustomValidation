@@ -40,7 +40,7 @@ namespace AspNetCore.CustomValidation.Demo
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new List<CultureInfo>
+                List<CultureInfo> supportedCultures = new List<CultureInfo>
                 {
                     new CultureInfo("en-US"),
                     new CultureInfo("fr")

@@ -29,7 +29,7 @@ namespace AspNetCore.CustomValidation.Adapters
             AddAttribute(context.Attributes, "data-val", "true");
 
             AddAttribute(context.Attributes, "data-val-file-minsize", GetErrorMessage(context));
-            var minSize = Attribute.MinSize.ToString(CultureInfo.InvariantCulture);
+            string minSize = Attribute.MinSize.ToString(CultureInfo.InvariantCulture);
             AddAttribute(context.Attributes, "data-val-file-minsize-value", minSize);
         }
 
@@ -40,9 +40,9 @@ namespace AspNetCore.CustomValidation.Adapters
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            var propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
+            string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
             int minSize = Attribute.MinSize;
-            var minSizeAndUnit = minSize >= 1024 ? Math.Round(minSize / 1024M, 2) + " MB" : minSize + " KB";
+            string minSizeAndUnit = minSize >= 1024 ? Math.Round(minSize / 1024M, 2) + " MB" : minSize + " KB";
             return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, minSizeAndUnit);
         }
 

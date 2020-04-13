@@ -1,5 +1,3 @@
-using System;
-
 namespace AspNetCore.CustomValidation.Demo.Models
 {
     public class ErrorViewModel

@@ -50,7 +50,7 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (value != null)
             {
-                var inputValue = value.ToString();
+                string inputValue = value.ToString();
 
                 if (inputValue.Length != FixedLength)
                 {

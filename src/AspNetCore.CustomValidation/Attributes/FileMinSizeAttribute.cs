@@ -48,7 +48,7 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (inputFile.Length > 0)
                 {
-                    var fileLengthInKByte = inputFile.Length / 1024;
+                    long fileLengthInKByte = inputFile.Length / 1024;
 
                     if (MinSize > 0 && fileLengthInKByte < MinSize)
                     {

@@ -60,7 +60,7 @@ namespace AspNetCore.CustomValidation.Adapters
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            var propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
+            string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
 
             return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName);
         }

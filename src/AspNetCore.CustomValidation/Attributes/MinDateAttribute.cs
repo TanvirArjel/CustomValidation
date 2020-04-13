@@ -68,11 +68,11 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (value != null)
             {
-                var inputDate = (DateTime)value;
+                DateTime inputDate = (DateTime)value;
 
                 if (inputDate < MinDate)
                 {
-                    var errorMessage = FormatErrorMessage(validationContext.DisplayName);
+                    string errorMessage = FormatErrorMessage(validationContext.DisplayName);
                     return new ValidationResult(errorMessage);
                 }
             }

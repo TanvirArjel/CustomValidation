@@ -69,7 +69,7 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentNullException($"The type of {this.ComparePropertyName} is null");
             }
 
-            var comparePropertyValue = compareProperty.GetValue(validationContext.ObjectInstance, null);
+            object comparePropertyValue = compareProperty.GetValue(validationContext.ObjectInstance, null);
 
             if (value == null || comparePropertyValue == null)
             {
@@ -92,24 +92,24 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (memberType == comparePropertyType)
             {
-                var validationResult = TriggerValueComparison();
+                ValidationResult validationResult = TriggerValueComparison();
                 return validationResult;
             }
             else
             {
                 if (value.IsNumber() && comparePropertyValue.IsNumber())
                 {
-                    var validationResult = TriggerValueComparison();
+                    ValidationResult validationResult = TriggerValueComparison();
                     return validationResult;
                 }
                 else if (value is DateTime && comparePropertyValue is DateTime)
                 {
-                    var validationResult = TriggerValueComparison();
+                    ValidationResult validationResult = TriggerValueComparison();
                     return validationResult;
                 }
                 else if (value is TimeSpan && comparePropertyValue is TimeSpan)
                 {
-                    var validationResult = TriggerValueComparison();
+                    ValidationResult validationResult = TriggerValueComparison();
                     return validationResult;
                 }
                 else
@@ -120,11 +120,11 @@ namespace AspNetCore.CustomValidation.Attributes
 
             ValidationResult TriggerValueComparison()
             {
-                var propertyDisplayName = validationContext.DisplayName;
-                var comparePropertyDisplayAttribute = compareProperty.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
-                var comparePropertyDisplayName = comparePropertyDisplayAttribute?.GetName() ?? this.ComparePropertyName;
+                string propertyDisplayName = validationContext.DisplayName;
+                DisplayAttribute comparePropertyDisplayAttribute = compareProperty.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
+                string comparePropertyDisplayName = comparePropertyDisplayAttribute?.GetName() ?? this.ComparePropertyName;
 
-                var errorMessage = this.GetFormattedErrorMessage(this.ErrorMessage, propertyDisplayName, comparePropertyDisplayName);
+                string errorMessage = this.GetFormattedErrorMessage(this.ErrorMessage, propertyDisplayName, comparePropertyDisplayName);
 
                 if (this.ComparisonType == ComparisonType.Equal)
                 {

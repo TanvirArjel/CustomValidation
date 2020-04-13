@@ -41,14 +41,14 @@ namespace AspNetCore.CustomValidation.Validators
                 throw new ArgumentException($"The object does not contain the property '{propertyName}'");
             }
 
-            var propertyType = propertyInfo.PropertyType;
+            Type propertyType = propertyInfo.PropertyType;
 
             if (propertyType != typeof(DateTime) && propertyType != typeof(DateTime?))
             {
                 throw new ArgumentException($"Property '{propertyName}' must be {typeof(DateTime)} or {typeof(DateTime?)} type.");
             }
 
-            var propertyValue = propertyInfo.GetValue(validationContext.ObjectInstance, null);
+            object propertyValue = propertyInfo.GetValue(validationContext.ObjectInstance, null);
 
             if (propertyValue == null)
             {
@@ -62,11 +62,11 @@ namespace AspNetCore.CustomValidation.Validators
                 return new ValidationResult($"{propertyName} can not be greater than today's date");
             }
 
-            var dateNow = DateTime.Now;
+            DateTime dateNow = DateTime.Now;
             TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
             DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
 
-            var minAgeDateTime = DateTime.MinValue.AddYears(years).AddMonths(months).AddDays(days);
+            DateTime minAgeDateTime = DateTime.MinValue.AddYears(years).AddMonths(months).AddDays(days);
 
             if (years > 0 || months > 0 || days > 0)
             {

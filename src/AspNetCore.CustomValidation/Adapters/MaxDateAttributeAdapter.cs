@@ -31,7 +31,7 @@ namespace AspNetCore.CustomValidation.Adapters
             AddAttribute(context.Attributes, "data-val", "true");
             AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
             AddAttribute(context.Attributes, "data-val-maxdate", errorMessage);
-            var maxDate = Attribute.MaxDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
+            string maxDate = Attribute.MaxDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
             AddAttribute(context.Attributes, "data-val-maxdate-date", maxDate);
         }
 
@@ -42,7 +42,7 @@ namespace AspNetCore.CustomValidation.Adapters
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            var propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
+            string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
             return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MaxDate);
         }
 
