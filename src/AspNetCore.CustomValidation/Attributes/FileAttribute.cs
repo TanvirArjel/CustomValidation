@@ -1,5 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="FileAttribute.cs" company="TanvirArjel">
+// Copyright (c) TanvirArjel. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
@@ -7,7 +10,6 @@ using System.Linq;
 using System.Reflection;
 using AspNetCore.CustomValidation.Extensions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
@@ -76,10 +78,8 @@ namespace AspNetCore.CustomValidation.Attributes
     /// parameters like <see cref="FileType"/>, <see cref="MaxSize"/> and <see cref="MinSize"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class FileAttribute : ValidationAttribute, IClientModelValidator
+    public sealed class FileAttribute : ValidationAttribute
     {
-        private const string _fileTypeErrorMessage = "The file should be in {0} {1}.";
-
         /// <summary>
         /// This constructor is used to pass a single <see cref="FileType"/> value which against the <see cref="IFormFile"/> will be validated.
         /// </summary>
@@ -87,6 +87,9 @@ namespace AspNetCore.CustomValidation.Attributes
         public FileAttribute(FileType fileType)
         {
             FileTypes = new FileType[] { fileType };
+            ErrorMessage = ErrorMessage ?? "{0} should be in {1} format.";
+            FileMinSizeErrorMessage = FileMinSizeErrorMessage ?? "{0} should be at least {1}.";
+            FileMaxSizeErrorMessage = FileMaxSizeErrorMessage ?? "{0} should be not more than {1}.";
         }
 
         /// <summary>
@@ -96,53 +99,30 @@ namespace AspNetCore.CustomValidation.Attributes
         public FileAttribute(FileType[] fileTypes)
         {
             FileTypes = fileTypes;
+            ErrorMessage = ErrorMessage ?? "{0} should be in {1} formats.";
+            FileMinSizeErrorMessage = FileMinSizeErrorMessage ?? "{0} should be at least {1}.";
+            FileMaxSizeErrorMessage = FileMaxSizeErrorMessage ?? "{0} should be not more than {1}.";
         }
+
+        public FileType[] FileTypes { get; }
 
         /// <summary>
         /// Set the File <see cref="MinSize"/> in KB.
         /// </summary>
         public int MinSize { get; set; }
 
+        public string MinSizeAndUnit => MinSize >= 1024 ? Math.Round(MinSize / 1024M, 2) + " MB" : MinSize + " KB";
+
+        public string FileMinSizeErrorMessage { get; set; }
+
         /// <summary>
         /// Set the File <see cref="MaxSize"/> in KB.
         /// </summary>
         public int MaxSize { get; set; }
 
-        private string FileMinSizeErrorMessage => $"File size should be at least {(MinSize >= 1024 ? Math.Round(MinSize / 1024M, 2) + " MB" : MinSize + " KB")}.";
+        public string MaxSizeAndUnit => MaxSize >= 1024 ? Math.Round(MaxSize / 1024M, 2) + " MB" : MaxSize + " KB";
 
-        private string FileMaxSizeErrorMessage => $"File size should not be more than {(MaxSize >= 1024 ? Math.Round(MaxSize / 1024M, 2) + " MB" : MaxSize + " KB")}.";
-
-        private FileType[] FileTypes { get; }
-
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            string[] validFileTypeNames = FileTypes.Select(ft => ft.ToString("G")).ToArray();
-            string validFileTypeNamesString = string.Join(",", validFileTypeNames);
-
-            var fileTypeErrorMessage = GetFileTypeErrorMessage(_fileTypeErrorMessage, validFileTypeNamesString, validFileTypeNames.Length);
-
-            AddAttribute(context.Attributes, "data-val", "true");
-
-            AddAttribute(context.Attributes, "data-val-filetype", fileTypeErrorMessage);
-            AddAttribute(context.Attributes, "data-val-filetype-validtypes", validFileTypeNamesString);
-
-            if (MinSize > 0)
-            {
-                AddAttribute(context.Attributes, "data-val-file-minsize", FileMinSizeErrorMessage);
-                AddAttribute(context.Attributes, "data-val-file-minsize-value", MinSize.ToString(CultureInfo.InvariantCulture));
-            }
-
-            if (MaxSize > 0)
-            {
-                AddAttribute(context.Attributes, "data-val-file-maxsize", FileMaxSizeErrorMessage);
-                AddAttribute(context.Attributes, "data-val-file-maxsize-value", MaxSize.ToString(CultureInfo.InvariantCulture));
-            }
-        }
+        public string FileMaxSizeErrorMessage { get; set; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -178,21 +158,23 @@ namespace AspNetCore.CustomValidation.Attributes
                         {
                             string[] validFileTypeNames = FileTypes.Select(ft => ft.ToString("G")).ToArray();
                             string validFileTypeNamesString = string.Join(",", validFileTypeNames);
-                            var fileTypeErrorMessage = GetFileTypeErrorMessage(_fileTypeErrorMessage, validFileTypeNamesString, validFileTypeNames.Length);
-                            return new ValidationResult(fileTypeErrorMessage);
+                            string formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, ErrorMessage, validationContext.DisplayName, validFileTypeNamesString);
+                            return new ValidationResult(formattedErrorMessage);
                         }
                     }
 
-                    var fileLengthInKByte = inputFile.Length / 1000;
+                    long fileLengthInKByte = inputFile.Length / 1000;
 
                     if (MinSize > 0 && fileLengthInKByte < MinSize)
                     {
-                        return new ValidationResult(FileMinSizeErrorMessage);
+                        string formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, FileMinSizeErrorMessage, validationContext.DisplayName, MinSizeAndUnit);
+                        return new ValidationResult(formattedErrorMessage);
                     }
 
                     if (MaxSize > 0 && fileLengthInKByte > MaxSize)
                     {
-                        return new ValidationResult(FileMaxSizeErrorMessage);
+                        string formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, FileMaxSizeErrorMessage, validationContext.DisplayName, MaxSizeAndUnit);
+                        return new ValidationResult(formattedErrorMessage);
                     }
                 }
                 else
@@ -202,19 +184,6 @@ namespace AspNetCore.CustomValidation.Attributes
             }
 
             return ValidationResult.Success;
-        }
-
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
-        {
-            if (!attributes.ContainsKey(key))
-            {
-                attributes.Add(key, value);
-            }
-        }
-
-        private string GetFileTypeErrorMessage(string errorMessageString, string fileTypeNamesString, int fileTypeCount)
-        {
-            return string.Format(CultureInfo.InvariantCulture, errorMessageString, fileTypeNamesString, fileTypeCount > 1 ? "formats" : "format");
         }
     }
 }

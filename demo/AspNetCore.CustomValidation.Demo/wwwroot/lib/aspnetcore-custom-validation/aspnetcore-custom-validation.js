@@ -503,42 +503,42 @@
         options.messages["comparison-smaller-than-or-equal"] = options.message;
     });
 
-    // tinymce required validation
+    // text editor required validation
 
-    $.validator.addMethod("tinymce-required", function (value, element, params) {
+    $.validator.addMethod("texteditor-required", function (value, element, params) {
         const inputValueWithoutHtml = jQuery($("<p>").html(value)).text().replace(/\s\s+/g, ' ');
         return inputValueWithoutHtml !== " " && inputValueWithoutHtml.length > 0;
     });
 
-    $.validator.unobtrusive.adapters.add("tinymce-required", [], function (options) {
-        options.rules["tinymce-required"] = options.params;
-        options.messages["tinymce-required"] = options.message;
+    $.validator.unobtrusive.adapters.add("texteditor-required", [], function (options) {
+        options.rules["texteditor-required"] = options.params;
+        options.messages["texteditor-required"] = options.message;
     });
 
-    // tinymce minlength validation
+    // text editor minlength validation
 
-    $.validator.addMethod("tinymce-minlength", function (value, element, params) {
+    $.validator.addMethod("texteditor-minlength", function (value, element, params) {
         const inputValueWithoutHtml = jQuery($("<p>").html(value)).text().replace(/\s\s+/g, ' ');
         const minLength = params.value;
         return inputValueWithoutHtml !== " " && inputValueWithoutHtml.length >= minLength;
     });
 
     $.validator.unobtrusive.adapters.add("tinymce-minlength", ['value'], function (options) {
-        options.rules["tinymce-minlength"] = options.params;
-        options.messages["tinymce-minlength"] = options.message;
+        options.rules["texteditor-minlength"] = options.params;
+        options.messages["texteditor-minlength"] = options.message;
     });
 
-    // tinymce minlength validation
+    // text editor minlength validation
 
-    $.validator.addMethod("tinymce-maxlength", function (value, element, params) {
+    $.validator.addMethod("texteditor-maxlength", function (value, element, params) {
         const inputValueWithoutHtml = jQuery($("<p>").html(value)).text().replace(/\s\s+/g, ' ');
         const maxLength = params.value;
         return inputValueWithoutHtml !== " " && inputValueWithoutHtml.length <= maxLength;
     });
 
-    $.validator.unobtrusive.adapters.add("tinymce-maxlength", ['value'], function (options) {
-        options.rules["tinymce-maxlength"] = options.params;
-        options.messages["tinymce-maxlength"] = options.message;
+    $.validator.unobtrusive.adapters.add("texteditor-maxlength", ['value'], function (options) {
+        options.rules["texteditor-maxlength"] = options.params;
+        options.messages["texteditor-maxlength"] = options.message;
     });
 
     // FixedLength validation

@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="MinAgeAttribute.cs" company="TanvirArjel">
+// Copyright (c) TanvirArjel. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
@@ -12,7 +13,7 @@ namespace AspNetCore.CustomValidation.Attributes
     /// min age value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class MinAgeAttribute : ValidationAttribute, IClientModelValidator
+    public sealed class MinAgeAttribute : ValidationAttribute
     {
         /// <summary>
         /// This constructor takes the permitted min age value in <see cref="years"/>, <see cref="months"/> and <see cref="days"/> format.
@@ -34,31 +35,6 @@ namespace AspNetCore.CustomValidation.Attributes
         public int Months { get; }
 
         public int Days { get; }
-
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            var errorMessage = FormatErrorMessage(propertyDisplayName);
-
-            AddAttribute(context.Attributes, "data-val", "true");
-            AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
-            AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
-
-            AddAttribute(context.Attributes, "data-val-minage", errorMessage);
-
-            var years = Years.ToString(CultureInfo.InvariantCulture);
-            var months = Months.ToString(CultureInfo.InvariantCulture);
-            var days = Days.ToString(CultureInfo.InvariantCulture);
-
-            AddAttribute(context.Attributes, "data-val-minage-years", years);
-            AddAttribute(context.Attributes, "data-val-minage-months", months);
-            AddAttribute(context.Attributes, "data-val-minage-days", days);
-        }
 
         public override string FormatErrorMessage(string displayName)
         {
@@ -108,14 +84,6 @@ namespace AspNetCore.CustomValidation.Attributes
             }
 
             return ValidationResult.Success;
-        }
-
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
-        {
-            if (!attributes.ContainsKey(key))
-            {
-                attributes.Add(key, value);
-            }
         }
     }
 }

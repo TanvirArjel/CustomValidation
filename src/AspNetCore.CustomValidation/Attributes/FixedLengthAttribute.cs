@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="FixedLengthAttribute.cs" company="TanvirArjel">
+// Copyright (c) TanvirArjel. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
@@ -12,39 +14,19 @@ namespace AspNetCore.CustomValidation.Attributes
     /// fixed length value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class FixedLengthAttribute : ValidationAttribute, IClientModelValidator
+    public sealed class FixedLengthAttribute : ValidationAttribute
     {
-        /// <summary>
-        /// This private field store the fixed length value provided by the caller.
-        /// </summary>
-        private readonly int _fixedLength;
-
         /// <summary>
         ///  Initializes a new instance of the <see cref="FixedLengthAttribute"/> class.
         /// </summary>
         /// <param name="fixedLength">A positive <see cref="int"/> value.</param>
         public FixedLengthAttribute(int fixedLength)
         {
-            _fixedLength = fixedLength;
+            FixedLength = fixedLength;
             ErrorMessage = ErrorMessage ?? "{0} should be exactly {1} characters long.";
         }
 
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            string errorMessage = GetFormattedErrorMessage(ErrorMessage, propertyDisplayName, _fixedLength);
-
-            AddAttribute(context.Attributes, "data-val", "true");
-            AddAttribute(context.Attributes, "data-val-fixed-length", errorMessage);
-
-            string fixedLengthValue = _fixedLength.ToString(CultureInfo.InvariantCulture);
-            AddAttribute(context.Attributes, "data-val-fixed-length-value", fixedLengthValue);
-        }
+        public int FixedLength { get; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -70,9 +52,9 @@ namespace AspNetCore.CustomValidation.Attributes
             {
                 var inputValue = value.ToString();
 
-                if (inputValue.Length != _fixedLength)
+                if (inputValue.Length != FixedLength)
                 {
-                    string errorMessage = GetFormattedErrorMessage(ErrorMessage, validationContext.DisplayName, _fixedLength);
+                    string errorMessage = GetFormattedErrorMessage(ErrorMessage, validationContext.DisplayName, FixedLength);
                     return new ValidationResult(errorMessage);
                 }
             }
@@ -83,14 +65,6 @@ namespace AspNetCore.CustomValidation.Attributes
         private string GetFormattedErrorMessage(string errorMessage, string propertyName, int fixedLength)
         {
             return string.Format(CultureInfo.InvariantCulture, errorMessage, propertyName, fixedLength);
-        }
-
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
-        {
-            if (!attributes.ContainsKey(key))
-            {
-                attributes.Add(key, value);
-            }
         }
     }
 }

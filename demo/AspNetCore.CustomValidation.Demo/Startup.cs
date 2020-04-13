@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using AspNetCore.CustomValidation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
@@ -24,7 +25,9 @@ namespace AspNetCore.CustomValidation.Demo
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
-            #region LocalizationSetting
+            services.AddAspNetCoreCustomValidation();
+
+            //// LocalizationSetting starts here
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddControllersWithViews()
@@ -48,7 +51,7 @@ namespace AspNetCore.CustomValidation.Demo
                 options.SupportedUICultures = supportedCultures;
             });
 
-            #endregion
+            //// LocalizationSetting ends here.
 
             services.Configure<IISServerOptions>(options =>
             {
@@ -67,12 +70,12 @@ namespace AspNetCore.CustomValidation.Demo
                 x.MultipartHeadersLengthLimit = int.MaxValue;
             });
 
-            services.AddControllersWithViews().AddNewtonsoftJson();
-
-            // services.AddMvc().AddViewOptions(options =>
-            // {
-            //    //options.HtmlHelperOptions.ClientValidationEnabled = false;
-            // });
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson()
+                .AddViewOptions(options =>
+                {
+                    options.HtmlHelperOptions.ClientValidationEnabled = true;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,7 +93,7 @@ namespace AspNetCore.CustomValidation.Demo
                 app.UseHsts();
             }
 
-            #region LocalizationSettings
+            //// LocalizationSetting ends here
 
             CultureInfo[] supportedCultures = new[]
             {
@@ -109,7 +112,7 @@ namespace AspNetCore.CustomValidation.Demo
                 SupportedUICultures = supportedCultures
             });
 
-            #endregion
+            //// LocalizationSetting ends here.
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

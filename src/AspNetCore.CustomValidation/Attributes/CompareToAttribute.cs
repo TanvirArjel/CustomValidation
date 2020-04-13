@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="CompareToAttribute.cs" company="TanvirArjel">
+// Copyright (c) TanvirArjel. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using AspNetCore.CustomValidation.Extensions;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
@@ -23,7 +25,7 @@ namespace AspNetCore.CustomValidation.Attributes
     /// This <see cref="Attribute"/> is used to compare the decorated property value against the another property value of the same object.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class CompareToAttribute : ValidationAttribute, IClientModelValidator
+    public sealed class CompareToAttribute : ValidationAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompareToAttribute"/> class.
@@ -35,73 +37,16 @@ namespace AspNetCore.CustomValidation.Attributes
         {
             this.ComparePropertyName = comparePropertyName;
             this.ComparisonType = comparisonType;
-        }
 
-        private string EqualityErrorMessage => this.ErrorMessage ?? "The {0} is not equal to {1}.";
-
-        private string NotEqualityErrorMessage => this.ErrorMessage ?? "The {0} can not be equal to {1}.";
-
-        private string GreaterThanErrorMessage => this.ErrorMessage ?? "The {0} should be greater than {1}.";
-
-        private string GreaterThanOrEqualErrorMessage => this.ErrorMessage ?? "The {0} should be greater than or equal {1}.";
-
-        private string SmallerThanErrorMessage => this.ErrorMessage ?? "The {0} should be smaller than {1}.";
-
-        private string SmallerThanOrEqualErrorMessage => this.ErrorMessage ?? "The {0} should be smaller than or equal {1}.";
-
-        private string ComparePropertyName { get; }
-
-        private ComparisonType ComparisonType { get; }
-
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            if (context == null)
+            if (ErrorMessage == null)
             {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            var propertyName = context.ModelMetadata.GetDisplayName();
-
-            this.AddAttribute(context.Attributes, "data-val", "true");
-            this.AddAttribute(context.Attributes, "data-val-input-type-compare", $"{propertyName} is not comparable to {ComparePropertyName}");
-            this.AddAttribute(context.Attributes, "data-val-input-type-compare-property", ComparePropertyName);
-
-            if (ComparisonType == ComparisonType.Equal)
-            {
-                this.AddAttribute(context.Attributes, "data-val-comparison-equal", GetFormattedErrorMessage(EqualityErrorMessage, propertyName, ComparePropertyName));
-                this.AddAttribute(context.Attributes, "data-val-comparison-equal-property", ComparePropertyName);
-            }
-
-            if (ComparisonType == ComparisonType.NotEqual)
-            {
-                this.AddAttribute(context.Attributes, "data-val-comparison-not-equal", GetFormattedErrorMessage(NotEqualityErrorMessage, propertyName, ComparePropertyName));
-                this.AddAttribute(context.Attributes, "data-val-comparison-not-equal-property", ComparePropertyName);
-            }
-
-            if (ComparisonType == ComparisonType.GreaterThan)
-            {
-                this.AddAttribute(context.Attributes, "data-val-comparison-greater-than", GetFormattedErrorMessage(GreaterThanErrorMessage, propertyName, ComparePropertyName));
-                this.AddAttribute(context.Attributes, "data-val-comparison-greater-than-property", ComparePropertyName);
-            }
-
-            if (ComparisonType == ComparisonType.GreaterThanOrEqual)
-            {
-                this.AddAttribute(context.Attributes, "data-val-comparison-greater-than-or-equal", GetFormattedErrorMessage(GreaterThanOrEqualErrorMessage, propertyName, ComparePropertyName));
-                this.AddAttribute(context.Attributes, "data-val-comparison-greater-than-or-equal-property", ComparePropertyName);
-            }
-
-            if (this.ComparisonType == ComparisonType.SmallerThan)
-            {
-                this.AddAttribute(context.Attributes, "data-val-comparison-smaller-than", GetFormattedErrorMessage(SmallerThanErrorMessage, propertyName, ComparePropertyName));
-                this.AddAttribute(context.Attributes, "data-val-comparison-smaller-than-property", ComparePropertyName);
-            }
-
-            if (ComparisonType == ComparisonType.SmallerThanOrEqual)
-            {
-                this.AddAttribute(context.Attributes, "data-val-comparison-smaller-than-or-equal", GetFormattedErrorMessage(SmallerThanOrEqualErrorMessage, propertyName, ComparePropertyName));
-                this.AddAttribute(context.Attributes, "data-val-comparison-smaller-than-or-equal-property", ComparePropertyName);
+                SetErrorMessage(comparisonType);
             }
         }
+
+        public string ComparePropertyName { get; }
+
+        public ComparisonType ComparisonType { get; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -179,10 +124,10 @@ namespace AspNetCore.CustomValidation.Attributes
                 var comparePropertyDisplayAttribute = compareProperty.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
                 var comparePropertyDisplayName = comparePropertyDisplayAttribute?.GetName() ?? this.ComparePropertyName;
 
+                var errorMessage = this.GetFormattedErrorMessage(this.ErrorMessage, propertyDisplayName, comparePropertyDisplayName);
+
                 if (this.ComparisonType == ComparisonType.Equal)
                 {
-                    var errorMessage = this.GetFormattedErrorMessage(this.EqualityErrorMessage, propertyDisplayName, comparePropertyDisplayName);
-
                     if (value.IsNumber() && comparePropertyValue.IsNumber())
                     {
                         if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) != Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
@@ -218,8 +163,6 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (this.ComparisonType == ComparisonType.NotEqual)
                 {
-                    var errorMessage = GetFormattedErrorMessage(NotEqualityErrorMessage, propertyDisplayName, comparePropertyDisplayName);
-
                     if (value.IsNumber() && comparePropertyValue.IsNumber())
                     {
                         if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) == Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
@@ -255,8 +198,6 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (ComparisonType == ComparisonType.GreaterThan)
                 {
-                    var errorMessage = GetFormattedErrorMessage(GreaterThanErrorMessage, propertyDisplayName, comparePropertyDisplayName);
-
                     if (value.IsNumber())
                     {
                         if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) <= Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
@@ -292,8 +233,6 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (ComparisonType == ComparisonType.GreaterThanOrEqual)
                 {
-                    var errorMessage = GetFormattedErrorMessage(GreaterThanOrEqualErrorMessage, propertyDisplayName, comparePropertyDisplayName);
-
                     if (value.IsNumber())
                     {
                         if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) < Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
@@ -329,8 +268,6 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (ComparisonType == ComparisonType.SmallerThan)
                 {
-                    var errorMessage = GetFormattedErrorMessage(SmallerThanErrorMessage, propertyDisplayName, comparePropertyDisplayName);
-
                     if (value.IsNumber())
                     {
                         if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) >= Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
@@ -366,8 +303,6 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (ComparisonType == ComparisonType.SmallerThanOrEqual)
                 {
-                    var errorMessage = GetFormattedErrorMessage(SmallerThanOrEqualErrorMessage, propertyDisplayName, comparePropertyDisplayName);
-
                     if (value.IsNumber())
                     {
                         if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) > Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
@@ -405,17 +340,36 @@ namespace AspNetCore.CustomValidation.Attributes
             }
         }
 
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
-        {
-            if (!attributes.ContainsKey(key))
-            {
-                attributes.Add(key, value);
-            }
-        }
-
         private string GetFormattedErrorMessage(string errorMessage, string propertyName, string comparePropertyName)
         {
             return string.Format(CultureInfo.InvariantCulture, errorMessage, propertyName, comparePropertyName);
+        }
+
+        private void SetErrorMessage(ComparisonType comparisonType)
+        {
+            switch (comparisonType)
+            {
+                case ComparisonType.Equal:
+                    ErrorMessage = "{0} is not equal to {1}.";
+                    break;
+                case ComparisonType.NotEqual:
+                    ErrorMessage = "{0} can not be equal to {1}.";
+                    break;
+                case ComparisonType.GreaterThan:
+                    ErrorMessage = "{0} should be greater than {1}.";
+                    break;
+                case ComparisonType.GreaterThanOrEqual:
+                    ErrorMessage = "{0} should be greater than or equal {1}.";
+                    break;
+                case ComparisonType.SmallerThan:
+                    ErrorMessage = "{0} should be smaller than {1}.";
+                    break;
+                case ComparisonType.SmallerThanOrEqual:
+                    ErrorMessage = "{0} should be smaller than or equal {1}.";
+                    break;
+                default:
+                    throw new ArgumentNullException(nameof(comparisonType));
+            }
         }
     }
 }

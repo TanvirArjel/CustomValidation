@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="FileValidationExtension.cs" company="TanvirArjel">
+// Copyright (c) TanvirArjel. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;

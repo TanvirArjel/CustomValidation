@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="MaxAgeAttribute.cs" company="TanvirArjel">
+// Copyright (c) TanvirArjel. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
@@ -12,7 +14,7 @@ namespace AspNetCore.CustomValidation.Attributes
     /// max age value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class MaxAgeAttribute : ValidationAttribute, IClientModelValidator
+    public sealed class MaxAgeAttribute : ValidationAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MaxAgeAttribute"/> class.
@@ -35,31 +37,6 @@ namespace AspNetCore.CustomValidation.Attributes
         public int Months { get; }
 
         public int Days { get; }
-
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            string propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            var errorMessage = this.FormatErrorMessage(propertyDisplayName);
-
-            this.AddAttribute(context.Attributes, "data-val", "true");
-
-            this.AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
-            this.AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
-            this.AddAttribute(context.Attributes, "data-val-maxage", errorMessage);
-
-            var years = this.Years.ToString(CultureInfo.InvariantCulture);
-            var months = this.Months.ToString(CultureInfo.InvariantCulture);
-            var days = this.Days.ToString(CultureInfo.InvariantCulture);
-
-            this.AddAttribute(context.Attributes, "data-val-maxage-years", years);
-            this.AddAttribute(context.Attributes, "data-val-maxage-months", months);
-            this.AddAttribute(context.Attributes, "data-val-maxage-days", days);
-        }
 
         public override string FormatErrorMessage(string displayName)
         {
@@ -111,14 +88,6 @@ namespace AspNetCore.CustomValidation.Attributes
             }
 
             return ValidationResult.Success;
-        }
-
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
-        {
-            if (!attributes.ContainsKey(key))
-            {
-                attributes.Add(key, value);
-            }
         }
     }
 }

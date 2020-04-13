@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿// <copyright file="FileTypeExtensions.cs" company="TanvirArjel">
+// Copyright (c) TanvirArjel. All rights reserved.
+// </copyright>
+
+using System.ComponentModel;
 using AspNetCore.CustomValidation.Attributes;
 
 namespace AspNetCore.CustomValidation.Extensions

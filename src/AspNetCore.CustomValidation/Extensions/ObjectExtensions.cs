@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="ObjectExtensions.cs" company="TanvirArjel">
+// Copyright (c) TanvirArjel. All rights reserved.
+// </copyright>
+
+using System;
 
 namespace AspNetCore.CustomValidation.Extensions
 {

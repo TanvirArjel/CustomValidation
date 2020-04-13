@@ -9,17 +9,17 @@ namespace AspNetCore.CustomValidation.Demo.Models
 {
     public class Employee : IValidatableObject
     {
-        [FixedLength(5)]
         [DisplayName("Name")]
+        [FixedLength(5, ErrorMessage = "{0} should be exactly {1} characters long.")]
         public string Name { get; set; }
 
-        [MaxAge(1, 0, 0)]
+        [MinAge(1, 0, 0, ErrorMessage = "Min age should be 1 year.")]
         [DataType(DataType.Date)]
         [DisplayName("Date Of Birth")]
         public DateTime? DateOfBirth { get; set; }
 
-        // [MinDate(2019,1,1)] // 2019 January 1
-        // [MaxDate(2019,10,1)] // 2019 October 1
+        [MinDate(2019, 1, 1, ErrorMessage = "{0} should be minimun 2019 January 1.")] // 2019 January 1
+        [MaxDate(2019, 10, 1, ErrorMessage = "{0} cannot be greater than {1}.")] // 2019 October 1
         [CompareTo(nameof(DateOfBirth), ComparisonType.GreaterThan)]
         [DisplayName("Joining Date")]
         public DateTime? JoiningDate { get; set; }
@@ -31,7 +31,9 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [Display(Name = "Second Number")]
         public int? SecondNumber { get; set; }
 
-        [File(new[] { FileType.Mkv, FileType.Mp4 })]
+        ////[FileType(new FileType[] { FileType.Mp4, FileType.Mp3 }, ErrorMessage = "{0} should be in {1} formats.")]
+        ////[FileMinSize(10000, ErrorMessage = "{0} should be at least {1}.")]
+        [File(FileType.Avi, MinSize = 1024)]
         public IFormFile Photo { get; set; }
 
         // public TimeSpan EntryTime { get; set; }

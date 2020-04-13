@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="MaxDateAttribute.cs" company="TanvirArjel">
+// Copyright (c) TanvirArjel. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
@@ -11,7 +13,7 @@ namespace AspNetCore.CustomValidation.Attributes
     /// This <see cref="Attribute"/> is used to check whether the property value is smaller than the specified <see cref="MaxDate"/> value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class MaxDateAttribute : ValidationAttribute, IClientModelValidator
+    public sealed class MaxDateAttribute : ValidationAttribute
     {
         /// <summary>
         /// This constructor takes the <see cref="MaxDate"/> value in <paramref name="year"/>, <paramref name="month"/> and <paramref name="day"/> format.
@@ -36,23 +38,6 @@ namespace AspNetCore.CustomValidation.Attributes
         }
 
         public DateTime MaxDate { get; }
-
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            var propertyDisplayName = context.ModelMetadata.GetDisplayName();
-            string formatErrorMessage = FormatErrorMessage(propertyDisplayName);
-
-            AddAttribute(context.Attributes, "data-val", "true");
-            AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
-            AddAttribute(context.Attributes, "data-val-maxdate", formatErrorMessage);
-            var maxDate = MaxDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
-            AddAttribute(context.Attributes, "data-val-maxdate-date", maxDate);
-        }
 
         public override string FormatErrorMessage(string displayName)
         {
@@ -93,14 +78,6 @@ namespace AspNetCore.CustomValidation.Attributes
             }
 
             return ValidationResult.Success;
-        }
-
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
-        {
-            if (!attributes.ContainsKey(key))
-            {
-                attributes.Add(key, value);
-            }
         }
     }
 }
