@@ -10,12 +10,13 @@ using System.Reflection;
 namespace AspNetCore.CustomValidation.Attributes
 {
     /// <summary>
-    /// This <see cref="Attribute"/> is used to check whether the property value is smaller than the specified <see cref="MaxDate"/> value.
+    /// This <see cref="ValidationAttribute"/> is used to check whether the property value is smaller than the specified <see cref="MaxDate"/> value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
     public sealed class MaxDateAttribute : ValidationAttribute
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="MaxDateAttribute"/> class.
         /// This constructor takes the <see cref="MaxDate"/> value in <paramref name="year"/>, <paramref name="month"/> and <paramref name="day"/> format.
         /// </summary>
         /// <param name="year">A calendar year like 1988,2019 etc,</param>
@@ -37,6 +38,9 @@ namespace AspNetCore.CustomValidation.Attributes
             MaxDate = DateTime.ParseExact(maxDate, format, CultureInfo.InvariantCulture);
         }
 
+        /// <summary>
+        /// Get the allowed max date value.
+        /// </summary>
         public DateTime MaxDate { get; }
 
         public override string FormatErrorMessage(string displayName)

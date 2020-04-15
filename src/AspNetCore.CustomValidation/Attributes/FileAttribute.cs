@@ -74,13 +74,14 @@ namespace AspNetCore.CustomValidation.Attributes
     }
 
     /// <summary>
-    /// This <see cref="Attribute"/> is used to validate the value of <see cref="IFormFile"/> type property value from different
+    /// This <see cref="ValidationAttribute"/> is used to validate the value of <see cref="IFormFile"/> type property value from different
     /// parameters like <see cref="FileType"/>, <see cref="MaxSize"/> and <see cref="MinSize"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
     public sealed class FileAttribute : ValidationAttribute
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="FileAttribute"/> class.
         /// This constructor is used to pass a single <see cref="FileType"/> value which against the <see cref="IFormFile"/> will be validated.
         /// </summary>
         /// <param name="fileType">A single <see cref="FileType"/> value.</param>
@@ -93,9 +94,10 @@ namespace AspNetCore.CustomValidation.Attributes
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FileAttribute"/> class.
         /// This constructor is used to pass an <see cref="Array"/> of <see cref="FileType"/> values which against the <see cref="IFormFile"/> will be validated.
         /// </summary>
-        /// <param name="fileTypes">An <see cref="Array"/> of <see cref="FileType"/></param>
+        /// <param name="fileTypes">An <see cref="Array"/> of <see cref="FileType"/>.</param>
         public FileAttribute(FileType[] fileTypes)
         {
             FileTypes = fileTypes;
@@ -104,24 +106,39 @@ namespace AspNetCore.CustomValidation.Attributes
             FileMaxSizeErrorMessage = FileMaxSizeErrorMessage ?? "{0} should be not more than {1}.";
         }
 
+        /// <summary>
+        /// Get <see cref="Array"/> of provided valid file types.
+        /// </summary>
         public FileType[] FileTypes { get; }
 
         /// <summary>
-        /// Set the File <see cref="MinSize"/> in KB.
+        /// Get and set the File <see cref="MinSize"/> in KB.
         /// </summary>
         public int MinSize { get; set; }
 
+        /// <summary>
+        /// Get allowed <see cref="MinSize"/> of the file with appropriate unit.
+        /// </summary>
         public string MinSizeAndUnit => MinSize >= 1024 ? Math.Round(MinSize / 1024M, 2) + " MB" : MinSize + " KB";
 
+        /// <summary>
+        /// Set your own error message for <see cref="MinSize"/> violation.
+        /// </summary>
         public string FileMinSizeErrorMessage { get; set; }
 
         /// <summary>
-        /// Set the File <see cref="MaxSize"/> in KB.
+        /// Get and set the File <see cref="MaxSize"/> in KB.
         /// </summary>
         public int MaxSize { get; set; }
 
+        /// <summary>
+        /// Get allowed <see cref="MaxSize"/> of the file with appropriate unit.
+        /// </summary>
         public string MaxSizeAndUnit => MaxSize >= 1024 ? Math.Round(MaxSize / 1024M, 2) + " MB" : MaxSize + " KB";
 
+        /// <summary>
+        /// Set your own error message for <see cref="MaxSize"/> violation.
+        /// </summary>
         public string FileMaxSizeErrorMessage { get; set; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

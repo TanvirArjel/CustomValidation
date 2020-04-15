@@ -9,13 +9,14 @@ using System.Globalization;
 namespace AspNetCore.CustomValidation.Attributes
 {
     /// <summary>
-    /// This <see cref="Attribute"/> is used to validate the date of birth value of a <see cref="DateTime"/> field against the specified
+    /// This <see cref="ValidationAttribute"/> is used to validate the date of birth value of a <see cref="DateTime"/> field against the specified
     /// min age value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
     public sealed class MinAgeAttribute : ValidationAttribute
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="MinAgeAttribute"/> class.
         /// This constructor takes the permitted min age value in <see cref="years"/>, <see cref="months"/> and <see cref="days"/> format.
         /// </summary>
         /// <param name="years">A positive <see cref="int"/> number.</param>
@@ -30,10 +31,19 @@ namespace AspNetCore.CustomValidation.Attributes
             ErrorMessage = ErrorMessage ?? $"Minimum age should be {(Years > 0 ? "{0}" + " years" : string.Empty)} {(Months > 0 ? "{1}" + " months" : string.Empty)} {(Days > 0 ? "{2}" + " days" : string.Empty)}";
         }
 
+        /// <summary>
+        /// Get the year value of the allowed min age.
+        /// </summary>
         public int Years { get; }
 
+        /// <summary>
+        /// Get the month value of the allowed min age.
+        /// </summary>
         public int Months { get; }
 
+        /// <summary>
+        /// Get the day value of the allowed min age.
+        /// </summary>
         public int Days { get; }
 
         public override string FormatErrorMessage(string displayName)

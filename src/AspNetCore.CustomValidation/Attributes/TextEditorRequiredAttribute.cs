@@ -11,11 +11,14 @@ using System.Text.RegularExpressions;
 namespace AspNetCore.CustomValidation.Attributes
 {
     /// <summary>
-    /// This <see cref="Attribute"/> is used to make popular TinyMCE online editor field required along with an option for setting minimum length.
+    /// This <see cref="ValidationAttribute"/> is used to make online text editor field, like TinyMCE, required along with an option for setting minimum length.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
     public sealed class TextEditorRequiredAttribute : ValidationAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextEditorRequiredAttribute"/> class.
+        /// </summary>
         public TextEditorRequiredAttribute()
         {
             ErrorMessage = ErrorMessage ?? "{0} field is required.";
@@ -24,17 +27,23 @@ namespace AspNetCore.CustomValidation.Attributes
         }
 
         /// <summary>
-        /// You can set <see cref="MinLength"/> of the TinyMCE field. The value should be a positive <see cref="int"/> number.
+        /// Get and set the minimum length of the text editor field. The value should be a positive <see cref="int"/> number.
         /// </summary>
         public int MinLength { get; set; }
 
         /// <summary>
-        /// You can set <see cref="MaxLength"/> of the TinyMCE field. The value should be a positive <see cref="int"/> number.
+        /// Get and set the maximum length of the text editor field. The value should be a positive <see cref="int"/> number.
         /// </summary>
         public int MaxLength { get; set; }
 
+        /// <summary>
+        /// Get and set the error message if the <c>MinLength</c> validation fails.
+        /// </summary>
         public string MinLengthErrorMessage { get; set; }
 
+        /// <summary>
+        /// Get and set the error message if the <c>MaxLength</c> validaton fails.
+        /// </summary>
         public string MaxLengthErrorMessage { get; set; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

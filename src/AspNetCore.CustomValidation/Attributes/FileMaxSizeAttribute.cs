@@ -10,16 +10,29 @@ using Microsoft.AspNetCore.Http;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
+    /// <summary>
+    /// This <see cref="ValidationAttribute"/> is used to validate allowed maximum size of a file.
+    /// </summary>
     public sealed class FileMaxSizeAttribute : ValidationAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileMaxSizeAttribute"/> class.
+        /// </summary>
+        /// <param name="maxSize">Allowed <see cref="MaxSize"/> of the file in KB.</param>
         public FileMaxSizeAttribute(int maxSize)
         {
             MaxSize = maxSize;
             ErrorMessage = ErrorMessage ?? "{0} should be not more than {1}.";
         }
 
+        /// <summary>
+        /// Get allowed <see cref="MaxSize"/> of the file. The unit of the size is KB.
+        /// </summary>
         public int MaxSize { get; }
 
+        /// <summary>
+        /// Get allowed <see cref="MaxSize"/> of the file with appropriate unit.
+        /// </summary>
         private string MaxSizeAndUnit => MaxSize >= 1024 ? Math.Round(MaxSize / 1024M, 2) + " MB" : MaxSize + " KB";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

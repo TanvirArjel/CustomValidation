@@ -22,7 +22,7 @@ namespace AspNetCore.CustomValidation.Attributes
     }
 
     /// <summary>
-    /// This <see cref="Attribute"/> is used to compare the decorated property value against the another property value of the same object.
+    /// This <see cref="ValidationAttribute"/> is used to compare the decorated property value against the another property value of the same object.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
     public sealed class CompareToAttribute : ValidationAttribute
@@ -44,8 +44,14 @@ namespace AspNetCore.CustomValidation.Attributes
             }
         }
 
+        /// <summary>
+        /// Name of the property which against the comparison will be done.
+        /// </summary>
         public string ComparePropertyName { get; }
 
+        /// <summary>
+        /// The comparison type. For example: GreaterThan, GreaterThanOrEqual etc.
+        /// </summary>
         public ComparisonType ComparisonType { get; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

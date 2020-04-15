@@ -12,10 +12,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
+    /// <summary>
+    /// This <see cref="ValidationAttribute"/> is used to validate file type of <see cref="IFormFile"/> object.
+    /// </summary>
     public sealed class FileTypeAttribute : ValidationAttribute
     {
         /// <summary>
-        /// This constructor is used to pass a single <see cref="FileType"/> value which against the <see cref="IFormFile"/> will be validated.
+        /// Initializes a new instance of the <see cref="FileMinSizeAttribute"/> class.
         /// </summary>
         /// <param name="fileType">A single <see cref="FileType"/> value.</param>
         public FileTypeAttribute(FileType fileType)
@@ -25,7 +28,7 @@ namespace AspNetCore.CustomValidation.Attributes
         }
 
         /// <summary>
-        /// This constructor is used to pass an <see cref="Array"/> of <see cref="FileType"/> values which against the <see cref="IFormFile"/> will be validated.
+        /// This <see cref="ValidationAttribute"/> is used to validate file type of <see cref="IFormFile"/> object.
         /// </summary>
         /// <param name="fileTypes">An <see cref="Array"/> of <see cref="FileType"/>.</param>
         public FileTypeAttribute(FileType[] fileTypes)
@@ -34,6 +37,9 @@ namespace AspNetCore.CustomValidation.Attributes
             ErrorMessage = ErrorMessage ?? "{0} should be in {1} formats.";
         }
 
+        /// <summary>
+        /// Get an <see cref="Array"/> of allowed file types.
+        /// </summary>
         public FileType[] FileTypes { get; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

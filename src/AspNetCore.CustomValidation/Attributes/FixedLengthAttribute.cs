@@ -10,7 +10,7 @@ using System.Reflection;
 namespace AspNetCore.CustomValidation.Attributes
 {
     /// <summary>
-    /// This <see cref="Attribute"/> is used to validate length of a <see cref="string"/> field against the specified
+    /// This <see cref="ValidationAttribute"/> is used to validate the length of a <see cref="string"/> field against the specified
     /// fixed length value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
@@ -26,6 +26,9 @@ namespace AspNetCore.CustomValidation.Attributes
             ErrorMessage = ErrorMessage ?? "{0} should be exactly {1} characters long.";
         }
 
+        /// <summary>
+        /// Get the value of specified fixed length.
+        /// </summary>
         public int FixedLength { get; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

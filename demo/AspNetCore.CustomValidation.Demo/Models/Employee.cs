@@ -11,6 +11,7 @@ namespace AspNetCore.CustomValidation.Demo.Models
     {
         [DisplayName("Name")]
         [FixedLength(5, ErrorMessage = "{0} should be exactly {1} characters long.")]
+        [TextEditorRequired]
         public string Name { get; set; }
 
         [MinAge(1, 0, 0, ErrorMessage = "Min age should be 1 year.")]

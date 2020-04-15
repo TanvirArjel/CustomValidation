@@ -10,7 +10,7 @@ using System.Reflection;
 namespace AspNetCore.CustomValidation.Attributes
 {
     /// <summary>
-    /// This <see cref="Attribute"/> is used to validate the date of birth value of a <see cref="DateTime"/> field against the specified
+    /// This <see cref="ValidationAttribute"/> is used to validate the date of birth value of a <see cref="DateTime"/> field against the specified
     /// max age value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
@@ -32,10 +32,19 @@ namespace AspNetCore.CustomValidation.Attributes
             this.ErrorMessage = this.ErrorMessage ?? $"Maximum age can be {(this.Years > 0 ? "{0}" + " years" : string.Empty)} {(this.Months > 0 ? "{1}" + " months" : string.Empty)} {(this.Days > 0 ? "{2}" + " days" : string.Empty)}";
         }
 
+        /// <summary>
+        /// Get the year value of the max allowed age.
+        /// </summary>
         public int Years { get; }
 
+        /// <summary>
+        /// Get the month value of the max allowed age.
+        /// </summary>
         public int Months { get; }
 
+        /// <summary>
+        /// Get the day value of the max allowed age.
+        /// </summary>
         public int Days { get; }
 
         public override string FormatErrorMessage(string displayName)

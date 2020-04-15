@@ -5,33 +5,45 @@
     <Company>Tanvir Ahmad Arjel</Company>
     <Authors>TanvirArjel</Authors>
     <Copyright>©2019-2020 TanvirArjel. All rights reserved.</Copyright>
-    <Description>This is a custom server-side validation library for ASP.NET Core. This also includes jQuery Client-Side Validation for each server-side validation.
+    <Description>
+      This is a custom server-side validation library for ASP.NET Core. This also includes jQuery client-side validation for each server-side validation.
 
-This version includes following Validation Attributes:
+      This version includes following Validation Attributes:
 
-1. FileAttribute:  To validate file type, file max size, file min size etc.
+      1. FileAttribute:  To validate file type, file max size, file min size etc.
 
-2. MaxAgeAttribute: To validate maximum age against date of birth value of DateTime type.
+      2. FileTypeAttribute: To validate type of a file.
 
-3. MinAgeAttribute: To validate minimum required age against a date of birth value of DateTime type.
+      3. FileMaxSizeAttribute: To validate allowed max size of a file.
 
-4. MaxDateAttribute: To set max value validation for a DateTime field.
+      4. FileMinSizeAttribute: To validate allowed min size of a file.
 
-5. MinDateAttribute: To set min value validation for a DateTime field.
+      5. MaxAgeAttribute: To validate maximum age against date of birth value of DateTime type.
 
-6. TinyMceRequiredAttribute: To enforce required validation attribute on the online text editors like TinyMCE, CkEditor etc.
+      6. MinAgeAttribute: To validate minimum required age against a date of birth value of DateTime type.
 
-7. CompareToAttribute: To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual,GreaterThan,GreatherThanOrEqual,SmallerThan,SmallerThanOrEqual
+      7. MaxDateAttribute: To set max value validation for a DateTime field.
 
-This version also includes validation against dynamic values from database, configuration file or any external source added for the following type: 1. File Type: with ValidateFile() method 1. DateTime Type: with ValidateMaxAge() and ValidateMinAge()</Description>
+      8. MinDateAttribute: To set min value validation for a DateTime field.
+
+      9. TextEditorRequiredAttribute: To enforce required validation attribute on the online text editors like TinyMCE, CkEditor etc.
+
+      10. CompareToAttribute: To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual,GreaterThan,GreatherThanOrEqual,SmallerThan,SmallerThanOrEqual
+
+      This version also includes validation against dynamic values from database, configuration file or any external source added for the following type: 1. File Type: with ValidateFile() method 1. DateTime Type: with ValidateMaxAge() and ValidateMinAge()
+    </Description>
     <PackageProjectUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</RepositoryUrl>
     <PackageTags>ASP.NET Core,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TinyMCERequired, CompareToValidation</PackageTags>
-    <PackageReleaseNotes>1. This release added TimeSpan comparison ability with CompareTo attribute.
+    <PackageReleaseNotes>
+      1. This release added localization support for error messages.
 
-2. This release also include some imporant bug fixes.
+      2. FileTypeAttribute, FileMaxSizeAttribute and FileMinSizeAttribute are newly added ValidationAttributes in this release.
 
-3. This release aligned client side validation library's version with this package version.</PackageReleaseNotes>
+      3. TinyMceRequiredAttribute has been renamed to TextEditorRequiredAttribute.
+
+      4. This release also includes some imporant bug fixes.
+    </PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

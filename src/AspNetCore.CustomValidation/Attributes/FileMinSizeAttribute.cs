@@ -10,16 +10,29 @@ using Microsoft.AspNetCore.Http;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
+    /// <summary>
+    /// This <see cref="ValidationAttribute"/> is used to validate allowed minimum size of a file.
+    /// </summary>
     public sealed class FileMinSizeAttribute : ValidationAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileMinSizeAttribute"/> class.
+        /// </summary>
+        /// <param name="minSize">Allowed <see cref="MinSize"/> of the file in KB.</param>
         public FileMinSizeAttribute(int minSize)
         {
             MinSize = minSize;
             ErrorMessage = ErrorMessage ?? "{0} should be at least {1}.";
         }
 
+        /// <summary>
+        /// Get allowed <see cref="MinSize"/> of the file. The unit of the size is KB.
+        /// </summary>
         public int MinSize { get; }
 
+        /// <summary>
+        /// Get allowed <see cref="MinSize"/> of the file with appropriate unit.
+        /// </summary>
         private string MinSizeAndUnit => MinSize >= 1024 ? Math.Round(MinSize / 1024M, 2) + " MB" : MinSize + " KB";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
