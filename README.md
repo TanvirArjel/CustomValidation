@@ -13,17 +13,24 @@
  
  Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is simple as below:
  
- 1. First install the lastest version of `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
+ First install the lastest version of `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
  
-    `Install-Package AspNetCore.CustomValidation`
+    Install-Package AspNetCore.CustomValidation
     
- 2. Then decorate your class properties with appropriate Custom validation attributes as follows:
+ Then decorate your class properties with appropriate custom validation attributes as follows:
  
-        pulic class Employee
-        {
-             [File(FileType.Jpg, MaxSize = 1024)]
-             public IFormFile Photo { get; set; }
-        }
+    pulic class Employee
+    {
+        [Display(Name = "First Number")]
+        public int FirstNumber { get; set; }
+
+        [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThanOrEqual)]
+        [Display(Name = "Second Number")]
+        public int? SecondNumber { get; set; }
+        
+        [File(FileType.Jpg, MaxSize = 1024)]
+        public IFormFile Photo { get; set; }
+    }
         
   ## Client Side validation:
   
