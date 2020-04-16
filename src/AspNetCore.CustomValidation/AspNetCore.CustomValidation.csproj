@@ -10,7 +10,7 @@
 
       This version includes following Validation Attributes:
 
-      1. FileAttribute:  To validate file type, file max size, file min size etc.
+      1. FileAttribute: To validate file type, file max size, file min size etc.
 
       2. FileTypeAttribute: To validate type of a file.
 
@@ -34,7 +34,7 @@
     </Description>
     <PackageProjectUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</RepositoryUrl>
-    <PackageTags>ASP.NET Core,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TinyMCERequired, CompareToValidation</PackageTags>
+    <PackageTags>ASP.NET Core,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TextEditorRequired, CompareToValidation</PackageTags>
     <PackageReleaseNotes>
       1. This release added localization support for error messages.
 
@@ -62,12 +62,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="2.0.0" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.0.0" />
+    
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
