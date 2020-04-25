@@ -1,47 +1,49 @@
 # ASP.NET Core Custom Validation
 
- This is a common custom model validation library for ASP.NET Core projects.
+ This is a custom model validation library for ASP.NET Core projects.
  
-## Whats new in Version 1.5.0?
+## Whats new in version 2.0.0?
 
-   1. This release added `TimeSpan` comparison ability with CompareTo attribute.
-   3. This release also include some imporant bug fixes.
+   1. This release added localization support for error messages.
+   2. FileTypeAttribute, FileMaxSizeAttribute and FileMinSizeAttribute are newly added ValidationAttributes in this release.
+   3. TinyMceRequiredAttribute has been renamed to TextEditorRequiredAttribute.
+   4. This release also includes some imporant bug fixes.
  
 ## How do I get started?
  
  Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is simple as below:
  
- 1. First install the lastest version of `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
+ First install the lastest version of `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
  
-    `Install-Package AspNetCore.CustomValidation`
+    Install-Package AspNetCore.CustomValidation
     
- 2. Then decorate your class properties with appropriate Custom validation attributes as follows:
+ Then decorate your class properties with appropriate custom validation attributes as follows:
  
-        public class Employee
-        {
-            public string EmployeeId { get; set; }
+    pulic class Employee
+    {
+        [Display(Name = "First Number")]
+        public int FirstNumber { get; set; }
 
-            public string Name { get; set; }
-
-            [MaxAge(30,10,0)] // 30 Year 10 Months 0 Days
-            [MinAge(10,10,0)] // 10 Year 10 Months 0 Days
-            public DateTime DateOfBirth { get; set; }
-
-            [MinDate(2019,1,1)] // 2019 January 1
-            [MaxDate(2019,10,1)] // 2019 October 1
-            public DateTime JoiningDate { get; set; }
-            public int FirstNumber { get; set; }
-
-            [CompareTo(nameof(FirstNumber),ComparisonType.GreaterThan)]
-            public int SecondNumber { get; set; }
-
-            [File(new FileType[]{FileType.Jpg, FileType.Jpeg}, MaxSize = 1024)]
-            public IFormFile Photo { get; set; }
-        }
+        [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThanOrEqual)]
+        [Display(Name = "Second Number")]
+        public int? SecondNumber { get; set; }
+        
+        [File(FileType.Jpg, MaxSize = 1024)]
+        public IFormFile Photo { get; set; }
+    }
         
   ## Client Side validation:
   
-  To enable client client side validation for **ASP.NET Core MVC or Razor Pages**, please add the latest version of `aspnetcore-custom-validation.min.js` file as follows:
+  To enable client client side validation for **ASP.NET Core MVC or Razor Pages**:
+  
+  1. First in the `ConfirugeServices` method of the `Startup` class:
+  
+    public static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddAspNetCoreCustomValidation();
+    }
+   
+  2. Then please add the latest version of `aspnetcore-custom-validation.min.js` file as follows:
   
     @section Scripts {
       @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -65,33 +67,42 @@ Or using Visusl Studio **Libman** as follows:
     3. Click install
   
         
-  ## What contains in Version 1.5.0?
+  ## What contains in version 2.0.0?
   
-  In version 1.5.0 `AspNetCore.CustomValidation` contains the following validation attributes:
+  In version 2.0.0 `AspNetCore.CustomValidation` contains the following validation attributes:
   
   **1. FileAttribute**
        To validate file type, file max size, file min size etc.
+  
+  **2. FileTypeAttribute**
+       To validate type of a file.
+  
+  **3. FileMaxSizeAttribute**
+       To validate allowed max size of a file.
        
-  **2. MaxAgeAttribute**
+  **4. FileMinSizeAttribute**
+       To validate allowed min size of a file.
+       
+  **5. MaxAgeAttribute**
        To validate maximum age against date of birth value of `DateTime` type.
        
-  **3. MinAgeAttribute**
+  **6. MinAgeAttribute**
        To validate minimum required age against a date of birth value of `DateTime` type.
        
-  **4. MaxDateAttribute**
+  **7. MaxDateAttribute**
        To set max value validation for a `DateTime` field.
        
-  **5. MinDateAttribute**
+  **8. MinDateAttribute**
        To set min value validation for a `DateTime` field.
        
-  **6. TinyMceRequiredAttribute**
+  **9. TextEditorRequiredAttribute**
        To enforce required valiaton attribute on the online text editors like TinyMCE, CkEditor etc.
        
-  **7. CompareToAttribute**
-       To compare one property value against another property value of the same object.
+  **10. CompareToAttribute**
+       To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual, GreaterThan, GreatherThanOrEqual, SmallerThan, SmallerThanOrEqual
        
    # Dynamic Validation
-   In version 1.4.0, validation against dynamic values from database, configuration file or any external source added for the following type:
+   From version 1.4.0, validation against dynamic values from database, configuration file or any external source added for the following type:
     **1. File Type:** with `ValidateFile()` method
     **1. DateTime Type:** with `ValidateMaxAge()` and `ValidateMinAge()` method as follows:
     
@@ -120,8 +131,12 @@ Or using Visusl Studio **Libman** as follows:
     }
     
        
-   # Note
+# Note
    
-   Dont forget to request your desired validation  attribute by submitting an issue.
+Dont forget to request your desired validation  attribute by submitting an issue.
+   
+# Request
+
+**If you find this library useful, please don't forget to encouraging me to do such more stuffs by giving a star to this repository. Thank you.**
   
   
