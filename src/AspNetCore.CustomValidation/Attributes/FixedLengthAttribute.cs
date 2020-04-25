@@ -31,6 +31,13 @@ namespace AspNetCore.CustomValidation.Attributes
         /// </summary>
         public int FixedLength { get; }
 
+        /// <summary>
+        /// To check whether the input value has exactly same as specified.
+        /// </summary>
+        /// <param name="value">Type of <see cref="string"/>.</param>
+        /// <param name="validationContext">The request validation context.</param>
+        /// <returns>Returns <see cref="ValidationResult"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="validationContext"/> is null.</exception>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)

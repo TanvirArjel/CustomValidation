@@ -4,7 +4,6 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Reflection;
 
 namespace AspNetCore.CustomValidation.Attributes
@@ -18,7 +17,6 @@ namespace AspNetCore.CustomValidation.Attributes
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MaxAgeAttribute"/> class.
-        /// This constructor takes the permitted max age value in <see cref="years"/>, <see cref="months"/> and <see cref="days"/> format.
         /// </summary>
         /// <param name="years">A positive <see cref="int"/> value.</param>
         /// <param name="months">A <see cref="int"/> value in between 0 and 11.</param>
@@ -47,11 +45,18 @@ namespace AspNetCore.CustomValidation.Attributes
         /// </summary>
         public int Days { get; }
 
-        public override string FormatErrorMessage(string displayName)
-        {
-            return string.Format(CultureInfo.InvariantCulture, this.ErrorMessage, this.Years, this.Months, this.Days);
-        }
+        ////public override string FormatErrorMessage(string displayName)
+        ////{
+        ////    return string.Format(CultureInfo.InvariantCulture, this.ErrorMessage, this.Years, this.Months, this.Days);
+        ////}
 
+        /// <summary>
+        /// To check whether the input date violates the specified max age constraint.
+        /// </summary>
+        /// <param name="value">Type of <see cref="DateTime"/>.</param>
+        /// <param name="validationContext">The request validation context.</param>
+        /// <returns>Returns <see cref="ValidationResult"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="validationContext"/> is null.</exception>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)

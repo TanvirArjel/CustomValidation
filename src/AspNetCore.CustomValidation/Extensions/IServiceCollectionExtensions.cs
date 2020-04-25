@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AspNetCore.CustomValidation.Extensions
 {
+    /// <summary>
+    /// Contains necessary <see cref="IServiceCollection"/> extension methods.
+    /// </summary>
     public static class IServiceCollectionExtensions
     {
         /// <summary>

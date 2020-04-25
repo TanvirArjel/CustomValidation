@@ -19,7 +19,7 @@ namespace AspNetCore.CustomValidation.Attributes
         /// Initializes a new instance of the <see cref="MaxDateAttribute"/> class.
         /// This constructor takes the <see cref="MaxDate"/> value in <paramref name="year"/>, <paramref name="month"/> and <paramref name="day"/> format.
         /// </summary>
-        /// <param name="year">A calendar year like 1988,2019 etc,</param>
+        /// <param name="year">A calendar year like 1988,2019 etc.</param>
         /// <param name="month">A calendar month number. The value should be in 1 to 12.</param>
         /// <param name="day">A calendar date. The value should be in 1 to 31.</param>
         public MaxDateAttribute(int year, int month, int day)
@@ -43,11 +43,18 @@ namespace AspNetCore.CustomValidation.Attributes
         /// </summary>
         public DateTime MaxDate { get; }
 
-        public override string FormatErrorMessage(string displayName)
-        {
-            return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, MaxDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
-        }
+        ////public override string FormatErrorMessage(string displayName)
+        ////{
+        ////    return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, MaxDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
+        ////}
 
+        /// <summary>
+        /// To check whether the input date violates the specified max date constraint.
+        /// </summary>
+        /// <param name="value">Type of <see cref="DateTime"/>.</param>
+        /// <param name="validationContext">The request validation context.</param>
+        /// <returns>Returns <see cref="ValidationResult"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="validationContext"/> is null.</exception>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)

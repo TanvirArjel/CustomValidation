@@ -42,6 +42,13 @@ namespace AspNetCore.CustomValidation.Attributes
         /// </summary>
         public FileType[] FileTypes { get; }
 
+        /// <summary>
+        /// To check whether the input <see cref="IFormFile"/> is type of the specified type.
+        /// </summary>
+        /// <param name="value">Type of <see cref="IFormFile"/>.</param>
+        /// <param name="validationContext">The request validation context.</param>
+        /// <returns>Returns <see cref="ValidationResult"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="validationContext"/> is null.</exception>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)

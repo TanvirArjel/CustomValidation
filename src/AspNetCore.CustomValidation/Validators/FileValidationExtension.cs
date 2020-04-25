@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace AspNetCore.CustomValidation.Validators
 {
+    /// <summary>
+    /// Contains necessary <see cref="ValidationContext"/> extension methods.
+    /// </summary>
     public static class FileValidationExtension
     {
         /// <summary>
@@ -21,7 +24,7 @@ namespace AspNetCore.CustomValidation.Validators
         /// <param name="validationContext">The type to be extended.</param>
         /// <param name="propertyName">Name of the <see cref="IFormFile"/> type property.</param>
         /// <param name="fileOptions">Validation options.</param>
-        /// <returns>Returns <see cref="ValidationResult"/></returns>
+        /// <returns>Returns <see cref="ValidationResult"/>.</returns>
         public static ValidationResult ValidateFile(
             this ValidationContext validationContext,
             string propertyName,
@@ -93,8 +96,14 @@ namespace AspNetCore.CustomValidation.Validators
         }
     }
 
+    /// <summary>
+    /// Use to create object which contains the file configuration.
+    /// </summary>
     public class FileOptions
     {
+        /// <summary>
+        /// The file types which against the input file will be validated.
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Not applicable here")]
         public FileType[] FileTypes { get; set; }
 

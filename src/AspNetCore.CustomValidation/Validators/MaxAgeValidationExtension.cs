@@ -8,6 +8,9 @@ using System.Reflection;
 
 namespace AspNetCore.CustomValidation.Validators
 {
+    /// <summary>
+    /// Contains methods that extend <see cref="ValidationContext"/>.
+    /// </summary>
     public static class MaxAgeValidationExtension
     {
         /// <summary>
@@ -20,7 +23,7 @@ namespace AspNetCore.CustomValidation.Validators
         /// <param name="months">A positive <see cref="int"/> number ranging from 0 to 11. </param>
         /// <param name="days">A positive <see cref="int"/> number ranging from 0 to 31.</param>
         /// <param name="errorMessage">A <see cref="string"/> content to override the default ErrorMessage.</param>
-        /// <returns>Return <see cref="ValidationResult"/></returns>
+        /// <returns>Return <see cref="ValidationResult"/>.</returns>
         public static ValidationResult ValidateMaxAge(
             this ValidationContext validationContext,
             string propertyName,

@@ -46,6 +46,13 @@ namespace AspNetCore.CustomValidation.Attributes
         /// </summary>
         public string MaxLengthErrorMessage { get; set; }
 
+        /// <summary>
+        /// To check whether the input date violates the required constraint.
+        /// </summary>
+        /// <param name="value">Type of <see cref="DateTime"/>.</param>
+        /// <param name="validationContext">The request validation context.</param>
+        /// <returns>Returns <see cref="ValidationResult"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="validationContext"/> is null.</exception>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)

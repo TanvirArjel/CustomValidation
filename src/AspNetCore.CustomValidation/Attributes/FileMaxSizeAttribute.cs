@@ -35,6 +35,13 @@ namespace AspNetCore.CustomValidation.Attributes
         /// </summary>
         private string MaxSizeAndUnit => MaxSize >= 1024 ? Math.Round(MaxSize / 1024M, 2) + " MB" : MaxSize + " KB";
 
+        /// <summary>
+        /// To check whether the input <see cref="IFormFile"/> is larger than the specified size.
+        /// </summary>
+        /// <param name="value">Type of <see cref="IFormFile"/>.</param>
+        /// <param name="validationContext">The request validation context.</param>
+        /// <returns>Returns <see cref="ValidationResult"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="validationContext"/> is null.</exception>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)

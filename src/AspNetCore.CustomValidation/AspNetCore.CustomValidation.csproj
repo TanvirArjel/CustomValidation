@@ -2,9 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>2.0.0</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>Tanvir Ahmad Arjel</Company>
     <Authors>TanvirArjel</Authors>
     <Copyright>©2019-2020 TanvirArjel. All rights reserved.</Copyright>
+    <Title>ASP.NET Core Custom Validation</Title>
     <Description>
       This is a custom server-side validation library for ASP.NET Core. This also includes jQuery client-side validation for each server-side validation.
 
@@ -47,8 +51,6 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.0.0</Version>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>

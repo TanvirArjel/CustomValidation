@@ -11,13 +11,39 @@ using AspNetCore.CustomValidation.Extensions;
 
 namespace AspNetCore.CustomValidation.Attributes
 {
+    /// <summary>
+    /// Contains possible comparison types for <see cref="CompareToAttribute"/>.
+    /// </summary>
     public enum ComparisonType
     {
+        /// <summary>
+        /// Use to check equality.
+        /// </summary>
         Equal,
+
+        /// <summary>
+        /// Use to check not equality.
+        /// </summary>
         NotEqual,
+
+        /// <summary>
+        /// Use to check greater than.
+        /// </summary>
         GreaterThan,
+
+        /// <summary>
+        /// Use to check greater than or equality.
+        /// </summary>
         GreaterThanOrEqual,
+
+        /// <summary>
+        /// Use to check smaller than.
+        /// </summary>
         SmallerThan,
+
+        /// <summary>
+        /// Use to check smaller than or equal.
+        /// </summary>
         SmallerThanOrEqual
     }
 
@@ -29,7 +55,6 @@ namespace AspNetCore.CustomValidation.Attributes
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompareToAttribute"/> class.
-        /// This constructor takes the <param name="comparePropertyName"></param> and <param name="comparisonType"></param> values.
         /// </summary>
         /// <param name="comparePropertyName">Name of the property which against the comparison will be done.</param>
         /// <param name="comparisonType">The <see cref="ComparisonType"/>.</param>
@@ -54,6 +79,13 @@ namespace AspNetCore.CustomValidation.Attributes
         /// </summary>
         public ComparisonType ComparisonType { get; }
 
+        /// <summary>
+        /// Perform the compare to validation check and returns the <see cref="ValidationResult"/>.
+        /// </summary>
+        /// <param name="value">Value of the input field.</param>
+        /// <param name="validationContext">The validation context.</param>
+        /// <returns>Retuns <see cref="ValidationResult"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="validationContext"/> is null.</exception>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (validationContext == null)
