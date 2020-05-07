@@ -97,7 +97,7 @@ namespace AspNetCore.CustomValidation.Attributes
             return ValidationResult.Success;
         }
 
-        private string GetFileTypeErrorMessage(string errorMessageString, string propertyName, string fileTypeNamesString)
+        private static string GetFileTypeErrorMessage(string errorMessageString, string propertyName, string fileTypeNamesString)
         {
             return string.Format(CultureInfo.InvariantCulture, errorMessageString, propertyName, fileTypeNamesString);
         }

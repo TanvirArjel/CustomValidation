@@ -1,4 +1,4 @@
-﻿// <copyright file="MinAgeValidationExtension.cs" company="TanvirArjel">
+﻿// <copyright file="MaxAgeValidationExtension.cs" company="TanvirArjel">
 // Copyright (c) TanvirArjel. All rights reserved.
 // </copyright>
 
@@ -6,12 +6,12 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace AspNetCore.CustomValidation.Validators
+namespace TanvirArjel.CustomValidation.Validators
 {
     /// <summary>
     /// Contains methods that extend <see cref="ValidationContext"/>.
     /// </summary>
-    public static class MinAgeValidationExtension
+    public static class MaxAgeValidationExtension
     {
         /// <summary>
         /// This extension method is used to validate <see cref="DateTime"/> input against dynamic values from database,
@@ -23,8 +23,8 @@ namespace AspNetCore.CustomValidation.Validators
         /// <param name="months">A positive <see cref="int"/> number ranging from 0 to 11. </param>
         /// <param name="days">A positive <see cref="int"/> number ranging from 0 to 31.</param>
         /// <param name="errorMessage">A <see cref="string"/> content to override the default ErrorMessage.</param>
-        /// <returns>Returns <see cref="ValidationResult"/>.</returns>
-        public static ValidationResult ValidateMinAge(
+        /// <returns>Return <see cref="ValidationResult"/>.</returns>
+        public static ValidationResult ValidateMaxAge(
             this ValidationContext validationContext,
             string propertyName,
             int years,
@@ -69,13 +69,13 @@ namespace AspNetCore.CustomValidation.Validators
             TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
             DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
 
-            DateTime minAgeDateTime = DateTime.MinValue.AddYears(years).AddMonths(months).AddDays(days);
+            DateTime maxAgeDateTime = DateTime.MinValue.AddYears(years).AddMonths(months).AddDays(days);
 
             if (years > 0 || months > 0 || days > 0)
             {
-                if (minAgeDateTime > ageDateTime)
+                if (maxAgeDateTime < ageDateTime)
                 {
-                    errorMessage = errorMessage ?? $"Minimum age should be at least {(years > 0 ? years + " years" : string.Empty)} {(months > 0 ? months + " months" : string.Empty)} {(days > 0 ? days + " days" : string.Empty)}.";
+                    errorMessage = errorMessage ?? $"Maximum age can be {(years > 0 ? years + " years" : string.Empty)} {(months > 0 ? months + " months" : string.Empty)} {(days > 0 ? days + " days" : string.Empty)}.";
 
                     return new ValidationResult(errorMessage, new[] { propertyName });
                 }

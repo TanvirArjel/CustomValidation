@@ -7,6 +7,7 @@ using AspNetCore.CustomValidation.Adapters;
 using AspNetCore.CustomValidation.Attributes;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Extensions.Localization;
+using TanvirArjel.CustomValidation.Attributes;
 
 namespace AspNetCore.CustomValidation.AdapterProviders
 {
@@ -38,6 +39,8 @@ namespace AspNetCore.CustomValidation.AdapterProviders
                     return new MinAgeAttributeAdapter(minAgeAttribute, stringLocalizer);
                 case MinDateAttribute minDateAttribute:
                     return new MinDateAttributeAdapter(minDateAttribute, stringLocalizer);
+                case RequiredIfAttribute requiredIfAttribute:
+                    return new RequiredIfAttributeAdapter(requiredIfAttribute, stringLocalizer);
                 case TextEditorRequiredAttribute textEditorRequiredAttribute:
                     return new TextEditorRequiredAttributeAdapter(textEditorRequiredAttribute, stringLocalizer);
                 default:

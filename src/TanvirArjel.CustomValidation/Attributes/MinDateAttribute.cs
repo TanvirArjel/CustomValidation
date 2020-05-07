@@ -1,4 +1,4 @@
-﻿// <copyright file="MaxDateAttribute.cs" company="TanvirArjel">
+﻿// <copyright file="MinDateAttribute.cs" company="TanvirArjel">
 // Copyright (c) TanvirArjel. All rights reserved.
 // </copyright>
 
@@ -7,49 +7,49 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
 
-namespace AspNetCore.CustomValidation.Attributes
+namespace TanvirArjel.CustomValidation.Attributes
 {
     /// <summary>
-    /// This <see cref="ValidationAttribute"/> is used to check whether the property value is smaller than the specified <see cref="MaxDate"/> value.
+    /// This <see cref="ValidationAttribute"/> is used to check whether the property value is smaller than the specified <see cref="MinDate"/> value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public sealed class MaxDateAttribute : ValidationAttribute
+    public sealed class MinDateAttribute : ValidationAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MaxDateAttribute"/> class.
-        /// This constructor takes the <see cref="MaxDate"/> value in <paramref name="year"/>, <paramref name="month"/> and <paramref name="day"/> format.
+        /// Initializes a new instance of the <see cref="MinDateAttribute"/> class.
+        /// This constructor takes the <see cref="MinDate"/> value in <paramref name="year"/>, <paramref name="month"/> and <paramref name="day"/> format.
         /// </summary>
         /// <param name="year">A calendar year like 1988,2019 etc.</param>
         /// <param name="month">A calendar month number. The value should be in 1 to 12.</param>
         /// <param name="day">A calendar date. The value should be in 1 to 31.</param>
-        public MaxDateAttribute(int year, int month, int day)
+        public MinDateAttribute(int year, int month, int day)
         {
-            MaxDate = new DateTime(year, month, day);
-            ErrorMessage = ErrorMessage ?? "The {0} cannot be larger than {1}.";
+            MinDate = new DateTime(year, month, day);
+            ErrorMessage = ErrorMessage ?? "The {0} cannot be smaller than {1}.";
         }
 
         /// <summary>
-        /// This constructor takes the <see cref="MaxDate"/> value in <see cref="string"/> with a specified <see cref="DateTime"/> format.
+        /// This constructor takes the <see cref="MinDate"/> value in <see cref="string"/> with a specified <see cref="DateTime"/> format.
         /// </summary>
-        /// <param name="maxDate">The <see cref="string"/> representation of the minDate value.</param>
+        /// <param name="minDate">The <see cref="string"/> representation of the minDate value.</param>
         /// <param name="format">Format of the supplied string minDate value.</param>
-        public MaxDateAttribute(string maxDate, string format)
+        public MinDateAttribute(string minDate, string format)
         {
-            MaxDate = DateTime.ParseExact(maxDate, format, CultureInfo.InvariantCulture);
+            MinDate = DateTime.ParseExact(minDate, format, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        /// Get the allowed max date value.
+        /// Get the allowed min date value.
         /// </summary>
-        public DateTime MaxDate { get; }
+        public DateTime MinDate { get; }
 
         ////public override string FormatErrorMessage(string displayName)
         ////{
-        ////    return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, MaxDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
+        ////    return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, MinDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
         ////}
 
         /// <summary>
-        /// To check whether the input date violates the specified max date constraint.
+        /// To check whether the input date violates the specified min date constraint.
         /// </summary>
         /// <param name="value">Type of <see cref="DateTime"/>.</param>
         /// <param name="validationContext">The request validation context.</param>
@@ -73,7 +73,7 @@ namespace AspNetCore.CustomValidation.Attributes
 
             if (propertyType != typeof(DateTime) && propertyType != typeof(DateTime?))
             {
-                throw new ArgumentException($"The {nameof(MaxDateAttribute)} is not valid on property type {propertyType}." +
+                throw new ArgumentException($"The {nameof(MinDateAttribute)} is not valid on property type {propertyType}." +
                                             $" This Attribute is only valid on {typeof(DateTime)} and {typeof(DateTime?)}");
             }
 
@@ -81,7 +81,7 @@ namespace AspNetCore.CustomValidation.Attributes
             {
                 DateTime inputDate = (DateTime)value;
 
-                if (inputDate > MaxDate)
+                if (inputDate < MinDate)
                 {
                     string errorMessage = FormatErrorMessage(validationContext.DisplayName);
                     return new ValidationResult(errorMessage);

@@ -71,7 +71,7 @@ namespace AspNetCore.CustomValidation.Adapters
             return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, validFileTypeNamesString);
         }
 
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
+        private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)
         {
             if (!attributes.ContainsKey(key))
             {

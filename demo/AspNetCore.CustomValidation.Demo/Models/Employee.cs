@@ -4,32 +4,37 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using AspNetCore.CustomValidation.Attributes;
 using Microsoft.AspNetCore.Http;
+using TanvirArjel.CustomValidation.Attributes;
 
 namespace AspNetCore.CustomValidation.Demo.Models
 {
     public class Employee : IValidatableObject
     {
-        [DisplayName("Name")]
-        [FixedLength(5, ErrorMessage = "{0} should be exactly {1} characters long.")]
-        [TextEditorRequired]
+        ////[DisplayName("Name")]
+        ////[FixedLength(5, ErrorMessage = "{0} should be exactly {1} characters long.")]
+        ////[TextEditorRequired]
         [Required]
+        [MinLength(5)]
         public string Name { get; set; }
 
-        [MinAge(1, 0, 0, ErrorMessage = "Min age should be 1 year.")]
-        [DataType(DataType.Date)]
-        [DisplayName("Date Of Birth")]
-        public DateTime? DateOfBirth { get; set; }
+        ////[MinAge(1, 0, 0, ErrorMessage = "Min age should be 1 year.")]
+        ////[DataType(DataType.Date)]
+        ////[DisplayName("Date Of Birth")]
+        [Required]
+        public DateTime DateOfBirth { get; set; }
 
-        [MinDate(2019, 1, 1, ErrorMessage = "{0} should be minimun 2019 January 1.")] // 2019 January 1
-        [MaxDate(2019, 10, 1, ErrorMessage = "{0} cannot be greater than {1}.")] // 2019 October 1
+        ////[MinDate(2019, 1, 1, ErrorMessage = "{0} should be minimun 2019 January 1.")] // 2019 January 1
+        ////[MaxDate(2019, 10, 1, ErrorMessage = "{0} cannot be greater than {1}.")] // 2019 October 1
         [CompareTo(nameof(DateOfBirth), ComparisonType.GreaterThan)]
         [DisplayName("Joining Date")]
+        ////[RequiredIf(nameof(DateOfBirth), ComparisonType.Equal, "01-May-2020")]
         public DateTime? JoiningDate { get; set; }
 
+        [Required]
         [Display(Name = "First Number")]
-        public int FirstNumber { get; set; }
+        public int? FirstNumber { get; set; }
 
-        [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThanOrEqual)]
+        [RequiredIf(nameof(FirstNumber), ComparisonType.GreaterThan, "20")]
         [Display(Name = "Second Number")]
         public int? SecondNumber { get; set; }
 

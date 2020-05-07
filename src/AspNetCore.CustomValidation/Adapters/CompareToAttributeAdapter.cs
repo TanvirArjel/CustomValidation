@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using AspNetCore.CustomValidation.Attributes;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Localization;
+using TanvirArjel.CustomValidation.Attributes;
 
 namespace AspNetCore.CustomValidation.Adapters
 {
@@ -31,44 +31,44 @@ namespace AspNetCore.CustomValidation.Adapters
             string comparePropertyName = Attribute.ComparePropertyName;
             ComparisonType comparisonType = Attribute.ComparisonType;
 
-            this.AddAttribute(context.Attributes, "data-val", "true");
-            this.AddAttribute(context.Attributes, "data-val-input-type-compare", $"{propertyDisplayName} is not comparable to {comparePropertyName}");
-            this.AddAttribute(context.Attributes, "data-val-input-type-compare-property", comparePropertyName);
+            AddAttribute(context.Attributes, "data-val", "true");
+            AddAttribute(context.Attributes, "data-val-input-type-compare", $"{propertyDisplayName} is not comparable to {comparePropertyName}");
+            AddAttribute(context.Attributes, "data-val-input-type-compare-property", comparePropertyName);
 
             if (comparisonType == ComparisonType.Equal)
             {
-                this.AddAttribute(context.Attributes, "data-val-comparison-equal", GetErrorMessage(context));
-                this.AddAttribute(context.Attributes, "data-val-comparison-equal-property", comparePropertyName);
+                AddAttribute(context.Attributes, "data-val-comparison-equal", GetErrorMessage(context));
+                AddAttribute(context.Attributes, "data-val-comparison-equal-property", comparePropertyName);
             }
 
             if (comparisonType == ComparisonType.NotEqual)
             {
-                this.AddAttribute(context.Attributes, "data-val-comparison-not-equal", GetErrorMessage(context));
-                this.AddAttribute(context.Attributes, "data-val-comparison-not-equal-property", comparePropertyName);
+                AddAttribute(context.Attributes, "data-val-comparison-not-equal", GetErrorMessage(context));
+                AddAttribute(context.Attributes, "data-val-comparison-not-equal-property", comparePropertyName);
             }
 
             if (comparisonType == ComparisonType.GreaterThan)
             {
-                this.AddAttribute(context.Attributes, "data-val-comparison-greater-than", GetErrorMessage(context));
-                this.AddAttribute(context.Attributes, "data-val-comparison-greater-than-property", comparePropertyName);
+                AddAttribute(context.Attributes, "data-val-comparison-greater-than", GetErrorMessage(context));
+                AddAttribute(context.Attributes, "data-val-comparison-greater-than-property", comparePropertyName);
             }
 
             if (comparisonType == ComparisonType.GreaterThanOrEqual)
             {
-                this.AddAttribute(context.Attributes, "data-val-comparison-greater-than-or-equal", GetErrorMessage(context));
-                this.AddAttribute(context.Attributes, "data-val-comparison-greater-than-or-equal-property", comparePropertyName);
+                AddAttribute(context.Attributes, "data-val-comparison-greater-than-or-equal", GetErrorMessage(context));
+                AddAttribute(context.Attributes, "data-val-comparison-greater-than-or-equal-property", comparePropertyName);
             }
 
             if (comparisonType == ComparisonType.SmallerThan)
             {
-                this.AddAttribute(context.Attributes, "data-val-comparison-smaller-than", GetErrorMessage(context));
-                this.AddAttribute(context.Attributes, "data-val-comparison-smaller-than-property", comparePropertyName);
+                AddAttribute(context.Attributes, "data-val-comparison-smaller-than", GetErrorMessage(context));
+                AddAttribute(context.Attributes, "data-val-comparison-smaller-than-property", comparePropertyName);
             }
 
             if (comparisonType == ComparisonType.SmallerThanOrEqual)
             {
-                this.AddAttribute(context.Attributes, "data-val-comparison-smaller-than-or-equal", GetErrorMessage(context));
-                this.AddAttribute(context.Attributes, "data-val-comparison-smaller-than-or-equal-property", comparePropertyName);
+                AddAttribute(context.Attributes, "data-val-comparison-smaller-than-or-equal", GetErrorMessage(context));
+                AddAttribute(context.Attributes, "data-val-comparison-smaller-than-or-equal-property", comparePropertyName);
             }
         }
 
@@ -86,7 +86,7 @@ namespace AspNetCore.CustomValidation.Adapters
             return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, comparePropertyDisplayName);
         }
 
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
+        private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)
         {
             if (!attributes.ContainsKey(key))
             {
@@ -94,7 +94,7 @@ namespace AspNetCore.CustomValidation.Adapters
             }
         }
 
-        private string GetFormattedErrorMessage(string errorMessage, string propertyName, string comparePropertyName)
+        private static string GetFormattedErrorMessage(string errorMessage, string propertyName, string comparePropertyName)
         {
             return string.Format(CultureInfo.InvariantCulture, errorMessage, propertyName, comparePropertyName);
         }

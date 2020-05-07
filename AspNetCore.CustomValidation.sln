@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TanvirArjel.CustomValidation", "src\TanvirArjel.CustomValidation\TanvirArjel.CustomValidation.csproj", "{7A9458F1-6941-4E8B-905E-4E2698F5F906}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{E1089FDD-10EA-4B08-9C9C-8B89D35A66EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1089FDD-10EA-4B08-9C9C-8B89D35A66EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1089FDD-10EA-4B08-9C9C-8B89D35A66EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9458F1-6941-4E8B-905E-4E2698F5F906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9458F1-6941-4E8B-905E-4E2698F5F906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9458F1-6941-4E8B-905E-4E2698F5F906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9458F1-6941-4E8B-905E-4E2698F5F906}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{16C0F232-1EC6-47C8-A960-E9FE9B24775B} = {5311FA25-C66B-4161-A1E9-4B28CE99C7F2}
 		{E1089FDD-10EA-4B08-9C9C-8B89D35A66EC} = {B784202F-FB20-4CFD-9D8D-0DC47051BA1D}
+		{7A9458F1-6941-4E8B-905E-4E2698F5F906} = {5311FA25-C66B-4161-A1E9-4B28CE99C7F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {515EE464-3595-45B6-A465-E4FBE4A66DC8}

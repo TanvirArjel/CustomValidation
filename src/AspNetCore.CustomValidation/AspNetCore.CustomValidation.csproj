@@ -2,52 +2,49 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>Tanvir Ahmad Arjel</Company>
     <Authors>TanvirArjel</Authors>
     <Copyright>©2019-2020 TanvirArjel. All rights reserved.</Copyright>
     <Title>ASP.NET Core Custom Validation</Title>
-    <Description>
-      This is a custom server-side validation library for ASP.NET Core. This also includes jQuery client-side validation for each server-side validation.
+    <Description>This is a custom server-side validation library for ASP.NET Core. This also includes jQuery client-side validation for each server-side validation.
 
-      This version includes following Validation Attributes:
+This version includes following Validation Attributes:
 
-      1. FileAttribute: To validate file type, file max size, file min size etc.
+1. FileAttribute: To validate file type, file max size, file min size etc.
 
-      2. FileTypeAttribute: To validate type of a file.
+2. FileTypeAttribute: To validate type of a file.
 
-      3. FileMaxSizeAttribute: To validate allowed max size of a file.
+3. FileMaxSizeAttribute: To validate allowed max size of a file.
 
-      4. FileMinSizeAttribute: To validate allowed min size of a file.
+4. FileMinSizeAttribute: To validate allowed min size of a file.
 
-      5. MaxAgeAttribute: To validate maximum age against date of birth value of DateTime type.
+5. MaxAgeAttribute: To validate maximum age against date of birth value of DateTime type.
 
-      6. MinAgeAttribute: To validate minimum required age against a date of birth value of DateTime type.
+6. MinAgeAttribute: To validate minimum required age against a date of birth value of DateTime type.
 
-      7. MaxDateAttribute: To set max value validation for a DateTime field.
+7. MaxDateAttribute: To set max value validation for a DateTime field.
 
-      8. MinDateAttribute: To set min value validation for a DateTime field.
+8. MinDateAttribute: To set min value validation for a DateTime field.
 
-      9. TextEditorRequiredAttribute: To enforce required validation attribute on the online text editors like TinyMCE, CkEditor etc.
+9. TextEditorRequiredAttribute: To enforce required validation attribute on the online text editors like TinyMCE, CkEditor etc.
 
-      10. CompareToAttribute: To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual,GreaterThan,GreatherThanOrEqual,SmallerThan,SmallerThanOrEqual
+ 10. CompareToAttribute: To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual,GreaterThan,GreatherThanOrEqual,SmallerThan,SmallerThanOrEqual
 
-      This version also includes validation against dynamic values from database, configuration file or any external source added for the following type: 1. File Type: with ValidateFile() method 1. DateTime Type: with ValidateMaxAge() and ValidateMinAge()
-    </Description>
+This version also includes validation against dynamic values from database, configuration file or any external source added for the following type: 1. File Type: with ValidateFile() method 1. DateTime Type: with ValidateMaxAge() and ValidateMinAge()
+</Description>
     <PackageProjectUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TanvirArjel/AspNetCore.CustomValidation</RepositoryUrl>
     <PackageTags>ASP.NET Core,CustomValidation, FileValidation,MinAgeValidation,MaxAgeValidation,MinDateValidation,MaxDateValidation,TextEditorRequired, CompareToValidation</PackageTags>
-    <PackageReleaseNotes>
-      1. This release added localization support for error messages.
+    <PackageReleaseNotes>1. This release added localization support for error messages.
 
-      2. FileTypeAttribute, FileMaxSizeAttribute and FileMinSizeAttribute are newly added ValidationAttributes in this release.
+2. FileTypeAttribute, FileMaxSizeAttribute and FileMinSizeAttribute are newly added ValidationAttributes in this release.
 
-      3. TinyMceRequiredAttribute has been renamed to TextEditorRequiredAttribute.
+3. TinyMceRequiredAttribute has been renamed to TextEditorRequiredAttribute.
 
-      4. This release also includes some imporant bug fixes.
-    </PackageReleaseNotes>
+4. This release also includes some imporant bug fixes.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -70,7 +67,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -85,6 +82,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TanvirArjel.CustomValidation\TanvirArjel.CustomValidation.csproj" />
   </ItemGroup>
 
 </Project>

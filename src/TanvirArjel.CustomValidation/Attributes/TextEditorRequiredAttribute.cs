@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace AspNetCore.CustomValidation.Attributes
+namespace TanvirArjel.CustomValidation.Attributes
 {
     /// <summary>
     /// This <see cref="ValidationAttribute"/> is used to make online text editor field, like TinyMCE, required along with an option for setting minimum length.

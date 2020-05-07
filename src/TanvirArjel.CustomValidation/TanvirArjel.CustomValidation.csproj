@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.0.0</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>TanvirArjel</Authors>
+    <Company>TanvirArjelTanvirArjel</Company>
+    <Description>This is a custom server-side validation library for ASP.NET Core. This also includes jQuery client-side validation for each server-side validation.
+
+This version includes following Validation Attributes:
+
+1. FileAttribute: To validate file type, file max size, file min size etc.
+
+2. FileTypeAttribute: To validate type of a file.
+
+3. FileMaxSizeAttribute: To validate allowed max size of a file.
+
+4. FileMinSizeAttribute: To validate allowed min size of a file.
+
+5. MaxAgeAttribute: To validate maximum age against date of birth value of DateTime type.
+
+6. MinAgeAttribute: To validate minimum required age against a date of birth value of DateTime type.
+
+7. MaxDateAttribute: To set max value validation for a DateTime field.
+
+8. MinDateAttribute: To set min value validation for a DateTime field.
+
+9. TextEditorRequiredAttribute: To enforce required validation attribute on the online text editors like TinyMCE, CkEditor etc.
+
+ 10. CompareToAttribute: To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual,GreaterThan,GreatherThanOrEqual,SmallerThan,SmallerThanOrEqual
+
+This version also includes validation against dynamic values from database, configuration file or any external source added for the following type: 1. File Type: with ValidateFile() method 1. DateTime Type: with ValidateMaxAge() and ValidateMinAge()</Description>
+    <Copyright>©2019-2020 TanvirArjel. All rights reserved.</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="stylecop.json" />
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+  </ItemGroup>
+
+</Project>

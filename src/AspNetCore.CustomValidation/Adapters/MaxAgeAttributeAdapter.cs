@@ -5,10 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using AspNetCore.CustomValidation.Attributes;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Localization;
+using TanvirArjel.CustomValidation.Attributes;
 
 namespace AspNetCore.CustomValidation.Adapters
 {
@@ -29,19 +29,19 @@ namespace AspNetCore.CustomValidation.Adapters
             string propertyDisplayName = context.ModelMetadata.GetDisplayName();
             string errorMessage = GetErrorMessage(context);
 
-            this.AddAttribute(context.Attributes, "data-val", "true");
+            AddAttribute(context.Attributes, "data-val", "true");
 
-            this.AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
-            this.AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
-            this.AddAttribute(context.Attributes, "data-val-maxage", errorMessage);
+            AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
+            AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
+            AddAttribute(context.Attributes, "data-val-maxage", errorMessage);
 
             string years = Attribute.Years.ToString(CultureInfo.InvariantCulture);
             string months = Attribute.Months.ToString(CultureInfo.InvariantCulture);
             string days = Attribute.Days.ToString(CultureInfo.InvariantCulture);
 
-            this.AddAttribute(context.Attributes, "data-val-maxage-years", years);
-            this.AddAttribute(context.Attributes, "data-val-maxage-months", months);
-            this.AddAttribute(context.Attributes, "data-val-maxage-days", days);
+            AddAttribute(context.Attributes, "data-val-maxage-years", years);
+            AddAttribute(context.Attributes, "data-val-maxage-months", months);
+            AddAttribute(context.Attributes, "data-val-maxage-days", days);
         }
 
         public override string GetErrorMessage(ModelValidationContextBase validationContext)
@@ -49,7 +49,7 @@ namespace AspNetCore.CustomValidation.Adapters
             return GetErrorMessage(validationContext.ModelMetadata, Attribute.Years, Attribute.Months, Attribute.Days);
         }
 
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
+        private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)
         {
             if (!attributes.ContainsKey(key))
             {

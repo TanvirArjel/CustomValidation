@@ -4,7 +4,7 @@
 
 using System;
 
-namespace AspNetCore.CustomValidation.Extensions
+namespace TanvirArjel.CustomValidation.Extensions
 {
     internal static class ObjectExtensions
     {

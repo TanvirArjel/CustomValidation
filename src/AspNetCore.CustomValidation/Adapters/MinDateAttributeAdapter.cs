@@ -5,10 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using AspNetCore.CustomValidation.Attributes;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Localization;
+using TanvirArjel.CustomValidation.Attributes;
 
 namespace AspNetCore.CustomValidation.Adapters
 {
@@ -47,7 +47,7 @@ namespace AspNetCore.CustomValidation.Adapters
             return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MinDate);
         }
 
-        private void AddAttribute(IDictionary<string, string> attributes, string key, string value)
+        private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)
         {
             if (!attributes.ContainsKey(key))
             {

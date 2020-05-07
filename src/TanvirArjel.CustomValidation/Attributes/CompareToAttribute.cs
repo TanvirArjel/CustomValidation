@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using AspNetCore.CustomValidation.Extensions;
+using TanvirArjel.CustomValidation.Extensions;
 
-namespace AspNetCore.CustomValidation.Attributes
+namespace TanvirArjel.CustomValidation.Attributes
 {
     /// <summary>
     /// Contains possible comparison types for <see cref="CompareToAttribute"/>.
@@ -60,8 +60,8 @@ namespace AspNetCore.CustomValidation.Attributes
         /// <param name="comparisonType">The <see cref="ComparisonType"/>.</param>
         public CompareToAttribute(string comparePropertyName, ComparisonType comparisonType)
         {
-            this.ComparePropertyName = comparePropertyName;
-            this.ComparisonType = comparisonType;
+            ComparePropertyName = comparePropertyName;
+            ComparisonType = comparisonType;
 
             if (ErrorMessage == null)
             {
@@ -82,34 +82,39 @@ namespace AspNetCore.CustomValidation.Attributes
         /// <summary>
         /// Perform the compare to validation check and returns the <see cref="ValidationResult"/>.
         /// </summary>
-        /// <param name="value">Value of the input field.</param>
+        /// <param name="propertyValue">Value of the input field.</param>
         /// <param name="validationContext">The validation context.</param>
         /// <returns>Retuns <see cref="ValidationResult"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="validationContext"/> is null.</exception>
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object propertyValue, ValidationContext validationContext)
         {
             if (validationContext == null)
             {
                 throw new ArgumentNullException(nameof(validationContext));
             }
 
-            PropertyInfo compareProperty = validationContext.ObjectType.GetProperty(this.ComparePropertyName);
-
-            if (compareProperty == null)
+            if (propertyValue == null)
             {
-                throw new ArgumentException($"The object does not contain any property with name '{this.ComparePropertyName}'");
+                return ValidationResult.Success;
             }
 
-            Type comparePropertyType = compareProperty.PropertyType;
+            PropertyInfo comparePropertyInfo = validationContext.ObjectType.GetProperty(ComparePropertyName);
+
+            if (comparePropertyInfo == null)
+            {
+                throw new ArgumentException($"The object does not contain any property with name '{ComparePropertyName}'");
+            }
+
+            Type comparePropertyType = comparePropertyInfo.PropertyType;
 
             if (comparePropertyType == null)
             {
-                throw new ArgumentNullException($"The type of {this.ComparePropertyName} is null");
+                throw new ArgumentNullException($"The type of {ComparePropertyName} is null");
             }
 
-            object comparePropertyValue = compareProperty.GetValue(validationContext.ObjectInstance, null);
+            object comparePropertyValue = comparePropertyInfo.GetValue(validationContext.ObjectInstance, null);
 
-            if (value == null || comparePropertyValue == null)
+            if (comparePropertyValue == null)
             {
                 return ValidationResult.Success;
             }
@@ -121,113 +126,98 @@ namespace AspNetCore.CustomValidation.Attributes
                 throw new ArgumentException($"The object does not contain any property with name '{validationContext.MemberName}'");
             }
 
-            Type memberType = propertyInfo.PropertyType;
+            Type propertyType = propertyInfo.PropertyType;
 
-            if (memberType == null)
+            if (propertyType == null)
             {
                 throw new ArgumentException($"The type of {validationContext.MemberName} is null.");
             }
 
-            if (memberType == comparePropertyType)
+            propertyType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+            comparePropertyType = Nullable.GetUnderlyingType(comparePropertyType) ?? comparePropertyType;
+
+            if (propertyType == comparePropertyType || propertyType.IsNumericType() == comparePropertyType.IsNumericType())
             {
                 ValidationResult validationResult = TriggerValueComparison();
                 return validationResult;
             }
             else
             {
-                if (value.IsNumber() && comparePropertyValue.IsNumber())
-                {
-                    ValidationResult validationResult = TriggerValueComparison();
-                    return validationResult;
-                }
-                else if (value is DateTime && comparePropertyValue is DateTime)
-                {
-                    ValidationResult validationResult = TriggerValueComparison();
-                    return validationResult;
-                }
-                else if (value is TimeSpan && comparePropertyValue is TimeSpan)
-                {
-                    ValidationResult validationResult = TriggerValueComparison();
-                    return validationResult;
-                }
-                else
-                {
-                    throw new ArgumentException($"The type of {validationContext.MemberName} is not comparable to type of {ComparePropertyName}");
-                }
+                throw new ArgumentException($"The type of {validationContext.MemberName} is not comparable to type of {ComparePropertyName}");
             }
 
             ValidationResult TriggerValueComparison()
             {
                 string propertyDisplayName = validationContext.DisplayName;
-                DisplayAttribute comparePropertyDisplayAttribute = compareProperty.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
-                string comparePropertyDisplayName = comparePropertyDisplayAttribute?.GetName() ?? this.ComparePropertyName;
+                DisplayAttribute comparePropertyDisplayAttribute = comparePropertyInfo.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
+                string comparePropertyDisplayName = comparePropertyDisplayAttribute?.GetName() ?? ComparePropertyName;
 
-                string errorMessage = this.GetFormattedErrorMessage(this.ErrorMessage, propertyDisplayName, comparePropertyDisplayName);
+                string errorMessage = string.Format(CultureInfo.InvariantCulture, ErrorMessage, propertyDisplayName, comparePropertyDisplayName);
 
-                if (this.ComparisonType == ComparisonType.Equal)
+                if (ComparisonType == ComparisonType.Equal)
                 {
-                    if (value.IsNumber() && comparePropertyValue.IsNumber())
+                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
                     {
-                        if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) != Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
+                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) != Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is DateTime memberValue)
+                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
                     {
-                        if (memberValue != (DateTime)comparePropertyValue)
+                        if ((DateTime)propertyValue != (DateTime)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is TimeSpan timeSpanValue)
+                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
                     {
-                        if (timeSpanValue != (TimeSpan)comparePropertyValue)
+                        if ((TimeSpan)propertyValue != (TimeSpan)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is string)
+                    if (propertyType == typeof(string))
                     {
-                        if (value.ToString() != comparePropertyValue.ToString())
+                        if (propertyValue.ToString() != comparePropertyValue.ToString())
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
                 }
 
-                if (this.ComparisonType == ComparisonType.NotEqual)
+                if (ComparisonType == ComparisonType.NotEqual)
                 {
-                    if (value.IsNumber() && comparePropertyValue.IsNumber())
+                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
                     {
-                        if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) == Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
+                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) == Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is DateTime memberValue)
+                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
                     {
-                        if (memberValue == (DateTime)comparePropertyValue)
+                        if ((DateTime)propertyValue == (DateTime)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is TimeSpan timeSpanValue)
+                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
                     {
-                        if (timeSpanValue == (TimeSpan)comparePropertyValue)
+                        if ((TimeSpan)propertyValue == (TimeSpan)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is string)
+                    if (propertyType == typeof(string))
                     {
-                        if (value.ToString() == comparePropertyValue.ToString())
+                        if (propertyValue.ToString() == comparePropertyValue.ToString())
                         {
                             return new ValidationResult(errorMessage);
                         }
@@ -236,33 +226,33 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (ComparisonType == ComparisonType.GreaterThan)
                 {
-                    if (value.IsNumber())
+                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
                     {
-                        if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) <= Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
+                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) <= Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value.IsDateTime())
+                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
                     {
-                        if ((DateTime)value <= (DateTime)comparePropertyValue)
+                        if ((DateTime)propertyValue <= (DateTime)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value.IsTimeSpan())
+                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
                     {
-                        if ((TimeSpan)value <= (TimeSpan)comparePropertyValue)
+                        if ((TimeSpan)propertyValue <= (TimeSpan)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is string)
+                    if (propertyType == typeof(string))
                     {
-                        if (value.ToString().Length <= comparePropertyValue.ToString().Length)
+                        if (propertyValue.ToString().Length <= comparePropertyValue.ToString().Length)
                         {
                             return new ValidationResult(errorMessage);
                         }
@@ -271,33 +261,33 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (ComparisonType == ComparisonType.GreaterThanOrEqual)
                 {
-                    if (value.IsNumber())
+                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
                     {
-                        if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) < Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
+                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) < Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value.IsDateTime())
+                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
                     {
-                        if ((DateTime)value < (DateTime)comparePropertyValue)
+                        if ((DateTime)propertyValue < (DateTime)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value.IsTimeSpan())
+                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
                     {
-                        if ((TimeSpan)value < (TimeSpan)comparePropertyValue)
+                        if ((TimeSpan)propertyValue < (TimeSpan)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is string)
+                    if (propertyType == typeof(string))
                     {
-                        if (value.ToString().Length < comparePropertyValue.ToString().Length)
+                        if (propertyValue.ToString().Length < comparePropertyValue.ToString().Length)
                         {
                             return new ValidationResult(errorMessage);
                         }
@@ -306,33 +296,33 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (ComparisonType == ComparisonType.SmallerThan)
                 {
-                    if (value.IsNumber())
+                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
                     {
-                        if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) >= Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
+                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) >= Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value.IsDateTime())
+                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
                     {
-                        if ((DateTime)value >= (DateTime)comparePropertyValue)
+                        if ((DateTime)propertyValue >= (DateTime)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value.IsTimeSpan())
+                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
                     {
-                        if ((TimeSpan)value >= (TimeSpan)comparePropertyValue)
+                        if ((TimeSpan)propertyValue >= (TimeSpan)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is string)
+                    if (propertyType == typeof(string))
                     {
-                        if (value.ToString().Length >= comparePropertyValue.ToString().Length)
+                        if (propertyValue.ToString().Length >= comparePropertyValue.ToString().Length)
                         {
                             return new ValidationResult(errorMessage);
                         }
@@ -341,33 +331,33 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 if (ComparisonType == ComparisonType.SmallerThanOrEqual)
                 {
-                    if (value.IsNumber())
+                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
                     {
-                        if (Convert.ToDecimal(value, CultureInfo.InvariantCulture) > Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
+                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) > Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value.IsDateTime())
+                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
                     {
-                        if ((DateTime)value > (DateTime)comparePropertyValue)
+                        if ((DateTime)propertyValue > (DateTime)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value.IsTimeSpan())
+                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
                     {
-                        if ((TimeSpan)value > (TimeSpan)comparePropertyValue)
+                        if ((TimeSpan)propertyValue > (TimeSpan)comparePropertyValue)
                         {
                             return new ValidationResult(errorMessage);
                         }
                     }
 
-                    if (value is string)
+                    if (propertyType == typeof(string))
                     {
-                        if (value.ToString().Length > comparePropertyValue.ToString().Length)
+                        if (propertyValue.ToString().Length > comparePropertyValue.ToString().Length)
                         {
                             return new ValidationResult(errorMessage);
                         }
@@ -376,11 +366,6 @@ namespace AspNetCore.CustomValidation.Attributes
 
                 return ValidationResult.Success;
             }
-        }
-
-        private string GetFormattedErrorMessage(string errorMessage, string propertyName, string comparePropertyName)
-        {
-            return string.Format(CultureInfo.InvariantCulture, errorMessage, propertyName, comparePropertyName);
         }
 
         private void SetErrorMessage(ComparisonType comparisonType)

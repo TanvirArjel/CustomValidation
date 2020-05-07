@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
 
-namespace AspNetCore.CustomValidation.Attributes
+namespace TanvirArjel.CustomValidation.Attributes
 {
     /// <summary>
     /// This <see cref="ValidationAttribute"/> is used to validate the length of a <see cref="string"/> field against the specified
@@ -72,7 +72,7 @@ namespace AspNetCore.CustomValidation.Attributes
             return ValidationResult.Success;
         }
 
-        private string GetFormattedErrorMessage(string errorMessage, string propertyName, int fixedLength)
+        private static string GetFormattedErrorMessage(string errorMessage, string propertyName, int fixedLength)
         {
             return string.Format(CultureInfo.InvariantCulture, errorMessage, propertyName, fixedLength);
         }
