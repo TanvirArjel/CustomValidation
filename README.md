@@ -1,21 +1,14 @@
-# ASP.NET Core Custom Validation
+# Custom Validation
 
- This is a custom model validation library for ASP.NET Core projects.
- 
-## Whats new in version 2.0.0?
-
-   1. This release added localization support for error messages.
-   2. FileTypeAttribute, FileMaxSizeAttribute and FileMinSizeAttribute are newly added ValidationAttributes in this release.
-   3. TinyMceRequiredAttribute has been renamed to TextEditorRequiredAttribute.
-   4. This release also includes some imporant bug fixes.
+ This is a custom model validation library for any C# and .NET projects.
  
 ## How do I get started?
  
- Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is simple as below:
+### For Any C# and .NET Application:
  
- First install the lastest version of `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
+ First install the lastest version of `TanvirArjel.CustomValidation` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation/) into your project as follows:
  
-    Install-Package AspNetCore.CustomValidation
+    Install-Package TanvirArjel.CustomValidation
     
  Then decorate your class properties with appropriate custom validation attributes as follows:
  
@@ -28,16 +21,42 @@
         [Display(Name = "Second Number")]
         public int? SecondNumber { get; set; }
         
+        [RequiredIf(nameof(FirstNumber), ComparisonType.Equal, 10)]
+        public string ThirdNumber { get; set; }
+    }
+    
+ ### For ASP.NET Core Application:
+ 
+ First install the lastest version of `TanvirArjel.CustomValidation.AspNetCore` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation/) into your project as follows:
+ 
+    Install-Package TanvirArjel.CustomValidation.AspNetCore
+    
+ Then decorate your class properties with appropriate custom validation attributes as follows:
+ 
+    pulic class Employee
+    {
+        [Display(Name = "First Number")]
+        public int FirstNumber { get; set; }
+
+        [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThanOrEqual)]
+        [Display(Name = "Second Number")]
+        public int? SecondNumber { get; set; }
+        
+        [RequiredIf(nameof(FirstNumber), ComparisonType.Equal, 10)]
+        public string ThirdNumber { get; set; }
+        
         [File(FileType.Jpg, MaxSize = 1024)]
         public IFormFile Photo { get; set; }
     }
         
-  ## Client Side validation:
+  ### Client Side validation:
   
   To enable client client side validation for **ASP.NET Core MVC or Razor Pages**:
   
   1. First in the `ConfirugeServices` method of the `Startup` class:
   
+    using TanvirArjel.CustomValidation.AspNetCore.Extensions;
+    
     public static void ConfigureServices(IServiceCollection services)
     {
         services.AddAspNetCoreCustomValidation();
@@ -67,9 +86,9 @@ Or using Visusl Studio **Libman** as follows:
     3. Click install
   
         
-  ## What contains in version 2.0.0?
+  ## What contains in version 1.0.0?
   
-  In version 2.0.0 `AspNetCore.CustomValidation` contains the following validation attributes:
+  In version 1.0.0 `TanvirArjel.CustomValidation` contains the following validation attributes:
   
   **1. FileAttribute**
        To validate file type, file max size, file min size etc.
@@ -100,6 +119,9 @@ Or using Visusl Studio **Libman** as follows:
        
   **10. CompareToAttribute**
        To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual, GreaterThan, GreatherThanOrEqual, SmallerThan, SmallerThanOrEqual
+       
+   **11. RequiredIfAttribute**
+       To mark a field required based on the value of another field.
        
    # Dynamic Validation
    From version 1.4.0, validation against dynamic values from database, configuration file or any external source added for the following type:
