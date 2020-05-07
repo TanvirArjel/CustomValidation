@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TanvirArjel.CustomValidatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore", "demo\AspNetCore\AspNetCore.csproj", "{763BB5A1-B44C-4D7C-BC38-C6493114DA71}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TanvirArjel.CustomValidation.AspNetCore", "src\TanvirArjel.CustomValidation.AspNetCore\TanvirArjel.CustomValidation.AspNetCore.csproj", "{B7D81B2A-3615-436C-AF16-7EB576EDB4C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{763BB5A1-B44C-4D7C-BC38-C6493114DA71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{763BB5A1-B44C-4D7C-BC38-C6493114DA71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{763BB5A1-B44C-4D7C-BC38-C6493114DA71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7D81B2A-3615-436C-AF16-7EB576EDB4C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7D81B2A-3615-436C-AF16-7EB576EDB4C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7D81B2A-3615-436C-AF16-7EB576EDB4C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7D81B2A-3615-436C-AF16-7EB576EDB4C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{16C0F232-1EC6-47C8-A960-E9FE9B24775B} = {5311FA25-C66B-4161-A1E9-4B28CE99C7F2}
 		{7A9458F1-6941-4E8B-905E-4E2698F5F906} = {5311FA25-C66B-4161-A1E9-4B28CE99C7F2}
 		{763BB5A1-B44C-4D7C-BC38-C6493114DA71} = {B784202F-FB20-4CFD-9D8D-0DC47051BA1D}
+		{B7D81B2A-3615-436C-AF16-7EB576EDB4C0} = {5311FA25-C66B-4161-A1E9-4B28CE99C7F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {515EE464-3595-45B6-A465-E4FBE4A66DC8}
