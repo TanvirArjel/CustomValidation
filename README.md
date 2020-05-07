@@ -1,3 +1,9 @@
+# Announcement:
+
+**AspNetCore.CustomValidation** NuGet package has been split into **TanvirArjel.CustomValidation** and **TanvirArjel.CustomValidation.AspNetCore** NuGet packages to extend the support of this library beyond ASP.NET Core. Now, this library can be used in any C# and .NET Application.
+
+So from now, please use **TanvirArjel.CustomValidation** and **TanvirArjel.CustomValidation.AspNetCore** NuGet packages instead.
+
 # Custom Validation
 This is a custom model validation library for any C# and .NET projects.
  
