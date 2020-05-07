@@ -1,10 +1,9 @@
 # Custom Validation
-
- This is a custom model validation library for any C# and .NET projects.
+This is a custom model validation library for any C# and .NET projects.
  
 ## How do I get started?
  
-### For Any C# and .NET Application:
+### For any C# and .NET Application:
  
  First install the lastest version of `TanvirArjel.CustomValidation` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation/) into your project as follows:
  
@@ -27,7 +26,7 @@
     
  ### For ASP.NET Core Application:
  
- First install the lastest version of `TanvirArjel.CustomValidation.AspNetCore` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation/) into your project as follows:
+ First install the lastest version of `TanvirArjel.CustomValidation.AspNetCore` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation.AspNetCore/) into your project as follows:
  
     Install-Package TanvirArjel.CustomValidation.AspNetCore
     
@@ -49,7 +48,7 @@
         public IFormFile Photo { get; set; }
     }
         
-  ### Client Side validation:
+  ### ASP.NET Core Client Side validation:
   
   To enable client client side validation for **ASP.NET Core MVC or Razor Pages**:
   
@@ -124,7 +123,7 @@ Or using Visusl Studio **Libman** as follows:
        To mark a field required based on the value of another field.
        
    # Dynamic Validation
-   From version 1.4.0, validation against dynamic values from database, configuration file or any external source added for the following type:
+   Validation against dynamic values from database, configuration file or any external sources added for the following type:
     **1. File Type:** with `ValidateFile()` method
     **1. DateTime Type:** with `ValidateMaxAge()` and `ValidateMinAge()` method as follows:
     
@@ -151,8 +150,7 @@ Or using Visusl Studio **Libman** as follows:
             return validationResults;
         }
     }
-    
-       
+     
 # Note
    
 Dont forget to request your desired validation  attribute by submitting an issue.
@@ -160,5 +158,3 @@ Dont forget to request your desired validation  attribute by submitting an issue
 # Request
 
 **If you find this library useful, please don't forget to encouraging me to do such more stuffs by giving a star to this repository. Thank you.**
-  
-  
