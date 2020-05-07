@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>AspNetCore.CustomValidation.Demo</AssemblyName>
+    <AssemblyName>AspNetCore</AssemblyName>
     <!--<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>-->
   </PropertyGroup>
 
