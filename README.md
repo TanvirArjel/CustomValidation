@@ -17,6 +17,8 @@ This is a custom model validation library for any C# and .NET projects.
     
  Then decorate your class properties with appropriate custom validation attributes as follows:
  
+    using TanvirArjel.CustomValidation.Attributes;
+    
     pulic class Employee
     {
         [Display(Name = "First Number")]
@@ -38,6 +40,9 @@ This is a custom model validation library for any C# and .NET projects.
     
  Then decorate your class properties with appropriate custom validation attributes as follows:
  
+    using TanvirArjel.CustomValidation.Attributes;
+    using TanvirArjel.CustomValidation.AspNetCore.Attributes;
+    
     pulic class Employee
     {
         [Display(Name = "First Number")]
