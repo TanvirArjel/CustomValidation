@@ -94,6 +94,29 @@ Or using Visusl Studio **Libman** as follows:
   ## What contains in version 1.0.0?
   
   In version 1.0.0 `TanvirArjel.CustomValidation` contains the following validation attributes:
+     
+  **1. MaxAgeAttribute**
+       To validate maximum age against date of birth value of `DateTime` type.
+       
+  **2. MinAgeAttribute**
+       To validate minimum required age against a date of birth value of `DateTime` type.
+       
+  **3. MaxDateAttribute**
+       To set max value validation for a `DateTime` field.
+       
+  **4. MinDateAttribute**
+       To set min value validation for a `DateTime` field.
+       
+  **5. TextEditorRequiredAttribute**
+       To enforce required valiaton attribute on the online text editors like TinyMCE, CkEditor etc.
+       
+  **6. CompareToAttribute**
+       To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual, GreaterThan, GreatherThanOrEqual, SmallerThan, SmallerThanOrEqual
+       
+   **7. RequiredIfAttribute**
+       To mark a field required based on the value of another field.
+       
+  In version 1.0.0 `TanvirArjel.CustomValidation.AspNetCore` contains the following validation attributes:
   
   **1. FileAttribute**
        To validate file type, file max size, file min size etc.
