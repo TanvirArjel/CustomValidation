@@ -76,27 +76,27 @@ This is a custom model validation library for any C# and .NET projects.
   
     @section Scripts {
       @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-      <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.min.js"</script>
+      <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.min.js"></script>
     }
     
     Or
     
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.min.js"</script>
+    <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.min.js"></script>
     
-You can download the `aspnetcore-custom-validation.min.js` from here [aspnetcore-custom-validation-npm](https://www.npmjs.com/package/aspnetcore-custom-validation)
+You can download the `tanvirarjel.customvalidation.unobtrusive.min.js` from here [tanvirarjel-custom-validation-unobtrusive-npm](https://www.npmjs.com/package/tanvirarjel-custom-validation-unobtrusive)
 
 Or using Visusl Studio **Libman** as follows:
 
     1 ) wwwroot > lib> Add > Client Side Libray
 
     2. Provider: jsdelivr
-       Libray: aspnetcore-custom-validation
+       Libray: tanvirarjel-custom-validation-unobtrusive
     3. Click install
   
         
-  ## What contains in version 1.0.0?
+  ## What contains in version 1.0.1?
   
   `TanvirArjel.CustomValidation` contains the following validation attributes:
      

@@ -13,7 +13,7 @@ namespace TanvirArjel.CustomValidation.Attributes
     /// <summary>
     /// This <see cref="ValidationAttribute"/> is used to validate required based on other property value.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public sealed class RequiredIfAttribute : ValidationAttribute
     {
         /// <summary>
@@ -75,219 +75,84 @@ namespace TanvirArjel.CustomValidation.Attributes
 
             object otherPropertyContextValue = otherPropertyInfo.GetValue(validationContext.ObjectInstance, null);
 
-            if (otherPropertyContextValue == null)
+            // Cast value to the appropriate dynamic type.
+            dynamic otherPropertyContextValueDynamic;
+            dynamic otherPropertyValueDynamic;
+
+            if (otherPropertyType.IsDateTimeType())
             {
-                return ValidationResult.Success;
+                otherPropertyContextValueDynamic = otherPropertyContextValue.ToDateTime();
+                otherPropertyValueDynamic = OtherPropertyValue.ToDateTime();
+            }
+            else if (otherPropertyType.IsNumericType())
+            {
+                otherPropertyContextValueDynamic = Convert.ToDecimal(otherPropertyContextValue, CultureInfo.InvariantCulture);
+                otherPropertyValueDynamic = Convert.ToDecimal(OtherPropertyValue, CultureInfo.InvariantCulture);
+            }
+            else if (otherPropertyType == typeof(string))
+            {
+                if (this.ComparisonType == ComparisonType.Equal || this.ComparisonType == ComparisonType.NotEqual)
+                {
+                    otherPropertyContextValueDynamic = otherPropertyContextValue?.ToString() ?? string.Empty;
+                    otherPropertyValueDynamic = OtherPropertyValue?.ToString() ?? string.Empty;
+                }
+                else
+                {
+                    otherPropertyContextValueDynamic = otherPropertyContextValue?.ToString().Length ?? 0;
+                    otherPropertyValueDynamic = OtherPropertyValue?.ToString().Length ?? 0;
+                }
+            }
+            else if (otherPropertyType.IsTimeSpanType())
+            {
+                otherPropertyContextValueDynamic = otherPropertyContextValue.ToTimeSpan();
+                otherPropertyValueDynamic = OtherPropertyValue.ToTimeSpan();
+            }
+            else
+            {
+                throw new Exception($"The type is not supported in {nameof(RequiredIfAttribute)}.");
             }
 
+            // Do comaprison and do the required validation.
             if (ComparisonType == ComparisonType.Equal)
             {
-                if (otherPropertyType == typeof(DateTime) || otherPropertyType == typeof(DateTime?))
+                if (otherPropertyContextValueDynamic == otherPropertyValueDynamic)
                 {
-                    DateTime otherPropertyValue = DateTime.Parse(OtherPropertyValue.ToString(), CultureInfo.InvariantCulture);
-                    if ((DateTime)otherPropertyContextValue == otherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(string))
-                {
-                    if (otherPropertyContextValue.ToString().ToUpperInvariant() == OtherPropertyValue.ToString().ToUpperInvariant())
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType.IsNumericType())
-                {
-                    if (Convert.ToDecimal(otherPropertyContextValue, CultureInfo.InvariantCulture) == Convert.ToDecimal(OtherPropertyValue, CultureInfo.InvariantCulture))
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(TimeSpan) || otherPropertyType == typeof(TimeSpan?))
-                {
-                    if ((TimeSpan)otherPropertyContextValue == (TimeSpan)OtherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
+                    return IsRequired(value, validationContext);
                 }
             }
             else if (ComparisonType == ComparisonType.NotEqual)
             {
-                if (otherPropertyType == typeof(DateTime) || otherPropertyType == typeof(DateTime?))
+                if (otherPropertyContextValueDynamic != otherPropertyValueDynamic)
                 {
-                    DateTime otherPropertyValue = DateTime.Parse(OtherPropertyValue.ToString(), CultureInfo.InvariantCulture);
-                    if ((DateTime)otherPropertyContextValue != otherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(string))
-                {
-                    if (otherPropertyContextValue.ToString().ToUpperInvariant() != OtherPropertyValue.ToString().ToUpperInvariant())
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType.IsNumericType())
-                {
-                    if (Convert.ToDecimal(otherPropertyContextValue, CultureInfo.InvariantCulture) != Convert.ToDecimal(OtherPropertyValue, CultureInfo.InvariantCulture))
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(TimeSpan) || otherPropertyType == typeof(TimeSpan?))
-                {
-                    if ((TimeSpan)otherPropertyContextValue != (TimeSpan)OtherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
+                    return IsRequired(value, validationContext);
                 }
             }
             else if (ComparisonType == ComparisonType.GreaterThan)
             {
-                if (otherPropertyType == typeof(DateTime) || otherPropertyType == typeof(DateTime?))
+                if (otherPropertyContextValueDynamic > otherPropertyValueDynamic)
                 {
-                    DateTime otherPropertyValue = DateTime.Parse(OtherPropertyValue.ToString(), CultureInfo.InvariantCulture);
-                    if ((DateTime)otherPropertyContextValue > otherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(string))
-                {
-                    if (otherPropertyContextValue.ToString().Length > OtherPropertyValue.ToString().Length)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType.IsNumericType())
-                {
-                    if (Convert.ToDecimal(otherPropertyContextValue, CultureInfo.InvariantCulture) > Convert.ToDecimal(OtherPropertyValue, CultureInfo.InvariantCulture))
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(TimeSpan) || otherPropertyType == typeof(TimeSpan?))
-                {
-                    if ((TimeSpan)otherPropertyContextValue > (TimeSpan)OtherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
+                    return IsRequired(value, validationContext);
                 }
             }
             else if (ComparisonType == ComparisonType.GreaterThanOrEqual)
             {
-                if (otherPropertyType == typeof(DateTime) || otherPropertyType == typeof(DateTime?))
+                if (otherPropertyContextValueDynamic >= otherPropertyValueDynamic)
                 {
-                    DateTime otherPropertyValue = DateTime.Parse(OtherPropertyValue.ToString(), CultureInfo.InvariantCulture);
-                    if ((DateTime)otherPropertyContextValue >= otherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(string))
-                {
-                    if (otherPropertyContextValue.ToString().Length >= OtherPropertyValue.ToString().Length)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType.IsNumericType())
-                {
-                    if (Convert.ToDecimal(otherPropertyContextValue, CultureInfo.InvariantCulture) >= Convert.ToDecimal(OtherPropertyValue, CultureInfo.InvariantCulture))
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(TimeSpan) || otherPropertyType == typeof(TimeSpan?))
-                {
-                    if ((TimeSpan)otherPropertyContextValue >= (TimeSpan)OtherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
+                    return IsRequired(value, validationContext);
                 }
             }
             else if (ComparisonType == ComparisonType.SmallerThan)
             {
-                if (otherPropertyType == typeof(DateTime) || otherPropertyType == typeof(DateTime?))
+                if (otherPropertyContextValueDynamic < otherPropertyValueDynamic)
                 {
-                    DateTime otherPropertyValue = DateTime.Parse(OtherPropertyValue.ToString(), CultureInfo.InvariantCulture);
-                    if ((DateTime)otherPropertyContextValue < otherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(string))
-                {
-                    if (otherPropertyContextValue.ToString().Length < OtherPropertyValue.ToString().Length)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType.IsNumericType())
-                {
-                    if (Convert.ToDecimal(otherPropertyContextValue, CultureInfo.InvariantCulture) < Convert.ToDecimal(OtherPropertyValue, CultureInfo.InvariantCulture))
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(TimeSpan) || otherPropertyType == typeof(TimeSpan?))
-                {
-                    if ((TimeSpan)otherPropertyContextValue < (TimeSpan)OtherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
+                    return IsRequired(value, validationContext);
                 }
             }
             else if (ComparisonType == ComparisonType.SmallerThanOrEqual)
             {
-                if (otherPropertyType == typeof(DateTime) || otherPropertyType == typeof(DateTime?))
+                if (otherPropertyContextValueDynamic <= otherPropertyValueDynamic)
                 {
-                    DateTime otherPropertyValue = DateTime.Parse(OtherPropertyValue.ToString(), CultureInfo.InvariantCulture);
-                    if ((DateTime)otherPropertyContextValue <= otherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(string))
-                {
-                    if (otherPropertyContextValue.ToString().Length <= OtherPropertyValue.ToString().Length)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType.IsNumericType())
-                {
-                    if (Convert.ToDecimal(otherPropertyContextValue, CultureInfo.InvariantCulture) <= Convert.ToDecimal(OtherPropertyValue, CultureInfo.InvariantCulture))
-                    {
-                        return IsRequired(value, validationContext);
-                    }
-                }
-
-                if (otherPropertyType == typeof(TimeSpan) || otherPropertyType == typeof(TimeSpan?))
-                {
-                    if ((TimeSpan)otherPropertyContextValue <= (TimeSpan)OtherPropertyValue)
-                    {
-                        return IsRequired(value, validationContext);
-                    }
+                    return IsRequired(value, validationContext);
                 }
             }
 

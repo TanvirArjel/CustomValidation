@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace TanvirArjel.CustomValidation.Extensions
 {
-    internal static class TypeExtensions
+    public static class TypeExtensions
     {
         private static HashSet<Type> _numericTypes = new HashSet<Type>
         {
@@ -24,9 +24,19 @@ namespace TanvirArjel.CustomValidation.Extensions
             typeof(decimal)
         };
 
-        internal static bool IsNumericType(this Type type)
+        public static bool IsNumericType(this Type type)
         {
             return _numericTypes.Contains(type) || _numericTypes.Contains(Nullable.GetUnderlyingType(type));
+        }
+
+        public static bool IsDateTimeType(this Type type)
+        {
+            return type == typeof(DateTime) || type == typeof(DateTime?);
+        }
+
+        public static bool IsTimeSpanType(this Type type)
+        {
+            return type == typeof(TimeSpan) || type == typeof(TimeSpan?);
         }
     }
 }

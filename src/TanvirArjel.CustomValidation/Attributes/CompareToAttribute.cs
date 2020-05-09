@@ -154,213 +154,76 @@ namespace TanvirArjel.CustomValidation.Attributes
 
                 string errorMessage = string.Format(CultureInfo.InvariantCulture, ErrorMessage, propertyDisplayName, comparePropertyDisplayName);
 
+                // Cast value to the appropriate dynamic type.
+                dynamic propertyValueDynamic;
+                dynamic comparePropertyValueDynamic;
+
+                if (propertyType.IsDateTimeType())
+                {
+                    propertyValueDynamic = propertyValue.ToDateTime();
+                    comparePropertyValueDynamic = comparePropertyValue.ToDateTime();
+                }
+                else if (propertyType.IsNumericType())
+                {
+                    propertyValueDynamic = Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture);
+                    comparePropertyValueDynamic = Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture);
+                }
+                else if (propertyType == typeof(string))
+                {
+                    propertyValueDynamic = propertyValue?.ToString().Length ?? 0;
+                    comparePropertyValueDynamic = comparePropertyValue?.ToString().Length ?? 0;
+                }
+                else if (propertyType.IsTimeSpanType())
+                {
+                    propertyValueDynamic = propertyValue.ToTimeSpan();
+                    comparePropertyValueDynamic = comparePropertyValue.ToTimeSpan();
+                }
+                else
+                {
+                    throw new Exception($"The type is not supported in {nameof(RequiredIfAttribute)}.");
+                }
+
+                // Do comaprison and do the required validation.
                 if (ComparisonType == ComparisonType.Equal)
                 {
-                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
+                    if (propertyValueDynamic != comparePropertyValueDynamic)
                     {
-                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) != Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
-                    {
-                        if ((DateTime)propertyValue != (DateTime)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
-                    {
-                        if ((TimeSpan)propertyValue != (TimeSpan)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(string))
-                    {
-                        if (propertyValue.ToString() != comparePropertyValue.ToString())
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
+                        return new ValidationResult(errorMessage);
                     }
                 }
-
-                if (ComparisonType == ComparisonType.NotEqual)
+                else if (ComparisonType == ComparisonType.NotEqual)
                 {
-                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
+                    if (propertyValueDynamic == comparePropertyValueDynamic)
                     {
-                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) == Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
-                    {
-                        if ((DateTime)propertyValue == (DateTime)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
-                    {
-                        if ((TimeSpan)propertyValue == (TimeSpan)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(string))
-                    {
-                        if (propertyValue.ToString() == comparePropertyValue.ToString())
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
+                        return new ValidationResult(errorMessage);
                     }
                 }
-
-                if (ComparisonType == ComparisonType.GreaterThan)
+                else if (ComparisonType == ComparisonType.GreaterThan)
                 {
-                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
+                    if (propertyValueDynamic <= comparePropertyValueDynamic)
                     {
-                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) <= Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
-                    {
-                        if ((DateTime)propertyValue <= (DateTime)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
-                    {
-                        if ((TimeSpan)propertyValue <= (TimeSpan)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(string))
-                    {
-                        if (propertyValue.ToString().Length <= comparePropertyValue.ToString().Length)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
+                        return new ValidationResult(errorMessage);
                     }
                 }
-
-                if (ComparisonType == ComparisonType.GreaterThanOrEqual)
+                else if (ComparisonType == ComparisonType.GreaterThanOrEqual)
                 {
-                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
+                    if (propertyValueDynamic < comparePropertyValueDynamic)
                     {
-                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) < Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
-                    {
-                        if ((DateTime)propertyValue < (DateTime)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
-                    {
-                        if ((TimeSpan)propertyValue < (TimeSpan)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(string))
-                    {
-                        if (propertyValue.ToString().Length < comparePropertyValue.ToString().Length)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
+                        return new ValidationResult(errorMessage);
                     }
                 }
-
-                if (ComparisonType == ComparisonType.SmallerThan)
+                else if (ComparisonType == ComparisonType.SmallerThan)
                 {
-                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
+                    if (propertyValueDynamic >= comparePropertyValueDynamic)
                     {
-                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) >= Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
-                    {
-                        if ((DateTime)propertyValue >= (DateTime)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
-                    {
-                        if ((TimeSpan)propertyValue >= (TimeSpan)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(string))
-                    {
-                        if (propertyValue.ToString().Length >= comparePropertyValue.ToString().Length)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
+                        return new ValidationResult(errorMessage);
                     }
                 }
-
-                if (ComparisonType == ComparisonType.SmallerThanOrEqual)
+                else if (ComparisonType == ComparisonType.SmallerThanOrEqual)
                 {
-                    if (propertyType.IsNumericType() && comparePropertyType.IsNumericType())
+                    if (propertyValueDynamic > comparePropertyValueDynamic)
                     {
-                        if (Convert.ToDecimal(propertyValue, CultureInfo.InvariantCulture) > Convert.ToDecimal(comparePropertyValue, CultureInfo.InvariantCulture))
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
-                    {
-                        if ((DateTime)propertyValue > (DateTime)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(TimeSpan) || propertyType == typeof(TimeSpan?))
-                    {
-                        if ((TimeSpan)propertyValue > (TimeSpan)comparePropertyValue)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
-                    }
-
-                    if (propertyType == typeof(string))
-                    {
-                        if (propertyValue.ToString().Length > comparePropertyValue.ToString().Length)
-                        {
-                            return new ValidationResult(errorMessage);
-                        }
+                        return new ValidationResult(errorMessage);
                     }
                 }
 

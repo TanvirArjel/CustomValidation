@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Globalization;
-using AspNetCore.CustomValidation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TanvirArjel.CustomValidation.AspNetCore.Extensions;
 
 namespace AspNetCore.CustomValidation.Demo
 {
@@ -31,6 +31,11 @@ namespace AspNetCore.CustomValidation.Demo
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddControllersWithViews()
+                .AddNewtonsoftJson()
+                .AddViewOptions(options =>
+                {
+                    options.HtmlHelperOptions.ClientValidationEnabled = true;
+                })
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization(options =>
                 {
@@ -69,13 +74,6 @@ namespace AspNetCore.CustomValidation.Demo
                 x.MultipartBodyLengthLimit = int.MaxValue;
                 x.MultipartHeadersLengthLimit = int.MaxValue;
             });
-
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson()
-                .AddViewOptions(options =>
-                {
-                    options.HtmlHelperOptions.ClientValidationEnabled = true;
-                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
