@@ -117,13 +117,13 @@ namespace AspNetCore.CustomValidation.Attributes
         /// <summary>
         /// Select if you want <see cref="IFormFile"/> should be a rar file.
         /// </summary>
-        [Description("application/x-rar-compressed, application/octet-stream")]
+        [Description("application/x-rar-compressed,application/octet-stream")]
         Rar,
 
         /// <summary>
         /// Select if you want <see cref="IFormFile"/> should be a zip file.
         /// </summary>
-        [Description("application/zip, application/octet-stream, application/x-zip-compressed, multipart/x-zip")]
+        [Description("application/zip,application/octet-stream,application/x-zip-compressed,multipart/x-zip")]
         Zip
     }
 
