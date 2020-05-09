@@ -16,7 +16,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IIS" Version="2.2.6" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -33,9 +33,8 @@
     </PackageReference>
   </ItemGroup>
 
-
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AspNetCore.CustomValidation\AspNetCore.CustomValidation.csproj" />
+    <ProjectReference Include="..\..\src\TanvirArjel.CustomValidation.AspNetCore\TanvirArjel.CustomValidation.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>

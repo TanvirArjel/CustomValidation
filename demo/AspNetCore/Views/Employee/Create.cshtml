@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @model AspNetCore.CustomValidation.Demo.Models.Employee
-@inject IViewLocalizer Localizer 
+@inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Create"];
 }
@@ -16,10 +16,17 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
                 <input asp-for="DateOfBirth" type="text" id="datepicker" class="form-control" onkeydown="return false" onpaste="return false" autocomplete="off" />
@@ -48,23 +55,28 @@
             </div>
 
             @*<div class="form-group">
-                <label asp-for="EntryTime" class="control-label"></label>
-                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                    <input asp-for="EntryTime" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
-                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                        <div class="input-group-text">
-                            <i class="far fa-clock"></i>
-                        </div>
+            <label asp-for="EntryTime" class="control-label"></label>
+            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                <input asp-for="EntryTime" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text">
+                        <i class="far fa-clock"></i>
                     </div>
                 </div>
+            </div>
 
+            <span asp-validation-for="EntryTime" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="EntryTime" class="control-label"></label>
+                <input type="time" asp-for="EntryTime" class="form-control" />
                 <span asp-validation-for="EntryTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OutTime" class="control-label"></label>
-                <input asp-for="OutTime" class="form-control" />
+                <input type="time" asp-for="OutTime" class="form-control" />
                 <span asp-validation-for="OutTime" class="text-danger"></span>
-            </div>*@
+            </div>
             <div class="form-group">
                 <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
             </div>
@@ -81,7 +93,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/moment.js/moment.js"></script>
     <script src="~/lib/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
-    <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.js"></script>
+    <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.js"></script>
     <script>
         $(function () {
             $("#datepicker").datepicker({

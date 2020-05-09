@@ -23,14 +23,42 @@ namespace TanvirArjel.CustomValidation.Extensions
                    || value is decimal;
         }
 
-        internal static bool IsDateTime(this object value)
+        internal static TimeSpan? ToTimeSpan(this object value)
         {
-            return value is DateTime;
+            TimeSpan? timeSpan = null;
+
+            if (value != null)
+            {
+                if (TimeSpan.TryParse(value.ToString(), out TimeSpan outTimeSpan))
+                {
+                    timeSpan = outTimeSpan;
+                }
+                else
+                {
+                    throw new FormatException("The provided string is not a valid timespan.");
+                }
+            }
+
+            return timeSpan;
         }
 
-        internal static bool IsTimeSpan(this object value)
+        internal static DateTime? ToDateTime(this object value)
         {
-            return value is TimeSpan;
+            DateTime? dateTime = null;
+
+            if (value != null)
+            {
+                if (DateTime.TryParse(value.ToString(), out DateTime outDateTime))
+                {
+                    dateTime = outDateTime;
+                }
+                else
+                {
+                    throw new FormatException("The string was not recognized as a valid DateTime. String format should be: 01-Jan-2020 or 01-Jan-2020 10:00:00 AM");
+                }
+            }
+
+            return dateTime;
         }
     }
 }

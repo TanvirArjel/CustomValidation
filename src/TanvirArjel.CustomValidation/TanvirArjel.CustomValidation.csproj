@@ -2,24 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>TanvirArjel</Authors>
     <Company>TanvirArjel</Company>
-    <Description>This is a custom server-side validation library for C# and .NET. This version includes following validation attributes:
+    <Description>This is a custom server-side validation library for C# and .NET. This version includes the following validation attributes:
 
-1. RequiredIfAttribute: To mark a field required based on the value of another fiiled.
+1. RequiredIfAttribute: To mark a field required based on the value of another field.
 
-2. MaxAgeAttribute: To validate maximum age against date of birth value of DateTime type.
+2. MaxAgeAttribute: To validate maximum age against the date of birth value of DateTime type.
 
-3. MinAgeAttribute: To validate minimum required age against a date of birth value of DateTime type.
+3. MinAgeAttribute: To validate the minimum required age against a date of birth value of DateTime type.
 
 4. MaxDateAttribute: To set max value validation for a DateTime field.
 
 5. MinDateAttribute: To set min value validation for a DateTime field.
 
-6. TextEditorRequiredAttribute: To enforce required validation attribute on the online text editors like TinyMCE, CkEditor etc.
+6. TextEditorRequiredAttribute: To enforce the required validation attribute on the online text editors like TinyMCE, CKEditor, etc.
 
 7. CompareToAttribute: To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual,GreaterThan,GreatherThanOrEqual,SmallerThan,SmallerThanOrEqual
 
@@ -32,7 +32,7 @@ This version also includes validation against dynamic values from database, conf
     <RepositoryType>Git</RepositoryType>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>CustomValidationAttribute,RequiredIfAttribute,MinAgeAttribute,MaxAgeAttribute,MinDateAttribute,MaxDateAttribute,TextEditorRequiredAttribute,CompareToAttribute</PackageTags>
-    <PackageReleaseNotes>This is the initial release of this library.</PackageReleaseNotes>
+    <PackageReleaseNotes>1. This release includes fixing of a crucial bug related to RequiredIfAttribute.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -56,6 +56,7 @@ This version also includes validation against dynamic values from database, conf
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
