@@ -17,6 +17,8 @@ This is a custom model validation library for any C# and .NET projects.
     
  Then decorate your class properties with appropriate custom validation attributes as follows:
  
+    using TanvirArjel.CustomValidation.Attributes;
+    
     pulic class Employee
     {
         [Display(Name = "First Number")]
@@ -38,6 +40,9 @@ This is a custom model validation library for any C# and .NET projects.
     
  Then decorate your class properties with appropriate custom validation attributes as follows:
  
+    using TanvirArjel.CustomValidation.Attributes;
+    using TanvirArjel.CustomValidation.AspNetCore.Attributes;
+    
     pulic class Employee
     {
         [Display(Name = "First Number")]
@@ -93,7 +98,30 @@ Or using Visusl Studio **Libman** as follows:
         
   ## What contains in version 1.0.0?
   
-  In version 1.0.0 `TanvirArjel.CustomValidation` contains the following validation attributes:
+  `TanvirArjel.CustomValidation` contains the following validation attributes:
+     
+  **1. MaxAgeAttribute**
+       To validate maximum age against date of birth value of `DateTime` type.
+       
+  **2. MinAgeAttribute**
+       To validate minimum required age against a date of birth value of `DateTime` type.
+       
+  **3. MaxDateAttribute**
+       To set max value validation for a `DateTime` field.
+       
+  **4. MinDateAttribute**
+       To set min value validation for a `DateTime` field.
+       
+  **5. TextEditorRequiredAttribute**
+       To enforce required valiaton attribute on the online text editors like TinyMCE, CkEditor etc.
+       
+  **6. CompareToAttribute**
+       To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual, GreaterThan, GreatherThanOrEqual, SmallerThan, SmallerThanOrEqual
+       
+   **7. RequiredIfAttribute**
+       To mark a field required based on the value of another field.
+       
+  In addition to the above, `TanvirArjel.CustomValidation.AspNetCore` also contains the following validation attributes:
   
   **1. FileAttribute**
        To validate file type, file max size, file min size etc.
@@ -106,27 +134,6 @@ Or using Visusl Studio **Libman** as follows:
        
   **4. FileMinSizeAttribute**
        To validate allowed min size of a file.
-       
-  **5. MaxAgeAttribute**
-       To validate maximum age against date of birth value of `DateTime` type.
-       
-  **6. MinAgeAttribute**
-       To validate minimum required age against a date of birth value of `DateTime` type.
-       
-  **7. MaxDateAttribute**
-       To set max value validation for a `DateTime` field.
-       
-  **8. MinDateAttribute**
-       To set min value validation for a `DateTime` field.
-       
-  **9. TextEditorRequiredAttribute**
-       To enforce required valiaton attribute on the online text editors like TinyMCE, CkEditor etc.
-       
-  **10. CompareToAttribute**
-       To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual, GreaterThan, GreatherThanOrEqual, SmallerThan, SmallerThanOrEqual
-       
-   **11. RequiredIfAttribute**
-       To mark a field required based on the value of another field.
        
    # Dynamic Validation
    Validation against dynamic values from database, configuration file or any external sources added for the following type:
