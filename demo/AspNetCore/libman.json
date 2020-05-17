@@ -454,6 +454,13 @@
         "css/bootstrap.css",
         "css/bootstrap.min.css"
       ]
+    },
+    {
+      "library": "tanvirarjel-custom-validation-unobtrusive@1.0.0",
+      "destination": "wwwroot/tanvirarjel-custom-validation-unobtrusive/",
+      "files": [
+        "tanvirarjel.customvalidation.unobtrusive.min.js"
+      ]
     }
   ]
 }

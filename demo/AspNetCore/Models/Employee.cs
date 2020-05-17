@@ -37,9 +37,9 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [RequiredIf(nameof(SecondNumber), ComparisonType.Equal, null)]
         public int? FirstNumber { get; set; }
 
-        [RequiredIf(nameof(FirstNumber), ComparisonType.Equal, null)]
+        //[RequiredIf(nameof(FirstNumber), ComparisonType.Equal, null)]
         [Display(Name = "Second Number")]
-        //[CompareTo(nameof(FirstNumber), ComparisonType.GreaterThan)]
+        [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThan)]
         public int? SecondNumber { get; set; }
 
         ////[FileType(new FileType[] { FileType.Mp4, FileType.Mp3 }, ErrorMessage = "{0} should be in {1} formats.")]
