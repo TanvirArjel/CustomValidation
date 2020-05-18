@@ -117,13 +117,13 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
         /// <summary>
         /// Select if you want <see cref="IFormFile"/> should be a rar file.
         /// </summary>
-        [Description("application/x-rar-compressed, application/octet-stream")]
+        [Description("application/x-rar-compressed,application/octet-stream")]
         Rar,
 
         /// <summary>
         /// Select if you want <see cref="IFormFile"/> should be a zip file.
         /// </summary>
-        [Description("application/zip, application/octet-stream, application/x-zip-compressed, multipart/x-zip")]
+        [Description("application/zip,application/octet-stream,application/x-zip-compressed,multipart/x-zip")]
         Zip
     }
 
@@ -230,7 +230,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
                 {
                     if (FileTypes != null && FileTypes.Length > 0)
                     {
-                        string[] validFileTypes = FileTypes.Select(ft => ft.ToDescriptionString().ToUpperInvariant()).ToArray();
+                        string[] validFileTypes = FileTypes.Select(ft => ft.ToDescriptionString().ToUpperInvariant().Trim()).ToArray();
                         validFileTypes = validFileTypes.SelectMany(vft => vft.Split(',')).ToArray();
                         if (!validFileTypes.Contains(inputFile.ContentType.ToUpperInvariant()))
                         {
