@@ -1,47 +1,20 @@
-# Announcement:
-
-**AspNetCore.CustomValidation** NuGet package has been split into **TanvirArjel.CustomValidation** and **TanvirArjel.CustomValidation.AspNetCore** NuGet packages to extend the support of this library beyond ASP.NET Core. Now, this library can be used in any C# and .NET Application.
-
-So from now, please use **TanvirArjel.CustomValidation** and **TanvirArjel.CustomValidation.AspNetCore** NuGet packages instead.
-
-# Custom Validation
+## 👑 Custom Validation 👑
 This is a custom model validation library for any C# and .NET projects.
  
-## How do I get started?
- 
-### For any C# and .NET Application:
- 
- First install the lastest version of `TanvirArjel.CustomValidation` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation/) into your project as follows:
+## ✈️ How do I get started? ✈️
+
+**For any C# and .NET Application:** First install the lastest version of `TanvirArjel.CustomValidation` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation/) into your project as follows:
  
     Install-Package TanvirArjel.CustomValidation
     
- Then decorate your class properties with appropriate custom validation attributes as follows:
- 
-    using TanvirArjel.CustomValidation.Attributes;
-    
-    pulic class Employee
-    {
-        [Display(Name = "First Number")]
-        public int FirstNumber { get; set; }
-
-        [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThanOrEqual)]
-        [Display(Name = "Second Number")]
-        public int? SecondNumber { get; set; }
-        
-        [RequiredIf(nameof(FirstNumber), ComparisonType.Equal, 10)]
-        public string ThirdNumber { get; set; }
-    }
-    
- ### For ASP.NET Core Application:
- 
- First install the lastest version of `TanvirArjel.CustomValidation.AspNetCore` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation.AspNetCore/) into your project as follows:
+**For ASP.NET Core Application:** First install the lastest version of `TanvirArjel.CustomValidation.AspNetCore` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation.AspNetCore/) into your project as follows:
  
     Install-Package TanvirArjel.CustomValidation.AspNetCore
-    
+ 
+## Usage   
  Then decorate your class properties with appropriate custom validation attributes as follows:
  
     using TanvirArjel.CustomValidation.Attributes;
-    using TanvirArjel.CustomValidation.AspNetCore.Attributes;
     
     pulic class Employee
     {
@@ -59,7 +32,7 @@ This is a custom model validation library for any C# and .NET projects.
         public IFormFile Photo { get; set; }
     }
         
-  ### ASP.NET Core Client Side validation:
+  ## ASP.NET Core Client Side validation:
   
   To enable client client side validation for **ASP.NET Core MVC or Razor Pages**:
   
