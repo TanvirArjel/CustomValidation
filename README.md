@@ -1,75 +1,11 @@
 ## 👑 Custom Validation 👑
 This is a custom model validation library for any C# and .NET projects.
- 
-## ✈️ How do I get started? ✈️
 
-**For any C# and .NET Application:** First install the lastest version of `TanvirArjel.CustomValidation` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation/) into your project as follows:
- 
-    Install-Package TanvirArjel.CustomValidation
-    
-**For ASP.NET Core Application:** First install the lastest version of `TanvirArjel.CustomValidation.AspNetCore` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation.AspNetCore/) into your project as follows:
- 
-    Install-Package TanvirArjel.CustomValidation.AspNetCore
- 
-## Usage   
- Then decorate your class properties with appropriate custom validation attributes as follows:
- 
-    using TanvirArjel.CustomValidation.Attributes;
-    
-    pulic class Employee
-    {
-        [Display(Name = "First Number")]
-        public int FirstNumber { get; set; }
-
-        [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThanOrEqual)]
-        [Display(Name = "Second Number")]
-        public int? SecondNumber { get; set; }
-        
-        [RequiredIf(nameof(FirstNumber), ComparisonType.Equal, 10)]
-        public string ThirdNumber { get; set; }
-        
-        [File(FileType.Jpg, MaxSize = 1024)]
-        public IFormFile Photo { get; set; }
-    }
-        
-  ## ASP.NET Core Client Side validation:
-  
-  To enable client client side validation for **ASP.NET Core MVC or Razor Pages**:
-  
-  1. First in the `ConfirugeServices` method of the `Startup` class:
-  
-    using TanvirArjel.CustomValidation.AspNetCore.Extensions;
-    
-    public static void ConfigureServices(IServiceCollection services)
-    {
-        services.AddAspNetCoreCustomValidation();
-    }
+ ## ⭐ Give a star ⭐
    
-  2. Then please add the latest version of `aspnetcore-custom-validation.min.js` file as follows:
-  
-    @section Scripts {
-      @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-      <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.min.js"></script>
-    }
-    
-    Or
-    
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.min.js"></script>
-    
-You can download the `tanvirarjel.customvalidation.unobtrusive.min.js` from here [tanvirarjel-custom-validation-unobtrusive-npm](https://www.npmjs.com/package/tanvirarjel-custom-validation-unobtrusive)
+   **If you find this library useful to you, please don't forget to encouraging me to do such more stuffs by giving a star (⭐) to this repository. Thank you.**
 
-Or using Visusl Studio **Libman** as follows:
-
-    1 ) wwwroot > lib> Add > Client Side Libray
-
-    2. Provider: jsdelivr
-       Libray: tanvirarjel-custom-validation-unobtrusive
-    3. Click install
-  
-        
-  ## What contains in version 1.0.1?
+## ⚙️ What contains in version 1.0.1? ⚙️
   
   `TanvirArjel.CustomValidation` contains the following validation attributes:
      
@@ -107,8 +43,76 @@ Or using Visusl Studio **Libman** as follows:
        
   **4. FileMinSizeAttribute**
        To validate allowed min size of a file.
-       
-   # Dynamic Validation
+ 
+## ✈️ How do I get started? ✈️
+
+**For any C# and .NET Application:** First install the lastest version of `TanvirArjel.CustomValidation` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation/) into your project as follows:
+ 
+    Install-Package TanvirArjel.CustomValidation
+    
+**For ASP.NET Core Application:** First install the lastest version of `TanvirArjel.CustomValidation.AspNetCore` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation.AspNetCore/) into your project as follows:
+ 
+    Install-Package TanvirArjel.CustomValidation.AspNetCore
+    
+**ASP.NET Core Client Side validation:** To enable client client side validation for **ASP.NET Core MVC or Razor Pages**:
+  
+  1. First in the `ConfirugeServices` method of the `Startup` class:
+  
+    using TanvirArjel.CustomValidation.AspNetCore.Extensions;
+    
+    public static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddAspNetCoreCustomValidation();
+    }
+   
+  2. Then please add the latest version of `tanvirarjel.customvalidation.unobtrusive.min.js` file as follows:
+  
+    @section Scripts {
+      @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+      <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.min.js"></script>
+    }
+    
+    Or
+    
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.min.js"></script>
+    
+You can download the `tanvirarjel.customvalidation.unobtrusive.min.js` from here [tanvirarjel-custom-validation-unobtrusive-npm](https://www.npmjs.com/package/tanvirarjel-custom-validation-unobtrusive)
+
+Or using Visusl Studio **Libman** as follows:
+
+    1. wwwroot > lib> Add > Client Side Libray
+    
+    2. Provider: jsdelivr
+       Libray: tanvirarjel-custom-validation-unobtrusive
+    3. Click install     
+ 
+## 🛠️ Usage 🛠️
+
+Then decorate your class properties with appropriate custom validation attributes as follows:
+ 
+    using TanvirArjel.CustomValidation.Attributes;
+    
+    pulic class Employee
+    {
+        [Display(Name = "First Number")]
+        public int FirstNumber { get; set; }
+
+        [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThanOrEqual)]
+        [Display(Name = "Second Number")]
+        public int? SecondNumber { get; set; }
+        
+        [RequiredIf(nameof(FirstNumber), ComparisonType.Equal, 10)]
+        public string ThirdNumber { get; set; }
+        
+        [File(FileType.Jpg, MaxSize = 1024)]
+        public IFormFile Photo { get; set; }
+    }
+        
+  
+ ## ✔️ Dynamic Validation ✔️
+ 
    Validation against dynamic values from database, configuration file or any external sources added for the following type:
     **1. File Type:** with `ValidateFile()` method
     **1. DateTime Type:** with `ValidateMaxAge()` and `ValidateMinAge()` method as follows:
@@ -137,10 +141,10 @@ Or using Visusl Studio **Libman** as follows:
         }
     }
      
-# Note
+## 🙏 Note 🙏
    
-Dont forget to request your desired validation  attribute by submitting an issue.
+**Dont forget to request your desired validation  attribute by submitting an issue.**
    
-# Request
+## 🐞 Bug Report 🐞
 
-**If you find this library useful, please don't forget to encouraging me to do such more stuffs by giving a star to this repository. Thank you.**
+**Dont forget to submit an issue if you face. we will try to resolve as soon as possible.**
