@@ -1,4 +1,4 @@
-﻿// <copyright file="CutomValidationAttributeAdapterProvider.cs" company="TanvirArjel">
+﻿// <copyright file="TanvirArjelAttributeAdapterProvider.cs" company="TanvirArjel">
 // Copyright (c) TanvirArjel. All rights reserved.
 // </copyright>
 
@@ -11,11 +11,20 @@ using TanvirArjel.CustomValidation.Attributes;
 
 namespace TanvirArjel.CustomValidation.AspNetCore.AdapterProviders
 {
-    internal class CutomValidationAttributeAdapterProvider : IValidationAttributeAdapterProvider
+    /// <summary>
+    /// Provider for supplying <see cref="IAttributeAdapter"/>.
+    /// </summary>
+    public class TanvirArjelAttributeAdapterProvider : IValidationAttributeAdapterProvider
     {
         private readonly IValidationAttributeAdapterProvider _baseProvider = new ValidationAttributeAdapterProvider();
 
-        public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
+        /// <summary>
+        ///  Returns the <see cref="IAttributeAdapter"/> for a given <see cref="ValidationAttribute"/> attribute.
+        /// </summary>
+        /// <param name="attribute">The <see cref="ValidationAttribute"/> for which <see cref="IAttributeAdapter"/> will be provided.</param>
+        /// <param name="stringLocalizer">The <see cref="IStringLocalizer"/> which will be used to create messages.</param>
+        /// <returns>An <see cref="IAttributeAdapter"/> for the given attribute.</returns>
+        public virtual IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
         {
             switch (attribute)
             {

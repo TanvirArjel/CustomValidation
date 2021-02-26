@@ -19,7 +19,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Extensions
         /// <param name="services">Extend the type <see cref="IServiceCollection"/>.</param>
         public static void AddAspNetCoreCustomValidation(this IServiceCollection services)
         {
-            services.AddSingleton<IValidationAttributeAdapterProvider, CutomValidationAttributeAdapterProvider>();
+            services.AddSingleton<IValidationAttributeAdapterProvider, TanvirArjelAttributeAdapterProvider>();
         }
     }
 }

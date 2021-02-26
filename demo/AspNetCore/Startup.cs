@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Globalization;
+using AspNetCore.MyCustomAttributes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +28,7 @@ namespace AspNetCore.CustomValidation.Demo
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddAspNetCoreCustomValidation();
+            services.AddSingleton<IValidationAttributeAdapterProvider, MyCustomValidationAttributeAdapterProvider>();
 
             //// LocalizationSetting starts here
 

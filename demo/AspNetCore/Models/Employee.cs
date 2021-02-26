@@ -15,6 +15,7 @@ namespace AspNetCore.CustomValidation.Demo.Models
         ////[TextEditorRequired]
         [Required]
         [MinLength(5)]
+        [AspNetCore.MyCustomAttributes.FooAtrribute]
         public string FirstName { get; set; }
 
         [RequiredIf(nameof(FirstName), ComparisonType.Equal, "Tanvir")]
@@ -37,7 +38,7 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [RequiredIf(nameof(SecondNumber), ComparisonType.Equal, null)]
         public int? FirstNumber { get; set; }
 
-        //[RequiredIf(nameof(FirstNumber), ComparisonType.Equal, null)]
+        ////[RequiredIf(nameof(FirstNumber), ComparisonType.Equal, null)]
         [Display(Name = "Second Number")]
         [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThan)]
         public int? SecondNumber { get; set; }
