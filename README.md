@@ -5,7 +5,7 @@ This is a custom model validation library for any C# and .NET projects.
    
    **If you find this library useful to you, please don't forget to encouraging me to do such more stuffs by giving a star (⭐) to this repository. Thank you.**
 
-## ⚙️ What contains in version 1.0.1? ⚙️
+## ⚙️ Attributes ⚙️
   
   `TanvirArjel.CustomValidation` contains the following validation attributes:
      
@@ -64,6 +64,8 @@ This is a custom model validation library for any C# and .NET projects.
  public static void ConfigureServices(IServiceCollection services)
  {
      services.AddAspNetCoreCustomValidation();
+     // or
+     services.AddSingleton<IValidationAttributeAdapterProvider, TanvirArjelAttributeAdapterProvider>();
  }
  ```
    
