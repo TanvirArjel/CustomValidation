@@ -107,6 +107,16 @@ namespace TanvirArjel.CustomValidation.Attributes
                 otherPropertyContextValueDynamic = otherPropertyContextValue.ToTimeSpan();
                 otherPropertyValueDynamic = OtherPropertyValue.ToTimeSpan();
             }
+            else if (otherPropertyType == typeof(bool))
+            {
+                if (ComparisonType != ComparisonType.Equal && ComparisonType != ComparisonType.NotEqual)
+                {
+                    throw new Exception($"The comparison type with boolean is not supported in {nameof(RequiredIfAttribute)}. Use Equal or NotEqual.");
+                }
+
+                otherPropertyContextValueDynamic = Convert.ToBoolean(otherPropertyContextValue, CultureInfo.InvariantCulture);
+                otherPropertyValueDynamic = Convert.ToBoolean(OtherPropertyValue, CultureInfo.InvariantCulture);
+            }
             else
             {
                 throw new Exception($"The type is not supported in {nameof(RequiredIfAttribute)}.");
