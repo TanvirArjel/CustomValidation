@@ -456,10 +456,11 @@
       ]
     },
     {
-      "library": "tanvirarjel-custom-validation-unobtrusive@1.0.0",
+      "library": "tanvirarjel-custom-validation-unobtrusive@1.0.1",
       "destination": "wwwroot/tanvirarjel-custom-validation-unobtrusive/",
       "files": [
-        "tanvirarjel.customvalidation.unobtrusive.min.js"
+        "tanvirarjel.customvalidation.unobtrusive.min.js",
+        "tanvirarjel.customvalidation.unobtrusive.js"
       ]
     }
   ]

@@ -53,6 +53,11 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [RequiredIf(nameof(EntryTime), ComparisonType.GreaterThan, "10:00")]
         public TimeSpan? OutTime { get; set; }
 
+        public bool IsPhoneRequired { get; set; }
+
+        [RequiredIf(nameof(IsPhoneRequired), ComparisonType.Equal, true)]
+        public string Phone { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> validationResults = new List<ValidationResult>();
