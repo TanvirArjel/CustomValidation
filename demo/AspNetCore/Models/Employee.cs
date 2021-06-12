@@ -21,10 +21,11 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [RequiredIf(nameof(FirstName), ComparisonType.Equal, "Tanvir")]
         public string LastName { get; set; }
 
-        ////[MinAge(1, 0, 0, ErrorMessage = "Min age should be 1 year.")]
         ////[DataType(DataType.Date)]
         ////[DisplayName("Date Of Birth")]
         [Required]
+        [MinAge(15, 11, 3)]
+        [MaxAge(20, 11, 3)]
         public DateTime DateOfBirth { get; set; }
 
         ////[MinDate(2019, 1, 1, ErrorMessage = "{0} should be minimun 2019 January 1.")] // 2019 January 1

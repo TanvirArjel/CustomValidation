@@ -1,17 +1,14 @@
 using System.Collections.Generic;
 using System.Globalization;
-using AspNetCore.MyCustomAttributes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TanvirArjel.CustomValidation.AspNetCore.Extensions;
 
 namespace AspNetCore.CustomValidation.Demo
 {
@@ -27,8 +24,8 @@ namespace AspNetCore.CustomValidation.Demo
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddAspNetCoreCustomValidation();
-            services.AddSingleton<IValidationAttributeAdapterProvider, MyCustomValidationAttributeAdapterProvider>();
+            ////services.AddAspNetCoreCustomValidation();
+            ////services.AddSingleton<IValidationAttributeAdapterProvider, MyCustomValidationAttributeAdapterProvider>();
 
             //// LocalizationSetting starts here
 

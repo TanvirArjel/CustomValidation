@@ -24,7 +24,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
         public FileTypeAttribute(FileType fileType)
         {
             FileTypes = new FileType[] { fileType };
-            ErrorMessage = ErrorMessage ?? "{0} should be in {1} format.";
+            ErrorMessage = ErrorMessage ?? "The {0} should be in {1} format.";
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
         public FileTypeAttribute(FileType[] fileTypes)
         {
             FileTypes = fileTypes;
-            ErrorMessage = ErrorMessage ?? "{0} should be in {1} formats.";
+            ErrorMessage = ErrorMessage ?? "The {0} should be in {1} formats.";
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
                 }
                 else
                 {
-                    return new ValidationResult("Selected file is empty.");
+                    return new ValidationResult("The selected file is empty.");
                 }
             }
 
