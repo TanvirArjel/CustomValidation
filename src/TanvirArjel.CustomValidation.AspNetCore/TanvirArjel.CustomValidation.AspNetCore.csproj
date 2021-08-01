@@ -39,7 +39,7 @@ This version also includes validation against dynamic values from database, conf
     <PackageProjectUrl>https://github.com/TanvirArjel/CustomValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TanvirArjel/CustomValidation</RepositoryUrl>
     <PackageTags>CustomValidationAttribute,RequiredIfAttribute, FileAttribute,MinAgeAttribute,MaxAgeAttribute,MinDateAttribute,MaxDateAttribute,TextEditorRequiredAttribute, CompareToAttribute</PackageTags>
-    <PackageReleaseNotes>1. `TanvirArjelAttributeAdapterProvider` has been made public so that you can extend it further.</PackageReleaseNotes>
+    <PackageReleaseNotes>1. MinAge and MaxAge validation error message issue has been fixed.</PackageReleaseNotes>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

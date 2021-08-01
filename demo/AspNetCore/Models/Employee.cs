@@ -21,6 +21,17 @@ namespace AspNetCore.CustomValidation.Demo.Models
         [RequiredIf(nameof(FirstName), ComparisonType.Equal, "Tanvir")]
         public string LastName { get; set; }
 
+        [Required]
+        [Range(1000, 9999)]
+        [Display(Name = "Starting Year")]
+        public int? StartingYear { get; set; }
+
+        [Required]
+        [Range(1000, 9999)]
+        [CompareTo(nameof(StartingYear), ComparisonType.GreaterThanOrEqual, ErrorMessage = "The {0} should be greater than or equal {1}.")]
+        [Display(Name = "Ending Year")]
+        public int? EndingYear { get; set; }
+
         ////[DataType(DataType.Date)]
         ////[DisplayName("Date Of Birth")]
         [Required]

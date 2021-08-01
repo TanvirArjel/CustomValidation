@@ -28,6 +28,18 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="StartingYear" class="control-label"></label>
+                <input asp-for="StartingYear" class="form-control" />
+                <span asp-validation-for="StartingYear" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EndingYear" class="control-label"></label>
+                <input asp-for="EndingYear" class="form-control" />
+                <span asp-validation-for="EndingYear" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
                 <input asp-for="DateOfBirth" type="text" id="datepicker" class="form-control" onkeydown="return false" onpaste="return false" autocomplete="off" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
@@ -55,18 +67,18 @@
             </div>
 
             @*<div class="form-group">
-            <label asp-for="EntryTime" class="control-label"></label>
-            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                <label asp-for="EntryTime" class="control-label"></label>
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                 <input asp-for="EntryTime" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                    <div class="input-group-text">
-                        <i class="far fa-clock"></i>
-                    </div>
+                <div class="input-group-text">
+                <i class="far fa-clock"></i>
                 </div>
-            </div>
+                </div>
+                </div>
 
-            <span asp-validation-for="EntryTime" class="text-danger"></span>
-        </div>*@
+                <span asp-validation-for="EntryTime" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="EntryTime" class="control-label"></label>
                 <input type="time" asp-for="EntryTime" class="form-control" />
@@ -89,36 +101,36 @@
 </div>
 
 @section Scripts {
-    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+<script src="~/lib/jqueryui/jquery-ui.min.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/moment.js/moment.js"></script>
-    <script src="~/lib/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
-    <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.js"></script>
-    <script>
-        $(function () {
-            $("#datepicker").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-100:+0", // You can set the year range as per as your need
-                dateFormat: 'dd-M-yy'
-            }).on('change', function () {
-                $("form").validate().element("#datepicker");
-            });
-
-            $("#datepicker2").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-100:+0", // You can set the year range as per as your need
-                dateFormat: 'dd-M-yy'
-            }).on('change', function () {
-                $("form").validate().element("#datepicker2");
-            });
+<script src="~/moment.js/moment.js"></script>
+<script src="~/lib/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
+<script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.js"></script>
+<script>
+    $(function () {
+        $("#datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0", // You can set the year range as per as your need
+            dateFormat: 'dd-M-yy'
+        }).on('change', function () {
+            $("form").validate().element("#datepicker");
         });
 
-        $(function () {
-            $('#datetimepicker1').datetimepicker({
-                format: 'LT'
-            });
+        $("#datepicker2").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0", // You can set the year range as per as your need
+            dateFormat: 'dd-M-yy'
+        }).on('change', function () {
+            $("form").validate().element("#datepicker2");
         });
-    </script>
+    });
+
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            format: 'LT'
+        });
+    });
+</script>
 }
