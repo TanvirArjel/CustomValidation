@@ -81,7 +81,7 @@ namespace TanvirArjel.CustomValidation.Attributes
             }
 
             string inputValue = value.ToString();
-            string inputValueWithoutHtml = Regex.Replace(inputValue, "<.*?>", string.Empty);
+            string inputValueWithoutHtml = Regex.Replace(inputValue, "<.*?>|&nbsp;", string.Empty);
 
             if (string.IsNullOrWhiteSpace(inputValueWithoutHtml))
             {

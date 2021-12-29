@@ -23,7 +23,7 @@ namespace TanvirArjel.CustomValidation.Attributes
         public FixedLengthAttribute(int fixedLength)
         {
             FixedLength = fixedLength;
-            ErrorMessage = ErrorMessage ?? "{0} should be exactly {1} characters long.";
+            ErrorMessage = ErrorMessage ?? "The {0} should be exactly {1} characters long.";
         }
 
         /// <summary>
