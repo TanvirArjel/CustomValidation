@@ -47,6 +47,10 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             {
                 AddAttribute(context.Attributes, "data-val-requiredif-other-property-type", "timespan");
             }
+            else if (otherPropertyType == typeof(bool))
+            {
+                AddAttribute(context.Attributes, "data-val-requiredif-other-property-type", "boolean");
+            }
             else
             {
                 throw new ApplicationException($"This attribute does not support type {otherPropertyType}");

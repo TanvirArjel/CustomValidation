@@ -609,7 +609,14 @@
         } else if (otherPropertyType == "timespan") {
             otherPropertyValue = otherPropertyValue;
             otherPropertyCurrentValue = otherPropertyCurrentValue;
-        } else {
+        } else if (otherPropertyType == "boolean") {
+            if (comparisonType != "Equal" && comparisonType != "NotEqual") {
+                throw { name: "InvalidTypeException", message: "The comparision type with boolean is not supported in requiredif validation." };
+            }
+            otherPropertyValue = Number(Boolean(otherPropertyValue));
+            otherPropertyCurrentValue = Number(Boolean(otherPropertyCurrentValue));
+        }
+        else {
             throw { name: "InvalidTypeException", message: "The type in not supported in requiredif validation." };
         }
 

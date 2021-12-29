@@ -90,6 +90,16 @@
                 <span asp-validation-for="OutTime" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="IsPhoneRequired" class="control-label"></label>
+                <input type="checkbox" asp-for="IsPhoneRequired" class="form-control" />
+                <span asp-validation-for="IsPhoneRequired" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input type="text" asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
             </div>
         </form>
