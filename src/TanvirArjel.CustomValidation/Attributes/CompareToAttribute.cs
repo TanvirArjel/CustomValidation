@@ -236,22 +236,22 @@ namespace TanvirArjel.CustomValidation.Attributes
             switch (comparisonType)
             {
                 case ComparisonType.Equal:
-                    ErrorMessage = "{0} is not equal to {1}.";
+                    ErrorMessage = "The {0} is not equal to {1}.";
                     break;
                 case ComparisonType.NotEqual:
-                    ErrorMessage = "{0} can not be equal to {1}.";
+                    ErrorMessage = "The {0} can not be equal to {1}.";
                     break;
                 case ComparisonType.GreaterThan:
-                    ErrorMessage = "{0} should be greater than {1}.";
+                    ErrorMessage = "The {0} should be greater than {1}.";
                     break;
                 case ComparisonType.GreaterThanOrEqual:
-                    ErrorMessage = "{0} should be greater than or equal {1}.";
+                    ErrorMessage = "The {0} should be greater than or equal {1}.";
                     break;
                 case ComparisonType.SmallerThan:
-                    ErrorMessage = "{0} should be smaller than {1}.";
+                    ErrorMessage = "The {0} should be smaller than {1}.";
                     break;
                 case ComparisonType.SmallerThanOrEqual:
-                    ErrorMessage = "{0} should be smaller than or equal {1}.";
+                    ErrorMessage = "The {0} should be smaller than or equal {1}.";
                     break;
                 default:
                     throw new ArgumentNullException(nameof(comparisonType));

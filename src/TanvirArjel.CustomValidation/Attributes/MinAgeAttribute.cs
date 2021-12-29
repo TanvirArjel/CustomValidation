@@ -26,7 +26,7 @@ namespace TanvirArjel.CustomValidation.Attributes
             Months = months < 0 ? 0 : months;
             Days = days < 0 ? 0 : days;
 
-            ErrorMessage = ErrorMessage ?? $"Minimum age should be {(Years > 0 ? "{0}" + " years" : string.Empty)} {(Months > 0 ? "{1}" + " months" : string.Empty)} {(Days > 0 ? "{2}" + " days" : string.Empty)}";
+            ErrorMessage = ErrorMessage ?? $"The Minimum age should be {(Years > 0 ? years + " years" : string.Empty)} {(Months > 0 ? months + " months" : string.Empty)} {(Days > 0 ? days + " days." : string.Empty)}";
         }
 
         /// <summary>

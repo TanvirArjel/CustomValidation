@@ -1,4 +1,4 @@
-﻿// <copyright file="IServiceCollectionExtensions.cs" company="TanvirArjel">
+﻿// <copyright file="ServiceCollectionExtensions.cs" company="TanvirArjel">
 // Copyright (c) TanvirArjel. All rights reserved.
 // </copyright>
 
@@ -11,7 +11,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Extensions
     /// <summary>
     /// Contains necessary <see cref="IServiceCollection"/> extension methods.
     /// </summary>
-    public static class IServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         /// Add services for unobtrusive client side validation support for ASP.NET Core Custom Validation.

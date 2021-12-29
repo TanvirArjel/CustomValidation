@@ -64,16 +64,34 @@ namespace TanvirArjel.CustomValidation.Attributes
                 throw new ArgumentException($"Other property name is empty");
             }
 
+            object parentObj = validationContext.ObjectInstance;
             PropertyInfo otherPropertyInfo = validationContext.ObjectType.GetProperty(OtherPropertyName);
 
             if (otherPropertyInfo == null)
             {
-                throw new ArgumentException($"The object does not contain any property with name '{OtherPropertyName}'");
+                string[] propertyNames = OtherPropertyName.Split('.');
+                otherPropertyInfo = validationContext.ObjectType.GetProperty(propertyNames[0]);
+
+                if (otherPropertyInfo == null)
+                {
+                    throw new ArgumentException($"The object does not contain any property with name '{OtherPropertyName}'");
+                }
+
+                for (int i = 1; i < propertyNames.Length; i++)
+                {
+                    parentObj = otherPropertyInfo.GetValue(parentObj, null);
+                    otherPropertyInfo = otherPropertyInfo.PropertyType.GetProperty(propertyNames[i]);
+
+                    if (otherPropertyInfo == null)
+                    {
+                        throw new ArgumentException($"The object does not contain any property with name '{OtherPropertyName}'");
+                    }
+                }
             }
 
             Type otherPropertyType = otherPropertyInfo.PropertyType;
 
-            object otherPropertyContextValue = otherPropertyInfo.GetValue(validationContext.ObjectInstance, null);
+            object otherPropertyContextValue = otherPropertyInfo.GetValue(parentObj, null);
 
             // Cast value to the appropriate dynamic type.
             dynamic otherPropertyContextValueDynamic;
