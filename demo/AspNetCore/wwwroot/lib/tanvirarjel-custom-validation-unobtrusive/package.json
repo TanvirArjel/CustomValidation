@@ -1,0 +1,30 @@
+{
+  "name": "tanvirarjel-custom-validation-unobtrusive",
+  "version": "1.0.1",
+  "description": "This library is a supportive client side validation library for TanvirArjel.CustomValidation library.",
+  "main": "tanvirarjel.customvalidation.unobtrusive.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanvirArjel/CustomValidation.git"
+  },
+  "keywords": [
+    "CustomValidationAttribute",
+    "RequiredIfAttribute",
+    "FileAttribute",
+    "MinAgeAttribute",
+    "MaxAgeAttribute",
+    "MinDateAttribute",
+    "MaxDateAttribute",
+    "TextEditorRequiredAttribute",
+    "CompareToAttribute"
+  ],
+  "author": "TanvirArjel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TanvirArjel/CustomValidation/issues"
+  },
+  "homepage": "https://github.com/TanvirArjel/CustomValidation#readme"
+}

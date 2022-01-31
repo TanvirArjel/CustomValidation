@@ -1,0 +1,146 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model AspNetCore.CustomValidation.Demo.Models.Employee
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Create"];
+}
+<link href="~/lib/jqueryui/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/lib/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
+<h1>@Localizer["Create"]</h1>
+
+<h4>@Localizer["Employee"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StartingYear" class="control-label"></label>
+                <input asp-for="StartingYear" class="form-control" />
+                <span asp-validation-for="StartingYear" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EndingYear" class="control-label"></label>
+                <input asp-for="EndingYear" class="form-control" />
+                <span asp-validation-for="EndingYear" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" type="text" id="datepicker" class="form-control" onkeydown="return false" onpaste="return false" autocomplete="off" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="JoiningDate" class="control-label"></label>
+                <input asp-for="JoiningDate" type="text" id="datepicker2" class="form-control" onkeydown="return false" onpaste="return false" autocomplete="off" />
+                <span asp-validation-for="JoiningDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstNumber" class="control-label"></label>
+                <input asp-for="FirstNumber" class="form-control" />
+                <span asp-validation-for="FirstNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecondNumber" class="control-label"></label>
+                <input asp-for="SecondNumber" class="form-control" />
+                <span asp-validation-for="SecondNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photo" class="control-label"></label>
+                <input asp-for="Photo" type="file" class="form-control" />
+                <span asp-validation-for="Photo" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+                <label asp-for="EntryTime" class="control-label"></label>
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                <input asp-for="EntryTime" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                <div class="input-group-text">
+                <i class="far fa-clock"></i>
+                </div>
+                </div>
+                </div>
+
+                <span asp-validation-for="EntryTime" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="EntryTime" class="control-label"></label>
+                <input type="time" asp-for="EntryTime" class="form-control" />
+                <span asp-validation-for="EntryTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OutTime" class="control-label"></label>
+                <input type="time" asp-for="OutTime" class="form-control" />
+                <span asp-validation-for="OutTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsPhoneRequired" class="control-label"></label>
+                <input type="checkbox" asp-for="IsPhoneRequired" class="form-control" />
+                <span asp-validation-for="IsPhoneRequired" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input type="text" asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["Back to List"]</a>
+</div>
+
+@section Scripts {
+<script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script src="~/moment.js/moment.js"></script>
+<script src="~/lib/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
+<script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.js"></script>
+<script>
+    $(function () {
+        $("#datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0", // You can set the year range as per as your need
+            dateFormat: 'dd-M-yy'
+        }).on('change', function () {
+            $("form").validate().element("#datepicker");
+        });
+
+        $("#datepicker2").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0", // You can set the year range as per as your need
+            dateFormat: 'dd-M-yy'
+        }).on('change', function () {
+            $("form").validate().element("#datepicker2");
+        });
+    });
+
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            format: 'LT'
+        });
+    });
+</script>
+}

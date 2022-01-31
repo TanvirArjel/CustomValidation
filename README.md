@@ -1,128 +1,160 @@
-# AspNetCore.CustomValidation
+## 👑 Custom Validation 👑
+This is a custom model validation library for any C# and .NET projects.
 
- This is a common custom model validation library for ASP.NET Core projects.
- 
-## Whats new in Version 1.4.0?
+ ## ⭐ Give a star ⭐
+   
+   **If you find this library useful to you, please don't forget to encouraging me to do such more stuffs by giving a star (⭐) to this repository. Thank you.**
 
-   1. `GreaterThanOrEqual` and `SmallerThanOrEqual` ComparisonType  to CompareToAttribute along with its client side validation.
-   2. ComparisonType `Equality` and `NotEquality` have renamed to `Equal` and `NotEqual` respectively.
-   3. This release also include some imporant bug fixes.
- 
-## How do I get started?
- 
- Configuring **TanvirArjel.CustomValidation** into your ASP.NET Core project is as simple as below:
- 
- 1. First install the lastest version of `AspNetCore.CustomValidation` [nuget package](https://www.nuget.org/packages/AspNetCore.CustomValidation) into your project as follows:
- 
-    `Install-Package AspNetCore.CustomValidation`
-    
- 2. Then decorate your class properties with appropriate Custom validation attributes as follows:
- 
-        public class Employee
-        {
-            public string EmployeeId { get; set; }
-
-            public string Name { get; set; }
-
-            [MaxAge(30,10,0)] // 30 Year 10 Months 0 Days
-            [MinAge(10,10,0)] // 10 Year 10 Months 0 Days
-            public DateTime DateOfBirth { get; set; }
-
-            [MinDate(2019,1,1)] // 2019 January 1
-            [MaxDate(2019,10,1)] // 2019 October 1
-            public DateTime JoiningDate { get; set; }
-            public int FirstNumber { get; set; }
-
-            [CompareTo(nameof(FirstNumber),ComparisonType.GreaterThan)]
-            public int SecondNumber { get; set; }
-
-            [File(new FileType[]{FileType.Jpg, FileType.Jpeg}, MaxSize = 1024)]
-            public IFormFile Photo { get; set; }
-        }
-        
-  ## Client Side validation:
+## ⚙️ Attributes ⚙️
   
-  To enable client client side validation, please add the latest version of `aspnetcore-custom-validation.min.js` file as follows:
+  `TanvirArjel.CustomValidation` contains the following validation attributes:
+     
+  **1. MaxAgeAttribute**
+       To validate maximum age against date of birth value of `DateTime` type.
+       
+  **2. MinAgeAttribute**
+       To validate minimum required age against a date of birth value of `DateTime` type.
+       
+  **3. MaxDateAttribute**
+       To set max value validation for a `DateTime` field.
+       
+  **4. MinDateAttribute**
+       To set min value validation for a `DateTime` field.
+       
+  **5. TextEditorRequiredAttribute**
+       To enforce required valiaton attribute on the online text editors like TinyMCE, CkEditor etc.
+       
+  **6. CompareToAttribute**
+       To compare one property value against another property value of the same object. Comparison types are: Equal, NotEqual, GreaterThan, GreatherThanOrEqual, SmallerThan, SmallerThanOrEqual
+       
+   **7. RequiredIfAttribute**
+       To mark a field required based on the value of another field.
+       
+  In addition to the above, `TanvirArjel.CustomValidation.AspNetCore` also contains the following validation attributes:
   
-    @section Scripts {
-      @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-      <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.min.js"</script>
-    }
+  **1. FileAttribute**
+       To validate file type, file max size, file min size etc.
+  
+  **2. FileTypeAttribute**
+       To validate type of a file.
+  
+  **3. FileMaxSizeAttribute**
+       To validate allowed max size of a file.
+       
+  **4. FileMinSizeAttribute**
+       To validate allowed min size of a file.
+ 
+## ✈️ How do I get started? ✈️
+
+**For any C# and .NET Application:** First install the lastest version of `TanvirArjel.CustomValidation` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation/) into your project as follows:
+ 
+    Install-Package TanvirArjel.CustomValidation
     
-    Or
+**For ASP.NET Core Application:** First install the lastest version of `TanvirArjel.CustomValidation.AspNetCore` [nuget package](https://www.nuget.org/packages/TanvirArjel.CustomValidation.AspNetCore/) into your project as follows:
+ 
+    Install-Package TanvirArjel.CustomValidation.AspNetCore
     
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script type="text/javascript" src="~/lib/aspnetcore-custom-validation/aspnetcore-custom-validation.min.js"</script>
+**ASP.NET Core Client Side validation:** To enable client client side validation for **ASP.NET Core MVC or Razor Pages**:
+  
+  1. First in the `ConfirugeServices` method of the `Startup` class:
+ 
+ ```C#
+ using TanvirArjel.CustomValidation.AspNetCore.Extensions;
+
+ public static void ConfigureServices(IServiceCollection services)
+ {
+     services.AddAspNetCoreCustomValidation();
+     // or
+     services.AddSingleton<IValidationAttributeAdapterProvider, TanvirArjelAttributeAdapterProvider>();
+ }
+ ```
+   
+  2. Then please add the latest version of `tanvirarjel.customvalidation.unobtrusive.min.js` file as follows:
+ 
+ ```C#
+ @section Scripts {
+   @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+   <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.min.js"></script>
+ }
+
+ Or
+
+ <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+ <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+ <script type="text/javascript" src="~/lib/tanvirarjel-custom-validation-unobtrusive/tanvirarjel.customvalidation.unobtrusive.min.js"></script>
+ ```
     
-You can download the `aspnetcore-custom-validation.min.js` from here [aspnetcore-custom-validation-npm](https://www.npmjs.com/package/aspnetcore-custom-validation)
+You can download the `tanvirarjel.customvalidation.unobtrusive.min.js` from here [tanvirarjel-custom-validation-unobtrusive-npm](https://www.npmjs.com/package/tanvirarjel-custom-validation-unobtrusive)
 
 Or using Visusl Studio **Libman** as follows:
 
-    1 ) wwwroot > lib> Add > Client Side Libray
-
+    1. wwwroot > lib> Add > Client Side Libray
+    
     2. Provider: jsdelivr
-       Libray: aspnetcore-custom-validation
-    3. Click install
-  
+       Libray: tanvirarjel-custom-validation-unobtrusive
+    3. Click install     
+ 
+## 🛠️ Usage 🛠️
+
+Then decorate your class properties with appropriate custom validation attributes as follows:
+
+```C#
+using TanvirArjel.CustomValidation.Attributes;
+
+pulic class Employee
+{
+    [Display(Name = "First Number")]
+    public int FirstNumber { get; set; }
+
+    [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThanOrEqual)]
+    [Display(Name = "Second Number")]
+    public int? SecondNumber { get; set; }
+
+    [RequiredIf(nameof(FirstNumber), ComparisonType.Equal, 10)]
+    public string ThirdNumber { get; set; }
+
+    [File(FileType.Jpg, MaxSize = 1024)]
+    public IFormFile Photo { get; set; }
+}
+```
         
-  ## What contains in Version 1.4.0?
   
-  In version 1.4.0 `AspNetCore.CustomValidation` contains the following validation attributes:
-  
-  **1. FileAttribute**
-       To validate file type, file max size, file min size
-       
-  **2. MaxAgeAttribute**
-       To validate maximum age against date of birth value of `DateTime` type
-       
-  **3. MinAgeAttribute**
-       To validate minimum required age against a date of birth value of `DateTime` type.
-       
-  **4. MaxDateAttribute**
-       To set max value validation for a `DateTime` field.
-       
-  **5. MinDateAttribute**
-       To set min value validation for a `DateTime` field.
-       
-  **6. TinyMceRequiredAttribute**
-       To enforce required valiaton attribute on the online text editors like TinyMCE, CkEditor etc.
-       
-  **7. CompareToAttribute**
-       To compare one property value against another property value of the same object.
-       
-   # Dynamic Validation
-   In version 1.4.0, validation against dynamic values from database, configuration file or any external source added for the following type:
+ ## ✔️ Dynamic Validation ✔️
+ 
+   Validation against dynamic values from database, configuration file or any external sources added for the following type:
     **1. File Type:** with `ValidateFile()` method
     **1. DateTime Type:** with `ValidateMaxAge()` and `ValidateMinAge()` method as follows:
-    
-    public class Employee : IValidatableObject
-    {
-        public DateTime? DateOfBirth { get; set; }
-        public IFormFile Photo { get; set; }
+ 
+ ```C#
+ public class Employee : IValidatableObject
+ {
+     public DateTime? DateOfBirth { get; set; }
+     public IFormFile Photo { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            List<ValidationResult> validationResults = new List<ValidationResult>();
-            FileOptions fileOptions = new FileOptions()
-            {
-                FileTypes = new FileType[] {FileType.Jpeg,FileType.Jpg},
-                MinSize = 124,
-                MaxSize = Convert.ToInt32(AppSettings.GetValue("DemoSettings:MaxFileSize"))
-            };
+     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+     {
+         List<ValidationResult> validationResults = new List<ValidationResult>();
+         FileOptions fileOptions = new FileOptions()
+         {
+             FileTypes = new FileType[] {FileType.Jpeg,FileType.Jpg},
+             MinSize = 124,
+             MaxSize = Convert.ToInt32(AppSettings.GetValue("DemoSettings:MaxFileSize"))
+         };
 
-            ValidationResult minAgeValidationResult = validationContext.ValidateMinAge(nameof(DateOfBirth), 10, 0, 0);
-            validationResults.Add(minAgeValidationResult);
-            
-            ValidationResult fileValidationResult = validationContext.ValidateFile(nameof(Photo), fileOptions);
-            validationResults.Add(fileValidationResult);
-            return validationResults;
-        }
-    }
-    
-       
-   # Note
+         ValidationResult minAgeValidationResult = validationContext.ValidateMinAge(nameof(DateOfBirth), 10, 0, 0);
+         validationResults.Add(minAgeValidationResult);
+
+         ValidationResult fileValidationResult = validationContext.ValidateFile(nameof(Photo), fileOptions);
+         validationResults.Add(fileValidationResult);
+         return validationResults;
+     }
+ }
+ ```
+     
+## 🙏 Note 🙏
    
-   Dont forget to request your desired validation  attribute by submitting an issue.
-  
-  
+**Dont forget to request your desired validation  attribute by submitting an issue.**
+   
+## 🐞 Bug Report 🐞
+
+**Dont forget to submit an issue if you face. we will try to resolve as soon as possible.**
