@@ -34,7 +34,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="TanvirArjel.CustomValidation.AspNetCore" Version="1.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TanvirArjel.CustomValidation.AspNetCore\TanvirArjel.CustomValidation.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\TanvirArjel.CustomValidation\TanvirArjel.CustomValidation.csproj" />
   </ItemGroup>
 
 </Project>

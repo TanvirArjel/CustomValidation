@@ -56,6 +56,17 @@
         }
     }
 
+    function getInputName(otherPropertyName, elementName) {
+        let modelPrefix = elementName.substr(0, elementName.lastIndexOf(".") + 1);
+
+        if (otherPropertyName.indexOf("*.") === 0) {
+            otherPropertyName = otherPropertyName.replace("*.", modelPrefix);
+        }
+
+        // As mentioned on http://api.jquery.com/category/selectors/
+        return otherPropertyName.replace(/([!"#$%&'()*+,./:;<=>?@\[\\\]^`{|}~])/g, "\\$1");
+    }
+
     // valid date validation
     $.validator.addMethod("valid-date-format", function (value, element, params) {
         if (value) {
@@ -211,7 +222,7 @@
     $.validator.addMethod("input-type-compare", function (value, element, params) {
         var inputPropertyType = $(element).prop('type');
         var comparePropertyName = params["property"];
-        var compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        var compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         var comparePropertyType = compareProperty.prop('type');
 
         return inputPropertyType === comparePropertyType;
@@ -230,7 +241,7 @@
         const inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -278,7 +289,7 @@
         const inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -324,7 +335,7 @@
         let inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -372,7 +383,7 @@
         let inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -418,7 +429,7 @@
         const inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -464,7 +475,7 @@
         const inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -565,16 +576,17 @@
         const otherPropertyName = params['other-property'];
         const comparisonType = params['comparison-type'];
         const otherPropertyType = params['other-property-type'];
-        let otherPropertyValue = params['other-property-value'];
+        let otherPropertyValue = params['other-property-value'];        
 
+        let inputName = getInputName(otherPropertyName, element.name);
 
-        const otherPropertyElement = $(element).closest('form').find('[name="' + otherPropertyName + '"]');
+        const otherPropertyElement = $(element).closest('form').find('[name="' + inputName + '"]');
         const otherPropertyInputType = otherPropertyElement.attr('type');
 
         let otherPropertyCurrentValue = null;
 
         if (otherPropertyInputType == "checkbox" || otherPropertyInputType == "radio") {
-            var control = $("[name$='" + otherPropertyName + "']:checked");
+            var control = $("[name$='" + inputName + "']:checked");
             otherPropertyCurrentValue = control.val();
         } else {
             otherPropertyCurrentValue = otherPropertyElement.val();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using AspNetCore.Models;
 using Microsoft.AspNetCore.Http;
 using TanvirArjel.CustomValidation.AspNetCore.Attributes;
 using TanvirArjel.CustomValidation.Attributes;
@@ -69,6 +70,8 @@ public class Employee : IValidatableObject
 
     [RequiredIf(nameof(IsPhoneRequired), ComparisonType.Equal, true)]
     public string Phone { get; set; }
+
+    public PreviousJobExperience[] PreviousJobs { get; set; } = new PreviousJobExperience[2];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {

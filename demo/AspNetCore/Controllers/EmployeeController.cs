@@ -14,7 +14,7 @@ namespace AspNetCore.CustomValidation.Demo.Controllers
         // GET: Employee/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new Employee());
         }
 
         // POST: Employee/Create

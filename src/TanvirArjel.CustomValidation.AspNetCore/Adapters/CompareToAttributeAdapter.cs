@@ -33,6 +33,9 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
 
             AddAttribute(context.Attributes, "data-val", "true");
             AddAttribute(context.Attributes, "data-val-input-type-compare", $"{propertyDisplayName} is not comparable to {comparePropertyName}");
+
+            comparePropertyName = "*." + comparePropertyName;
+
             AddAttribute(context.Attributes, "data-val-input-type-compare-property", comparePropertyName);
 
             if (comparisonType == ComparisonType.Equal)
