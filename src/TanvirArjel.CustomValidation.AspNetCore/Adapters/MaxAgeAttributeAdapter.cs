@@ -31,22 +31,28 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
 
             AddAttribute(context.Attributes, "data-val", "true");
 
-            AddAttribute(context.Attributes, "data-val-valid-date-format", "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
-            AddAttribute(context.Attributes, "data-val-currenttime", $"{propertyDisplayName} can not be greater than today's date.");
+            AddAttribute(context.Attributes, "data-val-valid-date-format",
+                "The input date/datetime format is not valid! Please prefer: '01-Jan-2019' format.");
+
+            AddAttribute(context.Attributes, "data-val-currenttime",
+                $"{propertyDisplayName} can not be greater than today's date.");
+
             AddAttribute(context.Attributes, "data-val-maxage", errorMessage);
 
-            string years = Attribute.Years.ToString(CultureInfo.InvariantCulture);
-            string months = Attribute.Months.ToString(CultureInfo.InvariantCulture);
-            string days = Attribute.Days.ToString(CultureInfo.InvariantCulture);
-
-            AddAttribute(context.Attributes, "data-val-maxage-years", years);
-            AddAttribute(context.Attributes, "data-val-maxage-months", months);
-            AddAttribute(context.Attributes, "data-val-maxage-days", days);
+            string maxAgeDateTime = Attribute.MaxAgeDateTime.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
+            AddAttribute(context.Attributes, "data-val-maxage-maxagedatetime", maxAgeDateTime);
         }
 
         public override string GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(validationContext.ModelMetadata, Attribute.Years, Attribute.Months, Attribute.Days);
+            if (validationContext == null)
+            {
+                throw new ArgumentNullException(nameof(validationContext));
+            }
+
+            string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
+
+            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MaxAgeDateTime.ToString(Attribute.ErrorMessageMaxAgeDateTimeFormat, CultureInfo.CurrentCulture));
         }
 
         private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)

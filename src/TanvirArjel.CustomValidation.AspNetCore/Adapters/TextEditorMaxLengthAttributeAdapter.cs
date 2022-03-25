@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Localization;
@@ -7,14 +8,11 @@ using TanvirArjel.CustomValidation.Attributes;
 
 namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
 {
-    internal class TextEditorRequiredAttributeAdapter : AttributeAdapterBase<TextEditorRequiredAttribute>
+    internal class TextEditorMaxLengthAttributeAdapter : AttributeAdapterBase<TextEditorMaxLengthAttribute>
     {
-        private IStringLocalizer _stringLocalizer;
-
-        public TextEditorRequiredAttributeAdapter(TextEditorRequiredAttribute attribute, IStringLocalizer stringLocalizer)
+        public TextEditorMaxLengthAttributeAdapter(TextEditorMaxLengthAttribute attribute, IStringLocalizer stringLocalizer)
             : base(attribute, stringLocalizer)
         {
-            _stringLocalizer = stringLocalizer;
         }
 
         public override void AddValidation(ClientModelValidationContext context)
@@ -25,7 +23,12 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             }
 
             AddAttribute(context.Attributes, "data-val", "true");
-            AddAttribute(context.Attributes, "data-val-texteditor-required", GetErrorMessage(context));
+
+            if (Attribute.MaxLength > 0)
+            {
+                AddAttribute(context.Attributes, "data-val-texteditor-maxlength", GetErrorMessage(context));
+                AddAttribute(context.Attributes, "data-val-texteditor-maxlength-value", Attribute.MaxLength.ToString(CultureInfo.InvariantCulture));
+            }
         }
 
         public override string GetErrorMessage(ModelValidationContextBase validationContext)
@@ -37,7 +40,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
 
             string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
 
-            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName);
+            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MaxLength);
         }
 
         private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)

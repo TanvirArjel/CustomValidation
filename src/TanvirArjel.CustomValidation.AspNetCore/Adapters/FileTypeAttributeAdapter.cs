@@ -42,9 +42,8 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             }
 
             string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
-            string[] validFileTypeNames = Attribute.FileTypes.Select(ft => ft.ToString("G")).ToArray();
-            string validFileTypeNamesString = string.Join(",", validFileTypeNames);
-            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, validFileTypeNamesString);
+
+            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.ValidFileTypeNamesString);
         }
 
         private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)

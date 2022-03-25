@@ -23,11 +23,11 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// <param name="comparisonType">The <see cref="ComparisonType"/> type of the other property supplied value.</param>
         /// <param name="otherPropertyValue">The value against comparison will be done.</param>
         public RequiredIfAttribute(string otherPropertyName, ComparisonType comparisonType, object otherPropertyValue)
+            : base("The {0} field is required.")
         {
             OtherPropertyName = otherPropertyName;
             ComparisonType = comparisonType;
             OtherPropertyValue = otherPropertyValue;
-            ErrorMessage = ErrorMessage ?? "The {0} field is required.";
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace TanvirArjel.CustomValidation.Attributes
         {
             if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
             {
-                string formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, ErrorMessage, validationContext.DisplayName);
+                string formattedErrorMessage = string.Format(CultureInfo.CurrentCulture, ErrorMessageString, validationContext.DisplayName);
                 return new ValidationResult(formattedErrorMessage);
             }
 

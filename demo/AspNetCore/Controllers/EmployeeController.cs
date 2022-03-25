@@ -29,5 +29,24 @@ namespace AspNetCore.CustomValidation.Demo.Controllers
 
             return View(employee);
         }
+
+        // GET: Employee/Create
+        public ActionResult CreateWithResx()
+        {
+            return View(new EmployeeWithResx());
+        }
+
+        // POST: Employee/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateWithResx(EmployeeWithResx employee)
+        {
+            if (ModelState.IsValid)
+            {
+                return View();
+            }
+
+            return View(employee);
+        }
     }
 }

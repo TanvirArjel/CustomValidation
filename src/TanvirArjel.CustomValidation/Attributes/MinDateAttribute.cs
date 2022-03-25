@@ -23,9 +23,9 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// <param name="month">A calendar month number. The value should be in 1 to 12.</param>
         /// <param name="day">A calendar date. The value should be in 1 to 31.</param>
         public MinDateAttribute(int year, int month, int day)
+            : base("The {0} cannot be smaller than {1}.")
         {
             MinDate = new DateTime(year, month, day);
-            ErrorMessage = ErrorMessage ?? "The {0} cannot be smaller than {1}.";
         }
 
         /// <summary>
@@ -34,6 +34,7 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// <param name="minDate">The <see cref="string"/> representation of the minDate value.</param>
         /// <param name="format">Format of the supplied string minDate value.</param>
         public MinDateAttribute(string minDate, string format)
+            : base("The {0} cannot be smaller than {1}.")
         {
             MinDate = DateTime.ParseExact(minDate, format, CultureInfo.InvariantCulture);
         }
@@ -43,10 +44,15 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// </summary>
         public DateTime MinDate { get; }
 
-        ////public override string FormatErrorMessage(string displayName)
-        ////{
-        ////    return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, MinDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
-        ////}
+        /// <summary>
+        /// Gets the format of the <see cref="MinDate"/> that will be used in <see cref="FormatErrorMessage"/>
+        /// </summary>
+        public string ErrorMessageMinDateFormat { get; set; } = "dd-MM-yyyy";
+
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, MinDate.ToString(ErrorMessageMinDateFormat, CultureInfo.CurrentCulture));
+        }
 
         /// <summary>
         /// To check whether the input date violates the specified min date constraint.
@@ -83,8 +89,7 @@ namespace TanvirArjel.CustomValidation.Attributes
 
                 if (inputDate < MinDate)
                 {
-                    string errorMessage = FormatErrorMessage(validationContext.DisplayName);
-                    return new ValidationResult(errorMessage);
+                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
                 }
             }
 

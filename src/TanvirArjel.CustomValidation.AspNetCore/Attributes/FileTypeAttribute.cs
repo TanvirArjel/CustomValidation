@@ -18,29 +18,31 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
     public sealed class FileTypeAttribute : ValidationAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileMinSizeAttribute"/> class.
-        /// </summary>
-        /// <param name="fileType">A single <see cref="FileType"/> value.</param>
-        public FileTypeAttribute(FileType fileType)
-        {
-            FileTypes = new FileType[] { fileType };
-            ErrorMessage = ErrorMessage ?? "The {0} should be in {1} format.";
-        }
-
-        /// <summary>
         /// This <see cref="ValidationAttribute"/> is used to validate file type of <see cref="IFormFile"/> object.
         /// </summary>
         /// <param name="fileTypes">An <see cref="Array"/> of <see cref="FileType"/>.</param>
-        public FileTypeAttribute(FileType[] fileTypes)
+        public FileTypeAttribute(params FileType[] fileTypes)
+            : base("The {0} should be in {1} formats.")
         {
             FileTypes = fileTypes;
-            ErrorMessage = ErrorMessage ?? "The {0} should be in {1} formats.";
+            string[] validFileTypeNames = FileTypes.Select(ft => ft.ToString("G")).ToArray();
+            ValidFileTypeNamesString = string.Join(",", validFileTypeNames);
         }
 
         /// <summary>
         /// Get an <see cref="Array"/> of allowed file types.
         /// </summary>
         public FileType[] FileTypes { get; }
+
+        /// <summary>
+        /// Valid file types string
+        /// </summary>
+        internal string ValidFileTypeNamesString { get; }
+
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, ValidFileTypeNamesString);
+        }
 
         /// <summary>
         /// To check whether the input <see cref="IFormFile"/> is type of the specified type.
@@ -81,10 +83,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
                         validFileTypes = validFileTypes.SelectMany(vft => vft.Split(',')).ToArray();
                         if (!validFileTypes.Contains(inputFile.ContentType.ToUpperInvariant()))
                         {
-                            string[] validFileTypeNames = FileTypes.Select(ft => ft.ToString("G")).ToArray();
-                            string validFileTypeNamesString = string.Join(",", validFileTypeNames);
-                            string fileTypeErrorMessage = GetFileTypeErrorMessage(ErrorMessage, validationContext.DisplayName, validFileTypeNamesString);
-                            return new ValidationResult(fileTypeErrorMessage);
+                            return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
                         }
                     }
                 }
@@ -95,11 +94,6 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
             }
 
             return ValidationResult.Success;
-        }
-
-        private static string GetFileTypeErrorMessage(string errorMessageString, string propertyName, string fileTypeNamesString)
-        {
-            return string.Format(CultureInfo.InvariantCulture, errorMessageString, propertyName, fileTypeNamesString);
         }
     }
 }

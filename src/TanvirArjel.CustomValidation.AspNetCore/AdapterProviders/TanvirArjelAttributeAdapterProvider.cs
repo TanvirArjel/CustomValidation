@@ -50,8 +50,14 @@ namespace TanvirArjel.CustomValidation.AspNetCore.AdapterProviders
                     return new MinDateAttributeAdapter(minDateAttribute, stringLocalizer);
                 case RequiredIfAttribute requiredIfAttribute:
                     return new RequiredIfAttributeAdapter(requiredIfAttribute, stringLocalizer);
+                case TextEditorAttribute textEditorAttribute:
+                    return new TextEditorAttributeAdapter(textEditorAttribute, stringLocalizer);
                 case TextEditorRequiredAttribute textEditorRequiredAttribute:
                     return new TextEditorRequiredAttributeAdapter(textEditorRequiredAttribute, stringLocalizer);
+                case TextEditorMaxLengthAttribute textEditorMaxLengthAttribute:
+                    return new TextEditorMaxLengthAttributeAdapter(textEditorMaxLengthAttribute, stringLocalizer);
+                case TextEditorMinLengthAttribute textEditorMinLengthAttribute:
+                    return new TextEditorMinLengthAttributeAdapter(textEditorMinLengthAttribute, stringLocalizer);
                 default:
                     return _baseProvider.GetAttributeAdapter(attribute, stringLocalizer);
             }

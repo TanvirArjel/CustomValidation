@@ -35,18 +35,20 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
 
             AddAttribute(context.Attributes, "data-val-minage", errorMessage);
 
-            string years = Attribute.Years.ToString(CultureInfo.InvariantCulture);
-            string months = Attribute.Months.ToString(CultureInfo.InvariantCulture);
-            string days = Attribute.Days.ToString(CultureInfo.InvariantCulture);
-
-            AddAttribute(context.Attributes, "data-val-minage-years", years);
-            AddAttribute(context.Attributes, "data-val-minage-months", months);
-            AddAttribute(context.Attributes, "data-val-minage-days", days);
+            string minAgeDateTime = Attribute.MinAgeDateTime.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture);
+            AddAttribute(context.Attributes, "data-val-minage-minagedatetime", minAgeDateTime);
         }
 
         public override string GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(validationContext.ModelMetadata, Attribute.Years, Attribute.Months, Attribute.Years);
+            if (validationContext == null)
+            {
+                throw new ArgumentNullException(nameof(validationContext));
+            }
+
+            string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
+
+            return GetErrorMessage(validationContext.ModelMetadata,propertyDisplayName, Attribute.MinAgeDateTime.ToString(Attribute.ErrorMessageMinAgeDateTimeFormat, CultureInfo.CurrentCulture));
         }
 
         private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)

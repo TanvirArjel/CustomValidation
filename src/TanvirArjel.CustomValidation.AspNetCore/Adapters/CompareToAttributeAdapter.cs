@@ -16,7 +16,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
     internal class CompareToAttributeAdapter : AttributeAdapterBase<CompareToAttribute>
     {
         public CompareToAttributeAdapter(CompareToAttribute attribute, IStringLocalizer stringLocalizer)
-            : base(attribute, stringLocalizer)
+            : base(new CompareToAttributeWrapper(attribute), stringLocalizer)
         {
         }
 
@@ -86,6 +86,8 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             string comparePropertyDisplayName = validationContext.ModelMetadata.ContainerMetadata.Properties
                 .Single(p => p.PropertyName == Attribute.ComparePropertyName).GetDisplayName();
 
+            ((CompareToAttributeWrapper)Attribute).ComparePropertyDisplayName = comparePropertyDisplayName;
+
             return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, comparePropertyDisplayName);
         }
 
@@ -97,9 +99,32 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             }
         }
 
-        private static string GetFormattedErrorMessage(string errorMessage, string propertyName, string comparePropertyName)
+        // The attribute wrapper is needed to override the FormatErrorMessage method
+        // See https://github.com/dotnet/aspnetcore/blob/main/src/Mvc/Mvc.DataAnnotations/src/CompareAttributeAdapter.cs
+        private sealed class CompareToAttributeWrapper : CompareToAttribute
         {
-            return string.Format(CultureInfo.InvariantCulture, errorMessage, propertyName, comparePropertyName);
+            public CompareToAttributeWrapper(CompareToAttribute attribute)
+                : base(attribute.ComparePropertyName, attribute.ComparisonType)
+            {
+                if (!string.IsNullOrEmpty(attribute.ErrorMessage) ||
+                    !string.IsNullOrEmpty(attribute.ErrorMessageResourceName) ||
+                    attribute.ErrorMessageResourceType != null)
+                {
+                    ErrorMessage = attribute.ErrorMessage;
+                    ErrorMessageResourceName = attribute.ErrorMessageResourceName;
+                    ErrorMessageResourceType = attribute.ErrorMessageResourceType;
+                }
+            }
+
+            /// <summary>
+            /// Display name of the property which against the comparison will be done.
+            /// </summary>
+            public string ComparePropertyDisplayName { get; set; }
+
+            public override string FormatErrorMessage(string name)
+            {
+                return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, ComparePropertyDisplayName ?? ComparePropertyName);
+            }
         }
     }
 }

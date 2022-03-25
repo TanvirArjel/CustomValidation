@@ -132,11 +132,7 @@
     // max age validation
     $.validator.addMethod("maxage", function (value, element, params) {
         if (value) {
-            let maxAgeDateTime = new Date();
-
-            maxAgeDateTime.setFullYear(maxAgeDateTime.getFullYear() - params.years);
-            maxAgeDateTime.setMonth(maxAgeDateTime.getMonth() - params.months);
-            maxAgeDateTime.setDate(maxAgeDateTime.getDate() - params.days);
+            let maxAgeDateTime = new Date(params.maxagedatetime);
 
             const inputDate = getDateValue(value);
             return inputDate >= maxAgeDateTime;
@@ -145,7 +141,7 @@
         return true;
     });
 
-    $.validator.unobtrusive.adapters.add("maxage", ['years', 'months', 'days'], function (options) {
+    $.validator.unobtrusive.adapters.add("maxage", ['maxagedatetime'], function (options) {
         options.rules.maxage = options.params;
         options.messages["maxage"] = options.message;
     });
@@ -153,10 +149,7 @@
     // min age validation
     $.validator.addMethod("minage", function (value, element, params) {
         if (value) {
-            let minAgeDateTime = new Date();
-            minAgeDateTime.setFullYear(minAgeDateTime.getFullYear() - params.years);
-            minAgeDateTime.setMonth(minAgeDateTime.getMonth() - params.months);
-            minAgeDateTime.setDate(minAgeDateTime.getDate() - params.days);
+            let minAgeDateTime = new Date(params.minagedatetime);
 
             const inputDate = getDateValue(value);
             return minAgeDateTime >= inputDate;
@@ -165,7 +158,7 @@
         return true;
     });
 
-    $.validator.unobtrusive.adapters.add("minage", ['years', 'months', 'days'], function (options) {
+    $.validator.unobtrusive.adapters.add("minage", ['minagedatetime'], function (options) {
         options.rules.minage = options.params;
         options.messages["minage"] = options.message;
     });

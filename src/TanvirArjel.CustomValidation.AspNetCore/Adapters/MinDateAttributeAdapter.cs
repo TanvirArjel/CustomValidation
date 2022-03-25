@@ -44,7 +44,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             }
 
             string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
-            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MinDate);
+            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MinDate.ToString(Attribute.ErrorMessageMinDateFormat, CultureInfo.CurrentCulture));
         }
 
         private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)
