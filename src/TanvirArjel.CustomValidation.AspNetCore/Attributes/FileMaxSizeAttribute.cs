@@ -20,9 +20,9 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
         /// </summary>
         /// <param name="maxSize">Allowed <see cref="MaxSize"/> of the file in KB.</param>
         public FileMaxSizeAttribute(int maxSize)
+            : base("{0} should be not more than {1}.")
         {
             MaxSize = maxSize;
-            ErrorMessage = ErrorMessage ?? "{0} should be not more than {1}.";
         }
 
         /// <summary>
@@ -33,7 +33,12 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
         /// <summary>
         /// Get allowed <see cref="MaxSize"/> of the file with appropriate unit.
         /// </summary>
-        private string MaxSizeAndUnit => MaxSize >= 1024 ? Math.Round(MaxSize / 1024M, 2) + " MB" : MaxSize + " KB";
+        internal string MaxSizeAndUnit => MaxSize >= 1024 ? Math.Round(MaxSize / 1024M, 2) + " MB" : MaxSize + " KB";
+
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, MaxSizeAndUnit);
+        }
 
         /// <summary>
         /// To check whether the input <see cref="IFormFile"/> is larger than the specified size.
@@ -72,8 +77,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
 
                     if (MaxSize > 0 && fileLengthInKByte > MaxSize)
                     {
-                        string formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, ErrorMessage, validationContext.DisplayName, MaxSizeAndUnit);
-                        return new ValidationResult(formattedErrorMessage);
+                        return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
                     }
                 }
                 else

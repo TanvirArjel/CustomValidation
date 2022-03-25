@@ -41,9 +41,8 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             }
 
             string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
-            int maxSize = Attribute.MaxSize;
-            string maxSizeAndUnit = maxSize >= 1024 ? Math.Round(maxSize / 1024M, 2) + " MB" : maxSize + " KB";
-            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, maxSizeAndUnit);
+
+            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MaxSizeAndUnit);
         }
 
         private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)

@@ -51,7 +51,7 @@ namespace TanvirArjel.CustomValidation.Attributes
     /// This <see cref="ValidationAttribute"/> is used to compare the decorated property value against the another property value of the same object.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public sealed class CompareToAttribute : ValidationAttribute
+    public class CompareToAttribute : ValidationAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompareToAttribute"/> class.
@@ -59,14 +59,10 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// <param name="comparePropertyName">Name of the property which against the comparison will be done.</param>
         /// <param name="comparisonType">The <see cref="ComparisonType"/>.</param>
         public CompareToAttribute(string comparePropertyName, ComparisonType comparisonType)
+            : base(GetErrorMessage(comparisonType))
         {
             ComparePropertyName = comparePropertyName;
             ComparisonType = comparisonType;
-
-            if (ErrorMessage == null)
-            {
-                SetErrorMessage(comparisonType);
-            }
         }
 
         /// <summary>
@@ -152,7 +148,7 @@ namespace TanvirArjel.CustomValidation.Attributes
                 DisplayAttribute comparePropertyDisplayAttribute = comparePropertyInfo.GetCustomAttributes(typeof(DisplayAttribute), true).FirstOrDefault() as DisplayAttribute;
                 string comparePropertyDisplayName = comparePropertyDisplayAttribute?.GetName() ?? ComparePropertyName;
 
-                string errorMessage = string.Format(CultureInfo.InvariantCulture, ErrorMessage, propertyDisplayName, comparePropertyDisplayName);
+                string errorMessage = string.Format(CultureInfo.CurrentCulture, ErrorMessageString, propertyDisplayName, comparePropertyDisplayName);
 
                 // Cast value to the appropriate dynamic type.
                 dynamic propertyValueDynamic;
@@ -180,7 +176,7 @@ namespace TanvirArjel.CustomValidation.Attributes
                 }
                 else
                 {
-                    throw new Exception($"The type is not supported in {nameof(RequiredIfAttribute)}.");
+                    throw new Exception($"The type is not supported in {nameof(CompareToAttribute)}.");
                 }
 
                 // Do comaprison and do the required validation.
@@ -231,28 +227,22 @@ namespace TanvirArjel.CustomValidation.Attributes
             }
         }
 
-        private void SetErrorMessage(ComparisonType comparisonType)
+        private static string GetErrorMessage(ComparisonType comparisonType)
         {
             switch (comparisonType)
             {
                 case ComparisonType.Equal:
-                    ErrorMessage = "The {0} is not equal to {1}.";
-                    break;
+                    return "The {0} is not equal to {1}.";
                 case ComparisonType.NotEqual:
-                    ErrorMessage = "The {0} can not be equal to {1}.";
-                    break;
+                    return "The {0} can not be equal to {1}.";
                 case ComparisonType.GreaterThan:
-                    ErrorMessage = "The {0} should be greater than {1}.";
-                    break;
+                    return "The {0} should be greater than {1}.";
                 case ComparisonType.GreaterThanOrEqual:
-                    ErrorMessage = "The {0} should be greater than or equal {1}.";
-                    break;
+                    return "The {0} should be greater than or equal {1}.";
                 case ComparisonType.SmallerThan:
-                    ErrorMessage = "The {0} should be smaller than {1}.";
-                    break;
+                    return "The {0} should be smaller than {1}.";
                 case ComparisonType.SmallerThanOrEqual:
-                    ErrorMessage = "The {0} should be smaller than or equal {1}.";
-                    break;
+                    return "The {0} should be smaller than or equal {1}.";
                 default:
                     throw new ArgumentNullException(nameof(comparisonType));
             }

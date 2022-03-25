@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Reflection;
 
 namespace TanvirArjel.CustomValidation.Attributes
@@ -22,33 +23,25 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// <param name="months">A <see cref="int"/> value in between 0 and 11.</param>
         /// <param name="days">A <see cref="int"/> value in between 0 and 31.</param>
         public MaxAgeAttribute(int years, int months, int days)
+            : base("The {0} cannot be smaller than {1}.")
         {
-            Years = years < 0 ? 0 : years;
-            Months = years < 0 ? 0 : months;
-            Days = days < 0 ? 0 : days;
-
-            ErrorMessage = ErrorMessage ?? $"The Maximum age can be {(Years > 0 ? years + " years" : string.Empty)} {(Months > 0 ? months + " months" : string.Empty)} {(Days > 0 ? days + " days." : string.Empty)}";
+            MaxAgeDateTime = DateTime.Today.AddYears(years < 0 ? 0 : -years).AddMonths(months < 0 ? 0 : -months).AddDays(days < 0 ? 0 : -days);
         }
 
         /// <summary>
-        /// Get the year value of the max allowed age.
+        /// Get the allowed min date value.
         /// </summary>
-        public int Years { get; }
+        public DateTime MaxAgeDateTime { get; }
 
         /// <summary>
-        /// Get the month value of the max allowed age.
+        /// Gets the format of the <see cref="MaxAgeDateTime"/> that will be used in <see cref="FormatErrorMessage"/>
         /// </summary>
-        public int Months { get; }
+        public string ErrorMessageMaxAgeDateTimeFormat { get; set; } = "dd-MM-yyyy";
 
-        /// <summary>
-        /// Get the day value of the max allowed age.
-        /// </summary>
-        public int Days { get; }
-
-        ////public override string FormatErrorMessage(string displayName)
-        ////{
-        ////    return string.Format(CultureInfo.InvariantCulture, this.ErrorMessage, this.Years, this.Months, this.Days);
-        ////}
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, MaxAgeDateTime.ToString(ErrorMessageMaxAgeDateTimeFormat, CultureInfo.CurrentCulture));
+        }
 
         /// <summary>
         /// To check whether the input date violates the specified max age constraint.
@@ -86,18 +79,13 @@ namespace TanvirArjel.CustomValidation.Attributes
                     return new ValidationResult($"{validationContext.DisplayName} can not be greater than today's date.");
                 }
 
-                DateTime dateNow = DateTime.Now;
-                TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
-                DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
+                //DateTime dateNow = DateTime.Now;
+                //TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
+                //DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
 
-                DateTime maxAgeDateTime = DateTime.MinValue.AddYears(Years).AddMonths(Months).AddDays(Days);
-
-                if (Years > 0 || Months > 0 || Days > 0)
+                if (dateOfBirth > MaxAgeDateTime)
                 {
-                    if (ageDateTime > maxAgeDateTime)
-                    {
-                        return new ValidationResult(ErrorMessage);
-                    }
+                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
                 }
             }
 

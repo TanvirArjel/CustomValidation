@@ -117,16 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back to List" xml:space="preserve">
-    <value>Retour à la liste</value>
+  <data name="GreaterThanError" xml:space="preserve">
+    <value>The {0} should be greater than {1}</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Créer</value>
+  <data name="GreaterThanOrEqualError" xml:space="preserve">
+    <value>The {0} should be greater than or equal {1}</value>
   </data>
-  <data name="Employee" xml:space="preserve">
-    <value>Employée</value>
+  <data name="MinAgeError" xml:space="preserve">
+    <value>The {0} cannot be larger than {1}</value>
   </data>
-  <data name="EmployeeWithResx" xml:space="preserve">
-    <value />
+  <data name="MaxAgeError" xml:space="preserve">
+    <value>The {0} cannot be smaller than {1}</value>
+  </data>
+  <data name="RequiredError" xml:space="preserve">
+    <value>The {0} field is required</value>
+  </data>
+  <data name="FileTypeError" xml:space="preserve">
+    <value>The {0} should be in {1} formats</value>
+  </data>
+  <data name="FileMinSizeError" xml:space="preserve">
+    <value>{0} should be at least {1}</value>
   </data>
 </root>

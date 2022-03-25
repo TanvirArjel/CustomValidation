@@ -21,15 +21,20 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// </summary>
         /// <param name="fixedLength">A positive <see cref="int"/> value.</param>
         public FixedLengthAttribute(int fixedLength)
+            : base("The {0} should be exactly {1} characters long.")
         {
             FixedLength = fixedLength;
-            ErrorMessage = ErrorMessage ?? "The {0} should be exactly {1} characters long.";
         }
 
         /// <summary>
         /// Get the value of specified fixed length.
         /// </summary>
         public int FixedLength { get; }
+
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, FixedLength);
+        }
 
         /// <summary>
         /// To check whether the input value has exactly same as specified.
@@ -64,17 +69,11 @@ namespace TanvirArjel.CustomValidation.Attributes
 
                 if (inputValue.Length != FixedLength)
                 {
-                    string errorMessage = GetFormattedErrorMessage(ErrorMessage, validationContext.DisplayName, FixedLength);
-                    return new ValidationResult(errorMessage);
+                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
                 }
             }
 
             return ValidationResult.Success;
-        }
-
-        private static string GetFormattedErrorMessage(string errorMessage, string propertyName, int fixedLength)
-        {
-            return string.Format(CultureInfo.InvariantCulture, errorMessage, propertyName, fixedLength);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
-@model AspNetCore.CustomValidation.Demo.Models.Employee
+@model AspNetCore.CustomValidation.Demo.Models.EmployeeWithResx
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Create"];
@@ -8,7 +8,7 @@
 <link href="~/lib/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
 <h1>@Localizer["Create"]</h1>
 
-<h4>@Localizer["Employee"]</h4>
+<h4>@Localizer["EmployeeWithResx"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">

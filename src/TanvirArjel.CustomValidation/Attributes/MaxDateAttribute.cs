@@ -23,9 +23,9 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// <param name="month">A calendar month number. The value should be in 1 to 12.</param>
         /// <param name="day">A calendar date. The value should be in 1 to 31.</param>
         public MaxDateAttribute(int year, int month, int day)
+            : base("The {0} cannot be larger than {1}.")
         {
             MaxDate = new DateTime(year, month, day);
-            ErrorMessage = ErrorMessage ?? "The {0} cannot be larger than {1}.";
         }
 
         /// <summary>
@@ -34,6 +34,7 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// <param name="maxDate">The <see cref="string"/> representation of the minDate value.</param>
         /// <param name="format">Format of the supplied string minDate value.</param>
         public MaxDateAttribute(string maxDate, string format)
+            : base("The {0} cannot be larger than {1}.")
         {
             MaxDate = DateTime.ParseExact(maxDate, format, CultureInfo.InvariantCulture);
         }
@@ -43,10 +44,15 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// </summary>
         public DateTime MaxDate { get; }
 
-        ////public override string FormatErrorMessage(string displayName)
-        ////{
-        ////    return string.Format(CultureInfo.InvariantCulture, ErrorMessage, displayName, MaxDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
-        ////}
+        /// <summary>
+        /// Gets the format of the <see cref="MaxDate"/> that will be used in <see cref="FormatErrorMessage"/>
+        /// </summary>
+        public string ErrorMessageMaxDateFormat { get; set; } = "dd-MM-yyyy";
+
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, MaxDate.ToString(ErrorMessageMaxDateFormat, CultureInfo.CurrentCulture));
+        }
 
         /// <summary>
         /// To check whether the input date violates the specified max date constraint.
@@ -83,8 +89,7 @@ namespace TanvirArjel.CustomValidation.Attributes
 
                 if (inputDate > MaxDate)
                 {
-                    string errorMessage = FormatErrorMessage(validationContext.DisplayName);
-                    return new ValidationResult(errorMessage);
+                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
                 }
             }
 

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using AspNetCore.Models;
+using AspNetCore.Resources;
 using Microsoft.AspNetCore.Http;
 using TanvirArjel.CustomValidation.AspNetCore.Attributes;
 using TanvirArjel.CustomValidation.Attributes;
 
 namespace AspNetCore.CustomValidation.Demo.Models;
 
-public class Employee : IValidatableObject
+public class EmployeeWithResx : IValidatableObject
 {
     ////[DisplayName("Name")]
     ////[FixedLength(5, ErrorMessage = "{0} should be exactly {1} characters long.")]
@@ -19,7 +20,7 @@ public class Employee : IValidatableObject
     [AspNetCore.MyCustomAttributes.FooAtrribute]
     public string FirstName { get; set; }
 
-    [RequiredIf(nameof(FirstName), ComparisonType.Equal, "Tanvir")]
+    [RequiredIf(nameof(FirstName), ComparisonType.Equal, "Tanvir", ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredError")]
     public string LastName { get; set; }
 
     [Required]
@@ -29,15 +30,15 @@ public class Employee : IValidatableObject
 
     [Required]
     [Range(1000, 9999)]
-    [CompareTo(nameof(StartingYear), ComparisonType.GreaterThanOrEqual, ErrorMessage = "The {0} should be greater than or equal {1}.")]
+    [CompareTo(nameof(StartingYear), ComparisonType.GreaterThanOrEqual, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "GreaterThanOrEqualError")]
     [Display(Name = "Ending Year")]
     public int? EndingYear { get; set; }
 
     ////[DataType(DataType.Date)]
     ////[DisplayName("Date Of Birth")]
     [Required]
-    [MinAge(15, 11, 3)]
-    [MaxAge(20, 11, 3)]
+    [MinAge(15, 11, 3, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "MinAgeError")]
+    [MaxAge(20, 11, 3, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "MaxAgeError")]
     public DateTime DateOfBirth { get; set; }
 
     ////[MinDate(2019, 1, 1, ErrorMessage = "{0} should be minimun 2019 January 1.")] // 2019 January 1
@@ -48,27 +49,28 @@ public class Employee : IValidatableObject
     public DateTime? JoiningDate { get; set; }
 
     [Display(Name = "First Number")]
-    [RequiredIf(nameof(SecondNumber), ComparisonType.Equal, null)]
+    [RequiredIf(nameof(SecondNumber), ComparisonType.Equal, null, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredError")]
     public int? FirstNumber { get; set; }
 
     ////[RequiredIf(nameof(FirstNumber), ComparisonType.Equal, null)]
     [Display(Name = "Second Number")]
-    [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThan)]
+    [CompareTo(nameof(FirstNumber), ComparisonType.GreaterThan, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "GreaterThanError")]
     public int? SecondNumber { get; set; }
 
     ////[FileType(new FileType[] { FileType.Mp4, FileType.Mp3 }, ErrorMessage = "{0} should be in {1} formats.")]
     ////[FileMinSize(10000, ErrorMessage = "{0} should be at least {1}.")]
-    [File(FileType.Avi, MinSize = 1024)]
+    [FileType(FileType.Jpeg, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "FileTypeError")]
+    [FileMinSize(1024, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "FileMinSizeError")]
     public IFormFile Photo { get; set; }
 
     public TimeSpan? EntryTime { get; set; }
 
-    [RequiredIf(nameof(EntryTime), ComparisonType.GreaterThan, "10:00")]
+    [RequiredIf(nameof(EntryTime), ComparisonType.GreaterThan, "10:00", ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredError")]
     public TimeSpan? OutTime { get; set; }
-    
+
     public bool IsPhoneRequired { get; set; }
 
-    [RequiredIf(nameof(IsPhoneRequired), ComparisonType.Equal, true)]
+    [RequiredIf(nameof(IsPhoneRequired), ComparisonType.Equal, true, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredError")]
     public string Phone { get; set; }
 
     public PreviousJobExperience[] PreviousJobs { get; set; } = new PreviousJobExperience[2];

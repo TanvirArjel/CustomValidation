@@ -56,6 +56,17 @@
         }
     }
 
+    function getInputName(otherPropertyName, elementName) {
+        let modelPrefix = elementName.substr(0, elementName.lastIndexOf(".") + 1);
+
+        if (otherPropertyName.indexOf("*.") === 0) {
+            otherPropertyName = otherPropertyName.replace("*.", modelPrefix);
+        }
+
+        // As mentioned on http://api.jquery.com/category/selectors/
+        return otherPropertyName.replace(/([!"#$%&'()*+,./:;<=>?@\[\\\]^`{|}~])/g, "\\$1");
+    }
+
     // valid date validation
     $.validator.addMethod("valid-date-format", function (value, element, params) {
         if (value) {
@@ -121,11 +132,7 @@
     // max age validation
     $.validator.addMethod("maxage", function (value, element, params) {
         if (value) {
-            let maxAgeDateTime = new Date();
-
-            maxAgeDateTime.setFullYear(maxAgeDateTime.getFullYear() - params.years);
-            maxAgeDateTime.setMonth(maxAgeDateTime.getMonth() - params.months);
-            maxAgeDateTime.setDate(maxAgeDateTime.getDate() - params.days);
+            let maxAgeDateTime = new Date(params.maxagedatetime);
 
             const inputDate = getDateValue(value);
             return inputDate >= maxAgeDateTime;
@@ -134,7 +141,7 @@
         return true;
     });
 
-    $.validator.unobtrusive.adapters.add("maxage", ['years', 'months', 'days'], function (options) {
+    $.validator.unobtrusive.adapters.add("maxage", ['maxagedatetime'], function (options) {
         options.rules.maxage = options.params;
         options.messages["maxage"] = options.message;
     });
@@ -142,10 +149,7 @@
     // min age validation
     $.validator.addMethod("minage", function (value, element, params) {
         if (value) {
-            let minAgeDateTime = new Date();
-            minAgeDateTime.setFullYear(minAgeDateTime.getFullYear() - params.years);
-            minAgeDateTime.setMonth(minAgeDateTime.getMonth() - params.months);
-            minAgeDateTime.setDate(minAgeDateTime.getDate() - params.days);
+            let minAgeDateTime = new Date(params.minagedatetime);
 
             const inputDate = getDateValue(value);
             return minAgeDateTime >= inputDate;
@@ -154,7 +158,7 @@
         return true;
     });
 
-    $.validator.unobtrusive.adapters.add("minage", ['years', 'months', 'days'], function (options) {
+    $.validator.unobtrusive.adapters.add("minage", ['minagedatetime'], function (options) {
         options.rules.minage = options.params;
         options.messages["minage"] = options.message;
     });
@@ -211,7 +215,7 @@
     $.validator.addMethod("input-type-compare", function (value, element, params) {
         var inputPropertyType = $(element).prop('type');
         var comparePropertyName = params["property"];
-        var compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        var compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         var comparePropertyType = compareProperty.prop('type');
 
         return inputPropertyType === comparePropertyType;
@@ -230,7 +234,7 @@
         const inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -278,7 +282,7 @@
         const inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -324,7 +328,7 @@
         let inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -372,7 +376,7 @@
         let inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -418,7 +422,7 @@
         const inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -464,7 +468,7 @@
         const inputPropertyType = $(element).prop('type');
 
         const comparePropertyName = params.property;
-        const compareProperty = $(element).closest('form').find('[name="' + comparePropertyName + '"]');
+        const compareProperty = $(element).closest('form').find('[name="' + getInputName(comparePropertyName, element.name) + '"]');
         const comparePropertyType = compareProperty.prop('type');
         const comparePropertyValue = compareProperty.val();
 
@@ -565,16 +569,17 @@
         const otherPropertyName = params['other-property'];
         const comparisonType = params['comparison-type'];
         const otherPropertyType = params['other-property-type'];
-        let otherPropertyValue = params['other-property-value'];
+        let otherPropertyValue = params['other-property-value'];        
 
+        let inputName = getInputName(otherPropertyName, element.name);
 
-        const otherPropertyElement = $(element).closest('form').find('[name="' + otherPropertyName + '"]');
+        const otherPropertyElement = $(element).closest('form').find('[name="' + inputName + '"]');
         const otherPropertyInputType = otherPropertyElement.attr('type');
 
         let otherPropertyCurrentValue = null;
 
         if (otherPropertyInputType == "checkbox" || otherPropertyInputType == "radio") {
-            var control = $("[name$='" + otherPropertyName + "']:checked");
+            var control = $("[name$='" + inputName + "']:checked");
             otherPropertyCurrentValue = control.val();
         } else {
             otherPropertyCurrentValue = otherPropertyElement.val();

@@ -43,7 +43,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             }
 
             string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
-            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MaxDate);
+            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MaxDate.ToString(Attribute.ErrorMessageMaxDateFormat, CultureInfo.CurrentCulture));
         }
 
         private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)

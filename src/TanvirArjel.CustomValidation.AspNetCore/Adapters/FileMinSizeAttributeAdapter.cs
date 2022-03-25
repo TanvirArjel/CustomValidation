@@ -41,9 +41,8 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             }
 
             string propertyDisplayName = validationContext.ModelMetadata.GetDisplayName();
-            int minSize = Attribute.MinSize;
-            string minSizeAndUnit = minSize >= 1024 ? Math.Round(minSize / 1024M, 2) + " MB" : minSize + " KB";
-            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, minSizeAndUnit);
+
+            return GetErrorMessage(validationContext.ModelMetadata, propertyDisplayName, Attribute.MinSizeAndUnit);
         }
 
         private static void AddAttribute(IDictionary<string, string> attributes, string key, string value)

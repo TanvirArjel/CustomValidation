@@ -57,7 +57,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Adapters
             }
 
             AddAttribute(context.Attributes, "data-val", "true");
-            AddAttribute(context.Attributes, "data-val-requiredif-other-property", Attribute.OtherPropertyName);
+            AddAttribute(context.Attributes, "data-val-requiredif-other-property", "*." + Attribute.OtherPropertyName);
             AddAttribute(context.Attributes, "data-val-requiredif-comparison-type", Attribute.ComparisonType.ToString());
             AddAttribute(context.Attributes, "data-val-requiredif-other-property-value", Attribute.OtherPropertyValue?.ToString() ?? string.Empty);
 

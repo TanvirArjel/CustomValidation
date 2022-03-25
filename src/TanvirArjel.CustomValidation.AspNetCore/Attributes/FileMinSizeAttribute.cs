@@ -20,9 +20,9 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
         /// </summary>
         /// <param name="minSize">Allowed <see cref="MinSize"/> of the file in KB.</param>
         public FileMinSizeAttribute(int minSize)
+            : base("{0} should be at least {1}.")
         {
             MinSize = minSize;
-            ErrorMessage = ErrorMessage ?? "{0} should be at least {1}.";
         }
 
         /// <summary>
@@ -33,7 +33,12 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
         /// <summary>
         /// Get allowed <see cref="MinSize"/> of the file with appropriate unit.
         /// </summary>
-        private string MinSizeAndUnit => MinSize >= 1024 ? Math.Round(MinSize / 1024M, 2) + " MB" : MinSize + " KB";
+        internal string MinSizeAndUnit => MinSize >= 1024 ? Math.Round(MinSize / 1024M, 2) + " MB" : MinSize + " KB";
+
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, MinSizeAndUnit);
+        }
 
         /// <summary>
         /// To check whether the input <see cref="IFormFile"/> is smaller than the specified size.
@@ -72,8 +77,7 @@ namespace TanvirArjel.CustomValidation.AspNetCore.Attributes
 
                     if (MinSize > 0 && fileLengthInKByte < MinSize)
                     {
-                        string formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, ErrorMessage, validationContext.DisplayName, MinSizeAndUnit);
-                        return new ValidationResult(formattedErrorMessage);
+                        return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
                     }
                 }
                 else

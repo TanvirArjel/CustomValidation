@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace TanvirArjel.CustomValidation.Attributes
 {
@@ -21,33 +22,25 @@ namespace TanvirArjel.CustomValidation.Attributes
         /// <param name="months">A positive <see cref="int"/> value ranging from 0 to 11.</param>
         /// <param name="days">A positive <see cref="int"/> value ranging from 0 to 31.</param>
         public MinAgeAttribute(int years, int months, int days)
+            : base("The {0} cannot be larger than {1}.")
         {
-            Years = years < 0 ? 0 : years;
-            Months = months < 0 ? 0 : months;
-            Days = days < 0 ? 0 : days;
-
-            ErrorMessage = ErrorMessage ?? $"The Minimum age should be {(Years > 0 ? years + " years" : string.Empty)} {(Months > 0 ? months + " months" : string.Empty)} {(Days > 0 ? days + " days." : string.Empty)}";
+            MinAgeDateTime = DateTime.Today.AddYears(years < 0 ? 0 : -years).AddMonths(months < 0 ? 0 : -months).AddDays(days < 0 ? 0 : -days);
         }
 
         /// <summary>
-        /// Get the year value of the allowed min age.
+        /// Get the allowed max date value.
         /// </summary>
-        public int Years { get; }
+        public DateTime MinAgeDateTime { get; }
 
         /// <summary>
-        /// Get the month value of the allowed min age.
+        /// Gets the format of the <see cref="MinAgeDateTime"/> that will be used in <see cref="FormatErrorMessage"/>
         /// </summary>
-        public int Months { get; }
+        public string ErrorMessageMinAgeDateTimeFormat { get; set; } = "dd-MM-yyyy";
 
-        /// <summary>
-        /// Get the day value of the allowed min age.
-        /// </summary>
-        public int Days { get; }
-
-        ////public override string FormatErrorMessage(string displayName)
-        ////{
-        ////    return string.Format(CultureInfo.InvariantCulture, ErrorMessage, Years, Months, Days);
-        ////}
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, MinAgeDateTime.ToString(ErrorMessageMinAgeDateTimeFormat, CultureInfo.CurrentCulture));
+        }
 
         /// <summary>
         /// To check whether the input date violates the specified min age constraint.
@@ -83,18 +76,13 @@ namespace TanvirArjel.CustomValidation.Attributes
                     return new ValidationResult($"{validationContext.DisplayName} can not be greater than today's date.");
                 }
 
-                DateTime dateNow = DateTime.Now;
-                TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
-                DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
+                //DateTime dateNow = DateTime.Now;
+                //TimeSpan timeSpan = dateNow.Subtract(dateOfBirth);
+                //DateTime ageDateTime = DateTime.MinValue.Add(timeSpan);
 
-                DateTime minAgeDateTime = DateTime.MinValue.AddYears(Years).AddMonths(Months).AddDays(Days);
-
-                if (Years > 0 || Months > 0 || Days > 0)
+                if (MinAgeDateTime > dateOfBirth)
                 {
-                    if (minAgeDateTime > ageDateTime)
-                    {
-                        return new ValidationResult(ErrorMessage);
-                    }
+                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
                 }
             }
 
