@@ -192,7 +192,7 @@ namespace TanvirArjel.CustomValidation.Attributes
             if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
             {
                 string formattedErrorMessage = string.Format(CultureInfo.InvariantCulture, ErrorMessage, validationContext.DisplayName);
-                return new ValidationResult(formattedErrorMessage);
+                return new ValidationResult(formattedErrorMessage, new[] { validationContext.MemberName });
             }
 
             return ValidationResult.Success;

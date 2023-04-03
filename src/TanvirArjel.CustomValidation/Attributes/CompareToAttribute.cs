@@ -188,42 +188,42 @@ namespace TanvirArjel.CustomValidation.Attributes
                 {
                     if (propertyValueDynamic != comparePropertyValueDynamic)
                     {
-                        return new ValidationResult(errorMessage);
+                        return new ValidationResult(errorMessage, new[] { validationContext.MemberName });
                     }
                 }
                 else if (ComparisonType == ComparisonType.NotEqual)
                 {
                     if (propertyValueDynamic == comparePropertyValueDynamic)
                     {
-                        return new ValidationResult(errorMessage);
+                        return new ValidationResult(errorMessage, new[] { validationContext.MemberName });
                     }
                 }
                 else if (ComparisonType == ComparisonType.GreaterThan)
                 {
                     if (propertyValueDynamic <= comparePropertyValueDynamic)
                     {
-                        return new ValidationResult(errorMessage);
+                        return new ValidationResult(errorMessage, new[] { validationContext.MemberName });
                     }
                 }
                 else if (ComparisonType == ComparisonType.GreaterThanOrEqual)
                 {
                     if (propertyValueDynamic < comparePropertyValueDynamic)
                     {
-                        return new ValidationResult(errorMessage);
+                        return new ValidationResult(errorMessage, new[] { validationContext.MemberName });
                     }
                 }
                 else if (ComparisonType == ComparisonType.SmallerThan)
                 {
                     if (propertyValueDynamic >= comparePropertyValueDynamic)
                     {
-                        return new ValidationResult(errorMessage);
+                        return new ValidationResult(errorMessage, new[] { validationContext.MemberName });
                     }
                 }
                 else if (ComparisonType == ComparisonType.SmallerThanOrEqual)
                 {
                     if (propertyValueDynamic > comparePropertyValueDynamic)
                     {
-                        return new ValidationResult(errorMessage);
+                        return new ValidationResult(errorMessage, new[] { validationContext.MemberName });
                     }
                 }
 
